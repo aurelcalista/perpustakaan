@@ -21,11 +21,4 @@
         <link href="{{asset('css/bootstrap-icons.css')}}" rel="stylesheet">
 
         <link href="{{asset('css/templatemo-topic-listing.css')}}" rel="stylesheet">      
-<!--
-
-TemplateMo 590 topic listing
-
-https://templatemo.com/tm-590-topic-listing
-
--->
     </head>
