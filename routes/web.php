@@ -4,15 +4,21 @@
 use App\Http\Controllers\ProfileController;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardPetugasController;
 
 
 Route::get('/', function () {
     return view('home');
 });
-
 Route::get('/dashboard_admin', function () {
     return view('dashboard_admin.index');
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard_petugas', [DashboardPetugasController::class, 'index'])->name('dashboard_petugas');
+});
+
+
 
 Route::get('/login', function () {
     return view('auth.login');

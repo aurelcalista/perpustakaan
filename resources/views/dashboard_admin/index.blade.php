@@ -1,4 +1,5 @@
-@extends('layouts.main')
+@extends('layout.main')
+
 
 @section('content')
 <div class="row">
@@ -8,7 +9,7 @@
 </div>
 
 <div class="row">
-    <!-- Kotak Info Buku -->
+
     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
         <div class="info-box">
             <span class="info-box-icon bg-aqua"><i class="fa fa-book"></i></span>
@@ -19,7 +20,7 @@
         </div>
     </div>
 
-    <!-- Kotak Info Anggota -->
+
     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
         <div class="info-box">
             <span class="info-box-icon bg-green"><i class="fa fa-users"></i></span>
@@ -30,7 +31,7 @@
         </div>
     </div>
 
-    <!-- Kotak Info Sirkulasi -->
+
     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
         <div class="info-box">
             <span class="info-box-icon bg-yellow"><i class="fa fa-refresh"></i></span>
@@ -41,7 +42,7 @@
         </div>
     </div>
 
-    <!-- Kotak Info Pengguna -->
+
     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
         <div class="info-box">
             <span class="info-box-icon bg-red"><i class="fa fa-user"></i></span>
