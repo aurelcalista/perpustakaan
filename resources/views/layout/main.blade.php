@@ -55,30 +55,30 @@
 					</ul>
 				</div>
 			</nav>
+			@stack('styles')
 		</header>
 
 		<!-- Sidebar -->
 		<aside class="main-sidebar">
 			<section class="sidebar">
-				<div class="user-panel">
-					<div class="pull-left image">
-						<img src="{{ asset('dist/img/avatar.png') }}" class="img-circle" alt="User Image">
-					</div>
-					<div class="pull-left info">
-				<p>{{ $data_nama ?? (Auth::check() ? Auth::user()->nama_pengguna : 'Guest') }}</p>
+		<div class="user-panel">
+			<div class="pull-left image">
+				<img src="{{ asset('dist/img/avatar.png') }}" class="img-circle" alt="User Image">
+			</div>
+			<div class="pull-left info">
+				<p>{{ Auth::user()->nama_pengguna ?? 'Guest' }}</p>
 				<span class="label label-warning">
-					{{ $data_level ?? (Auth::check() ? Auth::user()->level : 'Guest') }}
+					{{ Auth::user()->level ?? 'Guest' }}
 				</span>
-						</span>
-					</div>
-				</div>
+			</div>
+		</div>
 				<br>
 
 		<ul class="sidebar-menu">
 			<li class="header">MAIN NAVIGATION</li>
 
 
-			@if(Auth::check())
+			<!-- @if(Auth::check())
 				<li style="color: white; padding: 10px; background: red;">
 					<strong>DEBUG INFO:</strong><br>
 					Nama: {{ Auth::user()->nama_pengguna }}<br>
@@ -88,7 +88,7 @@
 				<li style="color: white; padding: 10px; background: red;">
 					<strong>User belum login!</strong>
 				</li>
-			@endif
+			@endif -->
 
 			@if(Auth::check() && Auth::user()->level == 'Administrator')
         <li class="treeview">
