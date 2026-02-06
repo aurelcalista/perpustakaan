@@ -16,7 +16,7 @@ class DashboardAdminController extends Controller
         $pin = DB::table('tb_sirkulasi')->where('status', 'PIN')->count('id_sk');
         $pengguna = DB::table('tb_pengguna')->count('id_pengguna');
         
-        return view('dashboard_admin.index', [  // Ubah jadi dashboard_admin.index
+        return view('dashboard_admin.index', [  
             'buku' => $buku,
             'agt' => $agt,
             'pin' => $pin,
