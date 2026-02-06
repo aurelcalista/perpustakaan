@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Perpustakaan</title>
+    <title>Perpustakaan SMKN 1 Cirebon</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
+<body class="font-sans antialiased">
 
     @include('layouts.frontend-navbar')
 
