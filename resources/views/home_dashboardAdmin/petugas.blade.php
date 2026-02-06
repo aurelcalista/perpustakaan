@@ -1,3 +1,4 @@
+@extends('layout.main')
 <?php
 	$sql = $koneksi->query("SELECT count(id_buku) as buku from tb_buku");
 	while ($data= $sql->fetch_assoc()) {

@@ -5,9 +5,9 @@
                     <div class="row">
 
                         <div class="col-lg-8 col-12 mx-auto">
-                            <h1 class="text-white text-center">Discover. Learn. Enjoy</h1>
+                            <h1 class="text-white text-center">Perpustakaan SMKN 1 Cirebon</h1>
 
-                            <h6 class="text-center">platform for creatives around the world</h6>
+                            <h6 class="text-center">pusat informasi, literasi, dan sumber belajar siswa</h6>
 
                             <form method="get" class="custom-form mt-4 pt-2 mb-lg-0 mb-5" role="search">
                                 <div class="input-group input-group-lg">
@@ -15,9 +15,9 @@
                                         
                                     </span>
 
-                                    <input name="keyword" type="search" class="form-control" id="keyword" placeholder="Design, Code, Marketing, Finance ..." aria-label="Search">
+                                    <input name="keyword" type="search" class="form-control" id="keyword" placeholder="Cari buku atau kategori buku ..." aria-label="Search">
 
-                                    <button type="submit" class="form-control">Search</button>
+                                    <button type="submit" class="form-control">Cari</button>
                                 </div>
                             </form>
                         </div>
@@ -36,9 +36,9 @@
                                 <a href="topics-detail.html">
                                     <div class="d-flex">
                                         <div>
-                                            <h5 class="mb-2">Web Design</h5>
+                                            <h5 class="mb-2">Buku Pelajaran</h5>
 
-                                            <p class="mb-0">When you search for free CSS templates, you will notice that TemplateMo is one of the best websites.</p>
+                                            <p class="mb-0">Kumpulan buku pelajaran sesuai jurusan dan mata pelajaran sekolah.</p>
                                         </div>
 
                                         <span class="badge bg-design rounded-pill ms-auto">14</span>
@@ -56,27 +56,27 @@
 
                                     <div class="custom-block-overlay-text d-flex">
                                         <div>
-                                            <h5 class="text-white mb-2">Finance</h5>
+                                            <h5 class="text-white mb-2">Buku Umum & Referensi</h5>
 
-                                            <p class="text-white">Topic Listing Template includes homepage, listing page, detail page, and contact page. You can feel free to edit and adapt for your CMS requirements.</p>
+                                            <p class="text-white">Berisi buku pengetahuan umum, ensiklopedia, dan bahan referensi lainnya.</p>
 
-                                            <a href="topics-detail.html" class="btn custom-btn mt-2 mt-lg-3">Learn More</a>
+                                            <a href="topics-detail.html" class="btn custom-btn mt-2 mt-lg-3">Baca Selengkapnya</a>
                                         </div>
 
                                         <span class="badge bg-finance rounded-pill ms-auto">25</span>
                                     </div>
 
                                     <div class="social-share d-flex">
-                                        <p class="text-white me-4">Share:</p>
+                                        <p class="text-white me-4">Bagikan:</p>
 
                                         <ul class="social-icon">
                                             <li class="social-icon-item">
-                                                <a href="#" class="social-icon-link bi-twitter"></a>
+                                                <a href="#" class="social-icon-link bi-instagram"></a>
                                             </li>
 
                                             <li class="social-icon-item">
-                                                <a href="#" class="social-icon-link bi-facebook"></a>
-                                            </li>Designms-auto"></a>
+                                                <a href="#" class="social-icon-link bi-whatsapp"></a>
+                                            </li></a>
                                     </div>
 
                                     <div class="section-overlay"></div>
@@ -90,7 +90,7 @@
 
 
             <section class="explore-section section-padding" id="section_2">
-                <div class="container">Design
+                <div class="container">
 
                         <div class="col-12 text-center">
                             <h2 class="mb-4">Browse Topics</h1>
