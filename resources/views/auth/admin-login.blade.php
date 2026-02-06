@@ -3,7 +3,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('login') }}">
+    <form method="POST" action="{{ route('admin.login.store') }}">
         @csrf
       <!-- logo -->
         <div class="login-container">
@@ -17,16 +17,16 @@
 
         <div class="welcome-text">
             <h2>Selamat Datang</h2>
-            <p>Silakan login untuk mengakses perpustakaan digital</p>
+            <p>Silakan login untuk mengakses dashboard admin</p>
         </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="nis">ID Anggota (NIS)</label>
+                    <label for="username">Username</label>
                     <div class="input-wrapper">
                         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
                         </svg>
-                        <input type="text" id="nis" name="nis" placeholder="Masukkan NIS Anda" required>
+                        <input type="text" id="username" name="username" placeholder="Masukkan Username Anda" required>
                     </div>
                 </div>
 
@@ -51,9 +51,6 @@
 
             <button type="submit" class="login-button">Login</button>
 
-            <div class="register-link">
-                Belum punya akun? <a href="{{ route('register') }}">Daftar Sekarang</a>
-            </div>
         </form>
     </div>
 @endsection

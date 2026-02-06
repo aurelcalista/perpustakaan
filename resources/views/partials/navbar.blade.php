@@ -47,7 +47,18 @@
                         </ul>
 
                         <div class="d-none d-lg-block">
-                            <a href="#top" class="navbar-icon bi-person smoothscroll"></a>
+                            @guest
+                                {{-- siswa belum punya akun → register --}}
+                                <a href="{{ route('register') }}" class="navbar-icon bi-person"></a>
+                            @else
+                                @if (auth()->user()->role === 'admin')
+                                    {{-- admin → dashboard --}}
+                                    <a href="{{ route('admin.dashboard') }}" class="navbar-icon bi-person"></a>
+                                @else
+                                    {{-- siswa → profile --}}
+                                    <a href="{{ route('profile.show') }}" class="navbar-icon bi-person"></a>
+                                @endif
+                            @endguest
                         </div>
                     </div>
                 </div>
