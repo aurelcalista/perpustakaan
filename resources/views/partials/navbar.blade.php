@@ -1,8 +1,11 @@
 <nav class="navbar navbar-expand-lg">
-    <div class="container">
-        <a href="/" class="navbar-brand">
-            <img src="{{ asset('images/logosmk.png') }}" alt="Logo Sekolah" height="50"> 
-        </a>
+    <div class="container-fluid px-3">
+       <a href="/" class="navbar-brand d-flex align-items-center gap-2 m-0 p-0">
+    <img src="{{ asset('images/logosmk.png') }}" alt="Logo Sekolah" height="50"> 
+    <span class="fw-bold text-white" style="font-size:15px;">
+        Perpustakaan SMKN 1 Cirebon
+    </span>
+</a>
 
         <div class="d-lg-none ms-auto me-4">
             <a href="#top" class="navbar-icon bi-person smoothscroll"></a>

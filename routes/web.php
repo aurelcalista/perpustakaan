@@ -34,14 +34,15 @@ Route::middleware(['auth', 'role:petugas'])->group(function () {
 
 
 Route::middleware(['auth', 'role:siswa'])->group(function () {
-    Route::get('/siswa/home', function () {
-        return view('siswa.home');
+    Route::get('/home', function () {
+        return view('home');
     })->name('siswa.home');
 });
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });

@@ -13,7 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'role' => RoleMiddleware::class, // ⬅️ INI INTINYA
+            'role' => RoleMiddleware::class, 
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

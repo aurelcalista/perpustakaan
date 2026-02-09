@@ -7,7 +7,8 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>Topic Listing Bootstrap 5 Template</title>
+        <title>Perpustakaan SMKN 1 Cirebon</title>
+        
 
         <!-- CSS FILES -->        
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,5 +21,6 @@
 
         <link href="{{asset('css/bootstrap-icons.css')}}" rel="stylesheet">
 
-        <link href="{{asset('css/templatemo-topic-listing.css')}}" rel="stylesheet">      
+        <link href="{{asset('css/templatemo-topic-listing.css')}}" rel="stylesheet">     
+         
     </head>
