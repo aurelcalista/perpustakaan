@@ -89,328 +89,174 @@
             </section>
 
 
-            <section class="explore-section section-padding" id="section_2">
-                <div class="container">
+           <section class="explore-section section-padding" id="section_2">
+    <div class="container">
+        <div class="col-12 text-center">
+            <h2 class="mb-4">Koleksi Perpustakaan</h2>
+        </div>
+    </div>
 
-                        <div class="col-12 text-center">
-                            <h2 class="mb-4">Browse Topics</h1>
-                        </div>
+    <div class="container-fluid">
+        <div class="row">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
 
-                    </div>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#pelajaran">Buku Pelajaran</button>
+                </li>
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#novel">Novel</button>
+                </li>
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#pengetahuan">Buku Pengetahuan</button>
+                </li>
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#referensi">Referensi</button>
+                </li>
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#majalah">Majalah</button>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="tab-content">
+
+            <!-- Buku Pelajaran -->
+<div class="tab-pane fade show active" id="pelajaran">
+    <div class="row">
+
+        <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <div class="custom-block bg-white shadow-lg text-center p-4">
+                <i class="bi bi-calculator fs-1 text-primary"></i>
+                <h5 class="mt-3">Matematika</h5>
+                <p>Buku pembelajaran matematika untuk memahami konsep hitungan dan logika.</p>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <div class="custom-block bg-white shadow-lg text-center p-4">
+                <i class="bi bi-book fs-1 text-success"></i>
+                <h5 class="mt-3">Bahasa Indonesia</h5>
+                <p>Buku untuk meningkatkan kemampuan membaca dan menulis.</p>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <div class="custom-block bg-white shadow-lg text-center p-4">
+                <i class="bi bi-globe fs-1 text-info"></i>
+                <h5 class="mt-3">IPA</h5>
+                <p>Buku ilmu pengetahuan alam dan sains.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Novel -->
+<div class="tab-pane fade" id="novel">
+    <div class="row">
+
+        <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <div class="custom-block bg-white shadow-lg text-center p-4">
+                <i class="bi bi-heart fs-1 text-danger"></i>
+                <h5 class="mt-3">Novel Romance</h5>
+                <p>Kumpulan novel bertema percintaan.</p>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <div class="custom-block bg-white shadow-lg text-center p-4">
+                <i class="bi bi-stars fs-1 text-warning"></i>
+                <h5 class="mt-3">Novel Fantasi</h5>
+                <p>Cerita dunia imajinasi dan petualangan.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Buku Pengetahuan -->
+<div class="tab-pane fade" id="pengetahuan">
+    <div class="row">
+
+        <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <div class="custom-block bg-white shadow-lg text-center p-4">
+                <i class="bi bi-clock-history fs-1 text-secondary"></i>
+                <h5 class="mt-3">Sejarah</h5>
+                <p>Membahas peristiwa sejarah dunia dan Indonesia.</p>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <div class="custom-block bg-white shadow-lg text-center p-4">
+                <i class="bi bi-cpu fs-1 text-dark"></i>
+                <h5 class="mt-3">Teknologi</h5>
+                <p>Buku perkembangan teknologi dan komputer.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Referensi -->
+<div class="tab-pane fade" id="referensi">
+    <div class="row">
+
+        <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <div class="custom-block bg-white shadow-lg text-center p-4">
+                <i class="bi bi-journal-text fs-1 text-primary"></i>
+                <h5 class="mt-3">Kamus</h5>
+                <p>Referensi arti kata dan kosakata bahasa.</p>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <div class="custom-block bg-white shadow-lg text-center p-4">
+                <i class="bi bi-collection fs-1 text-success"></i>
+                <h5 class="mt-3">Ensiklopedia</h5>
+                <p>Kumpulan informasi berbagai bidang ilmu.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Majalah -->
+<div class="tab-pane fade" id="majalah">
+    <div class="row">
+
+        <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <div class="custom-block bg-white shadow-lg text-center p-4">
+                <i class="bi bi-newspaper fs-1 text-warning"></i>
+                <h5 class="mt-3">Majalah Pendidikan</h5>
+                <p>Informasi dan perkembangan dunia pendidikan.</p>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <div class="custom-block bg-white shadow-lg text-center p-4">
+                <i class="bi bi-book-half fs-1 text-danger"></i>
+                <h5 class="mt-3">Majalah Umum</h5>
+                <p>Majalah hiburan dan lifestyle.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
                 </div>
-
-                <div class="container-fluid">
-                    <div class="row">
-                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="design-tab" data-bs-toggle="tab" data-bs-target="#design-tab-pane" type="button" role="tab" aria-controls="design-tab-pane" aria-selected="true">Design</button>
-                            </li>
-
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="marketing-tab" data-bs-toggle="tab" data-bs-target="#marketing-tab-pane" type="button" role="tab" aria-controls="marketing-tab-pane" aria-selected="false">Marketing</button>
-                            </li>
-
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="finance-tab" data-bs-toggle="tab" data-bs-target="#finance-tab-pane" type="button" role="tab" aria-controls="finance-tab-pane" aria-selected="false">Finance</button>
-                            </li>
-
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="music-tab" data-bs-toggle="tab" data-bs-target="#music-tab-pane" type="button" role="tab" aria-controls="music-tab-pane" aria-selected="false">Music</button>
-                            </li>
-
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="education-tab" data-bs-toggle="tab" data-bs-target="#education-tab-pane" type="button" role="tab" aria-controls="education-tab-pane" aria-selected="false">Education</button>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="container">
-                    <div class="row">
-
-                        <div class="col-12">
-                            <div class="tab-content" id="myTabContent">
-                                <div class="tab-pane fade show active" id="design-tab-pane" role="tabpanel" aria-labelledby="design-tab" tabindex="0">
-                                    <div class="row">
-                                        <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">
-                                            <div class="custom-block bg-white shadow-lg">
-                                                <a href="topics-detail.html">
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <h5 class="mb-2">Web Design</h5>
-
-                                                            <p class="mb-0">Topic Listing Template based on Bootstrap 5</p>
-                                                        </div>
-
-                                                        <span class="badge bg-design rounded-pill ms-auto">14</span>
-                                                    </div>
-
-                                                    <img src="images/topics/undraw_Remote_design_team_re_urdx.png" class="custom-block-image img-fluid" alt="">
-                                                </a>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">
-                                            <div class="custom-block bg-white shadow-lg">
-                                                <a href="topics-detail.html">
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <h5 class="mb-2">Graphic</h5>
-
-                                                                <p class="mb-0">Lorem Ipsum dolor sit amet consectetur</p>
-                                                        </div>
-
-                                                        <span class="badge bg-design rounded-pill ms-auto">75</span>
-                                                    </div>
-
-                                                    <img src="images/topics/undraw_Redesign_feedback_re_jvm0.png" class="custom-block-image img-fluid" alt="">
-                                                </a>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-4 col-md-6 col-12">
-                                            <div class="custom-block bg-white shadow-lg">
-                                                <a href="topics-detail.html">
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <h5 class="mb-2">Logo Design</h5>
-
-                                                                <p class="mb-0">Lorem Ipsum dolor sit amet consectetur</p>
-                                                        </div>
-
-                                                        <span class="badge bg-design rounded-pill ms-auto">100</span>
-                                                    </div>
-
-                                                    <img src="images/topics/colleagues-working-cozy-office-medium-shot.png" class="custom-block-image img-fluid" alt="">
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="tab-pane fade" id="marketing-tab-pane" role="tabpanel" aria-labelledby="marketing-tab" tabindex="0">
-                                    <div class="row">
-                                        <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-3">
-                                                <div class="custom-block bg-white shadow-lg">
-                                                    <a href="topics-detail.html">
-                                                        <div class="d-flex">
-                                                            <div>
-                                                                <h5 class="mb-2">Advertising</h5>
-
-                                                                <p class="mb-0">Lorem Ipsum dolor sit amet consectetur</p>
-                                                            </div>
-
-                                                            <span class="badge bg-advertising rounded-pill ms-auto">30</span>
-                                                        </div>
-
-                                                        <img src="images/topics/undraw_online_ad_re_ol62.png" class="custom-block-image img-fluid" alt="">
-                                                    </a>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-3">
-                                                <div class="custom-block bg-white shadow-lg">
-                                                    <a href="topics-detail.html">
-                                                        <div class="d-flex">
-                                                            <div>
-                                                                <h5 class="mb-2">Video Content</h5>
-
-                                                                <p class="mb-0">Lorem Ipsum dolor sit amet consectetur</p>
-                                                            </div>
-
-                                                            <span class="badge bg-advertising rounded-pill ms-auto">65</span>
-                                                        </div>
-
-                                                        <img src="images/topics/undraw_Group_video_re_btu7.png" class="custom-block-image img-fluid" alt="">
-                                                    </a>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-4 col-md-6 col-12">
-                                                <div class="custom-block bg-white shadow-lg">
-                                                    <a href="topics-detail.html">
-                                                        <div class="d-flex">
-                                                            <div>
-                                                                <h5 class="mb-2">Viral Tweet</h5>
-
-                                                                <p class="mb-0">Lorem Ipsum dolor sit amet consectetur</p>
-                                                            </div>
-
-                                                            <span class="badge bg-advertising rounded-pill ms-auto">50</span>
-                                                        </div>
-
-                                                        <img src="images/topics/undraw_viral_tweet_gndb.png" class="custom-block-image img-fluid" alt="">
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                  </div>
-
-                                <div class="tab-pane fade" id="finance-tab-pane" role="tabpanel" aria-labelledby="finance-tab" tabindex="0">   <div class="row">
-                                        <div class="col-lg-6 col-md-6 col-12 mb-4 mb-lg-0">
-                                            <div class="custom-block bg-white shadow-lg">
-                                                <a href="topics-detail.html">
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <h5 class="mb-2">Investment</h5>
-
-                                                            <p class="mb-0">Lorem Ipsum dolor sit amet consectetur</p>
-                                                        </div>
-
-                                                        <span class="badge bg-finance rounded-pill ms-auto">30</span>
-                                                    </div>
-
-                                                    <img src="images/topics/undraw_Finance_re_gnv2.png" class="custom-block-image img-fluid" alt="">
-                                                </a>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-6 col-md-6 col-12">
-                                            <div class="custom-block custom-block-overlay">
-                                                <div class="d-flex flex-column h-100">
-                                                    <img src="images/businesswoman-using-tablet-analysis-graph-company-finance-strategy-statistics-success-concept-planning-future-office-room.jpg" class="custom-block-image img-fluid" alt="">
-
-                                                    <div class="custom-block-overlay-text d-flex">
-                                                        <div>
-                                                            <h5 class="text-white mb-2">Finance</h5>
-
-                                                            <p class="text-white">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sint animi necessitatibus aperiam repudiandae nam omnis</p>
-
-                                                            <a href="topics-detail.html" class="btn custom-btn mt-2 mt-lg-3">Learn More</a>
-                                                        </div>
-
-                                                        <span class="badge bg-finance rounded-pill ms-auto">25</span>
-                                                    </div>
-
-                                                    <div class="social-share d-flex">
-                                                        <p class="text-white me-4">Share:</p>
-
-                                                        <ul class="social-icon">
-                                                            <li class="social-icon-item">
-                                                                <a href="#" class="social-icon-link bi-twitter"></a>
-                                                            </li>
-
-                                                            <li class="social-icon-item">
-                                                                <a href="#" class="social-icon-link bi-facebook"></a>
-                                                            </li>
-
-                                                            <li class="social-icon-item">
-                                                                <a href="#" class="social-icon-link bi-pinterest"></a>
-                                                            </li>
-                                                        </ul>
-
-                                                        <a href="#" class="custom-icon bi-bookmark ms-auto"></a>
-                                                    </div>
-
-                                                    <div class="section-overlay"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="tab-pane fade" id="music-tab-pane" role="tabpanel" aria-labelledby="music-tab" tabindex="0">
-                                    <div class="row">
-                                        <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-3">
-                                            <div class="custom-block bg-white shadow-lg">
-                                                <a href="topics-detail.html">
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <h5 class="mb-2">Composing Song</h5>
-
-                                                            <p class="mb-0">Lorem Ipsum dolor sit amet consectetur</p>
-                                                        </div>
-
-                                                        <span class="badge bg-music rounded-pill ms-auto">45</span>
-                                                    </div>
-
-                                                    <img src="images/topics/undraw_Compose_music_re_wpiw.png" class="custom-block-image img-fluid" alt="">
-                                                </a>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-3">
-                                            <div class="custom-block bg-white shadow-lg">
-                                                <a href="topics-detail.html">
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <h5 class="mb-2">Online Music</h5>
-
-                                                            <p class="mb-0">Lorem Ipsum dolor sit amet consectetur</p>
-                                                        </div>
-
-                                                        <span class="badge bg-music rounded-pill ms-auto">45</span>
-                                                    </div>
-
-                                                    <img src="images/topics/undraw_happy_music_g6wc.png" class="custom-block-image img-fluid" alt="">
-                                                </a>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-4 col-md-6 col-12">
-                                            <div class="custom-block bg-white shadow-lg">
-                                                <a href="topics-detail.html">
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <h5 class="mb-2">Podcast</h5>
-
-                                                            <p class="mb-0">Lorem Ipsum dolor sit amet consectetur</p>
-                                                        </div>
-
-                                                        <span class="badge bg-music rounded-pill ms-auto">20</span>
-                                                    </div>
-
-                                                    <img src="images/topics/undraw_Podcast_audience_re_4i5q.png" class="custom-block-image img-fluid" alt="">
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="tab-pane fade" id="education-tab-pane" role="tabpanel" aria-labelledby="education-tab" tabindex="0">
-                                    <div class="row">
-                                        <div class="col-lg-6 col-md-6 col-12 mb-4 mb-lg-3">
-                                            <div class="custom-block bg-white shadow-lg">
-                                                <a href="topics-detail.html">
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <h5 class="mb-2">Graduation</h5>
-
-                                                            <p class="mb-0">Lorem Ipsum dolor sit amet consectetur</p>
-                                                        </div>
-
-                                                        <span class="badge bg-education rounded-pill ms-auto">80</span>
-                                                    </div>
-
-                                                    <img src="images/topics/undraw_Graduation_re_gthn.png" class="custom-block-image img-fluid" alt="">
-                                                </a>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-6 col-md-6 col-12">
-                                            <div class="custom-block bg-white shadow-lg">
-                                                <a href="topics-detail.html">
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <h5 class="mb-2">Educator</h5>
-
-                                                            <p class="mb-0">Lorem Ipsum dolor sit amet consectetur</p>
-                                                        </div>
-
-                                                        <span class="badge bg-education rounded-pill ms-auto">75</span>
-                                                    </div>
-
-                                                    <img src="images/topics/undraw_Educator_re_ju47.png" class="custom-block-image img-fluid" alt="">
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                    </div>
-                </div>
-            </section>
+            </div>
+
+        </div>
+    </div>
+</section>
 
 
             <section class="timeline-section section-padding" id="section_3">
@@ -420,48 +266,59 @@
                     <div class="row">
 
                         <div class="col-12 text-center">
-                            <h2 class="text-white mb-4">How does it work?</h1>
+                            <h2 class="text-white mb-4">Bagaimana Cara Menggunakan Web Ini?</h1>
                         </div>
 
                         <div class="col-lg-10 col-12 mx-auto">
-                            <div class="timeline-container">
-                                <ul class="vertical-scrollable-timeline" id="vertical-scrollable-timeline">
-                                    <div class="list-progress">
-                                        <div class="inner"></div>
-                                    </div>
+    <div class="timeline-container">
+        <ul class="vertical-scrollable-timeline" id="vertical-scrollable-timeline">
+            <div class="list-progress">
+                <div class="inner"></div>
+            </div>
 
-                                    <li>
-                                        <h4 class="text-white mb-3">Search your favourite topic</h4>
+            <li>
+                <h4 class="text-white mb-3">Cari Buku</h4>
 
-                                        <p class="text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, cumque magnam? Sequi, cupiditate quibusdam alias illum sed esse ad dignissimos libero sunt, quisquam numquam aliquam? Voluptas, accusamus omnis?</p>
+                <p class="text-white">Pengguna dapat mencari buku berdasarkan judul, kategori, atau penulis yang tersedia di web perpustakaan.</p>
 
-                                        <div class="icon-holder">
-                                          <i class="bi-search"></i>
-                                        </div>
-                                    </li>
-                                    
-                                    <li>
-                                        <h4 class="text-white mb-3">Bookmark &amp; Keep it for yourself</h4>
+                <div class="icon-holder">
+                    <i class="bi-search"></i>
+                </div>
+            </li>
+            
+            <li>
+                <h4 class="text-white mb-3">Pilih Buku</h4>
 
-                                        <p class="text-white">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sint animi necessitatibus aperiam repudiandae nam omnis est vel quo, nihil repellat quia velit error modi earum similique odit labore. Doloremque, repudiandae?</p>
+                <p class="text-white">Setelah menemukan buku yang diinginkan, pengguna dapat melihat detail dan ketersediaan buku tersebut.</p>
 
-                                        <div class="icon-holder">
-                                          <i class="bi-bookmark"></i>
-                                        </div>
-                                    </li>
+                <div class="icon-holder">
+                    <i class="bi-book-half"></i>
+                </div>
+            </li>
 
-                                    <li>
-                                        <h4 class="text-white mb-3">Read &amp; Enjoy</h4>
+            <li>
+                <h4 class="text-white mb-3">Lakukan Peminjaman</h4>
 
-                                        <p class="text-white">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Animi vero quisquam, rem assumenda similique voluptas distinctio, iste est hic eveniet debitis ut ducimus beatae id? Quam culpa deleniti officiis autem?</p>
+                <p class="text-white">Pengguna dapat melakukan peminjaman buku melalui sistem yang tersedia dengan mudah dan cepat.</p>
 
-                                        <div class="icon-holder">
-                                          <i class="bi-book"></i>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                <div class="icon-holder">
+                    <i class="bi-journal-arrow-down"></i>
+                </div>
+            </li>
+
+            <li>
+                <h4 class="text-white mb-3">Kembalikan Buku</h4>
+
+                <p class="text-white">Setelah selesai membaca, pengguna dapat mengembalikan buku melalui sistem perpustakaan sesuai dengan batas waktu peminjaman.</p>
+
+                <div class="icon-holder">
+                    <i class="bi-journal-arrow-up"></i>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
 
                         <div class="col-12 text-center mt-5">
                             <p class="text-white">
@@ -479,7 +336,7 @@
                     <div class="row">
 
                         <div class="col-lg-6 col-12">
-                            <h2 class="mb-4">Frequently Asked Questions</h2>
+                            <h2 class="mb-4">Pertanyaan yang Sering Diajukan</h2>
                         </div>
 
                         <div class="clearfix"></div>
@@ -493,13 +350,16 @@
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="headingOne">
                                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        What is Topic Listing?
+                                        📖 Bagaimana cara meminjam buku?
                                         </button>
                                     </h2>
 
                                     <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
-                                            Topic Listing is free Bootstrap 5 CSS template. <strong>You are not allowed to redistribute this template</strong> on any other template collection website without our permission. Please contact TemplateMo for more detail. Thank you.
+                                            Untuk meminjam buku di perpustakaan, siswa harus datang langsung ke perpustakaan pada jam operasional.
+                                            Pilih buku yang ingin dipinjam di rak koleksi, lalu bawa buku tersebut ke meja petugas.
+                                            Siswa wajib menunjukkan kartu anggota perpustakaan atau identitas diri agar data peminjaman dapat dicatat oleh petugas.
+                                            Setelah proses pencatatan selesai, buku dapat dibawa pulang sesuai dengan ketentuan yang berlaku.
                                         </div>
                                     </div>
                                 </div>
@@ -507,27 +367,44 @@
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="headingTwo">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                        How to find a topic?
+                                        ⏰ Berapa lama batas waktu peminjaman buku?
                                     </button>
                                     </h2>
 
-                                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body">
-                                            You can search on Google with <strong>keywords</strong> such as templatemo portfolio, templatemo one-page layouts, photography, digital marketing, etc.
-                                        </div>
+                                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">Batas waktu peminjaman buku di perpustakaan adalah 3 hari sejak tanggal peminjaman.
+                                    Jika buku belum selesai dibaca dan belum ada siswa lain yang memesan buku tersebut, peminjaman dapat diperpanjang dengan melapor kembali ke petugas sebelum tanggal pengembalian.
+                                    Perpanjangan hanya dapat dilakukan satu kali sesuai kebijakan perpustakaan.
                                     </div>
                                 </div>
 
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="headingThree">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                        Does it need to paid?
+                                        💰 Apakah ada denda jika terlambat mengembalikan buku?
                                     </button>
                                     </h2>
 
                                     <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
-                                            You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                            Ya, perpustakaan menerapkan denda keterlambatan bagi siswa yang mengembalikan buku melewati batas waktu yang ditentukan.
+                                            Besarnya denda adalah Rp.500 untuk setiap buku.
+                                            Denda ini bertujuan untuk melatih kedisiplinan siswa dan memastikan buku dapat digunakan oleh siswa lainnya.
+                                            Jika keterlambatan terlalu lama, siswa dapat dikenakan sanksi tambahan sesuai peraturan perpustakaan.
+                                        </div>
+                                    </div>
+
+                                    <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                        🕘 Jam berapa perpustakaan buka?
+                                    </button>
+                                    </h2>
+
+                                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                        Perpustakaan buka pada hari Senin sampai Jumat, mulai pukul 08.00 hingga 15.00 WIB.
+                                        Perpustakaan tutup pada hari Sabtu, Minggu, dan hari libur nasional.
+                                        Siswa diharapkan datang sesuai jam operasional agar dapat dilayani dengan baik oleh petugas.
                                         </div>
                                     </div>
                                 </div>
@@ -544,25 +421,26 @@
                     <div class="row">
 
                         <div class="col-lg-12 col-12 text-center">
-                            <h2 class="mb-5">Get in touch</h2>
+                            <h2 class="mb-5">Hubungi Kami</h2>
                         </div>
 
                         <div class="col-lg-5 col-12 mb-4 mb-lg-0">
-                            <iframe class="google-map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2595.065641062665!2d-122.4230416990949!3d37.80335401520422!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80858127459fabad%3A0x808ba520e5e9edb7!2sFrancisco%20Park!5e1!3m2!1sen!2sth!4v1684340239744!5m2!1sen!2sth" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15849.335855052137!2d108.53468458413086!3d-6.729045740399089!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6f1df0e55b2ed3%3A0x51cf481547b4b319!2sSMK%20Negeri%201%20Cirebon!5e0!3m2!1sen!2sid!4v1770607084669!5m2!1sen!2sid" width="550" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
 
-                        <div class="col-lg-3 col-md-6 col-12 mb-3 mb-lg- mb-md-0 ms-auto">
-                            <h4 class="mb-3">Head office</h4>
+                        <div class="col-lg-4.5 col-md-6 col-12 mb-3 mb-lg- mb-md-0 ms-auto">
+                            <h4 class="mb-3">Perpustakaan SMKN 1 Cirebon</h4>
 
-                            <p>Bay St &amp;, Larkin St, San Francisco, CA 94109, United States</p>
+                            <p>Jl. Perjuangan, Sunyaragi <p>
+                                Kota Cirebon, Jawa Barat, Indonesia</p>
 
                             <hr>
 
                             <p class="d-flex align-items-center mb-1">
-                                <span class="me-2">Phone</span>
+                                <span class="me-2">Telepon</span>
 
                                 <a href="tel: 305-240-9671" class="site-footer-link">
-                                    305-240-9671
+                                    +62 85129935749
                                 </a>
                             </p>
 
@@ -570,31 +448,7 @@
                                 <span class="me-2">Email</span>
 
                                 <a href="mailto:info@company.com" class="site-footer-link">
-                                    info@company.com
-                                </a>
-                            </p>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-12 mx-auto">
-                            <h4 class="mb-3">Dubai office</h4>
-
-                            <p>Burj Park, Downtown Dubai, United Arab Emirates</p>
-
-                            <hr>
-
-                            <p class="d-flex align-items-center mb-1">
-                                <span class="me-2">Phone</span>
-
-                                <a href="tel: 110-220-3400" class="site-footer-link">
-                                    110-220-3400
-                                </a>
-                            </p>
-
-                            <p class="d-flex align-items-center">
-                                <span class="me-2">Email</span>
-
-                                <a href="mailto:info@company.com" class="site-footer-link">
-                                    info@company.com
+                                    info@smkn1-cirebon.sch.id
                                 </a>
                             </p>
                         </div>
