@@ -433,7 +433,7 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* Sidebar Menu */
+
 .sidebar-menu > li.header {
     background: rgba(255,255,255,0.1) !important;
     color: rgba(255,255,255,0.9) !important;
@@ -482,19 +482,18 @@ body {
     font-weight: 600;
 }
 
-/* Icons */
 .sidebar-menu > li > a > .fa,
 .sidebar-menu > li > a > .glyphicon,
 .sidebar-menu > li > a > .ion {
     color: rgba(255,255,255,0.9) !important;
 }
 
-/* Treeview Arrow */
+
 .sidebar-menu .treeview > a > .pull-right-container > .fa-angle-left {
     color: rgba(255,255,255,0.7) !important;
 }
 
-/* Logo Area */
+
 .main-header .logo {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
     color: white !important;
@@ -506,7 +505,7 @@ body {
     background: linear-gradient(135deg, #764ba2 0%, #667eea 100%) !important;
 }
 
-/* Navbar */
+
 .main-header .navbar {
     background: linear-gradient(90deg, #667eea 0%, #764ba2 100%) !important;
 }
@@ -523,7 +522,7 @@ body {
     color: white !important;
 }
 
-/* Scrollbar untuk Sidebar (opsional, biar lebih keren) */
+
 .sidebar::-webkit-scrollbar {
     width: 6px;
 }

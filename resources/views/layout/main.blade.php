@@ -24,7 +24,7 @@
 
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 	
-	<!-- Custom Styles Stack -->
+	
 	@stack('styles')
 </head>
 
@@ -34,7 +34,7 @@
 		<header class="main-header">
 			<a href="{{ url('/') }}" class="logo">
 				<span class="logo-lg">
-					<img src="{{ asset('dist/img/logo.png') }}" width="37px">
+					<img src="{{ asset('images/logosmk.png') }}" alt="Logo Sekolah" height="40"> 
 					<b>E-Library</b>
 				</span>
 			</a>
@@ -51,7 +51,7 @@
 						<li class="dropdown messages-menu">
 							<a class="dropdown-toggle">
 								<span>
-									<b>Sistem Informasi Perpustakaan Berbasis Web V 1.0</b>
+									<b>Sistem Informasi Perpustakaan</b>
 								</span>
 							</a>
 						</li>
@@ -60,12 +60,12 @@
 			</nav>
 		</header>
 
-		<!-- Sidebar -->
+		
 		<aside class="main-sidebar">
 			<section class="sidebar">
 				<div class="user-panel">
 					<div class="pull-left image">
-						<img src="{{ asset('dist/img/avatar.png') }}" class="img-circle" alt="User Image">
+						<img src="{{ asset('images/profile.avatar.png') }}" class="img-circle" alt="User Image" height="50">
 					</div>
 					<div class="pull-left info">
 						<p>{{ Auth::user()->nama ?? 'Guest' }}</p>
@@ -264,7 +264,7 @@
 		</div>
 	</div>
 
-	<!-- Scripts -->
+	
 	<script src="{{ asset('plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
 	<script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
 	<script src="{{ asset('plugins/select2/select2.full.min.js') }}"></script>
