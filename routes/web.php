@@ -5,19 +5,20 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\DashboardPetugasController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
-| Public
+| PUBLIC (HALAMAN DEPAN)
 |--------------------------------------------------------------------------
 */
-Route::get('/', function () {
-    return view('home');
+Route::get('/buku/detail', function () {
+    return view('frontend.detail-buku');
 });
 
 /*
 |--------------------------------------------------------------------------
-| Admin Login (Guest)
+| ADMIN LOGIN (GUEST)
 |--------------------------------------------------------------------------
 */
 Route::middleware('guest')->group(function () {
@@ -30,7 +31,7 @@ Route::middleware('guest')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| Admin
+| ADMIN
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'role:admin'])->group(function () {
@@ -40,7 +41,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| Petugas
+| PETUGAS
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'role:petugas'])->group(function () {
@@ -50,7 +51,7 @@ Route::middleware(['auth', 'role:petugas'])->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| Siswa
+| SISWA
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'role:siswa'])->group(function () {
@@ -61,7 +62,7 @@ Route::middleware(['auth', 'role:siswa'])->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| Profile
+| PROFILE
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
