@@ -5,7 +5,7 @@
     <div class="row align-items-center">
         <div class="col-md-8">
             <h2 class="mb-2">Dashboard Administrator</h2>
-            <p class="text-muted mb-0">Selamat datang kembali, <strong>{{ Auth::user()->nama_pengguna }}</strong>! Berikut ringkasan sistem perpustakaan Anda.</p>
+            <p class="text-muted mb-0">Selamat datang kembali, <strong>{{ Auth::user()->nama }}</strong>! Berikut ringkasan sistem perpustakaan Anda.</p>
         </div>
         <div class="col-md-4 text-right">
             <small class="text-muted">

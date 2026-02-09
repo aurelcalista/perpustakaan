@@ -1,11 +1,11 @@
 @extends('layout.login')
 @section('content')
-    <!-- Session Status -->
+
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
     <form method="POST" action="{{ route('admin.login.store') }}">
         @csrf
-      <!-- logo -->
+
         <div class="login-container">
             <div class="logo-container">
             <div class="logo">
