@@ -14,7 +14,7 @@ class DashboardAdminController extends Controller
         $buku = DB::table('tb_buku')->count('id_buku');
         $agt = DB::table('tb_anggota')->count('id_anggota');
         $pin = DB::table('tb_sirkulasi')->where('status', 'PIN')->count('id_sk');
-        $pengguna = DB::table('tb_pengguna')->count('id_pengguna');
+        $pengguna = DB::table('users')->count('id');
         
         return view('dashboard_admin.index', [  
             'buku' => $buku,
