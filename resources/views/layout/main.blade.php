@@ -19,13 +19,16 @@
 	<!-- Select2 -->
 	<link rel="stylesheet" href="{{ asset('plugins/select2/select2.min.css') }}">
 	<!-- Theme style -->
-	<link rel="stylesheet" href="{{ asset('dist/css/AdminLTE.min.css') }}">
-	<link rel="stylesheet" href="{{ asset('dist/css/skins/_all-skins.min.css') }}">
+<!-- Theme style -->
+<link rel="stylesheet" href="{{ asset('dist/css/AdminLTE.min.css') }}">
+<link rel="stylesheet" href="{{ asset('dist/css/skins/_all-skins.min.css') }}">
 
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-	
-	
-	@stack('styles')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+@stack('styles')
+
+<!-- Dashboard Custom CSS - HARUS PALING AKHIR -->
+<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 </head>
 
 <body class="hold-transition skin-green sidebar-mini">
@@ -97,7 +100,7 @@
 							</a>
 							<ul class="treeview-menu">
 								<li>
-									<a href="{{ url('/data_buku') }}">
+									<a href="{{ route('admin.buku.index') }}">
 										<i class="fa fa-book"></i>Data Buku
 									</a>
 								</li>

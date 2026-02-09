@@ -2,20 +2,24 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Buku extends Model
 {
+    use HasFactory;
+
     protected $table = 'tb_buku';
     protected $primaryKey = 'id_buku';
     public $incrementing = false;
     protected $keyType = 'string';
-    public function sirkulasi()
-    {
-        return $this->hasMany(Sirkulasi::class, 'id_buku', 'id_buku');
-    }
-    public function logPinjam()
-    {
-        return $this->hasMany(LogPinjam::class, 'id_buku', 'id_buku');
-    }
+    public $timestamps = false;
+
+    protected $fillable = [
+        'id_buku',
+        'judul_buku',
+        'pengarang',
+        'penerbit',
+        'th_terbit'
+    ];
 }

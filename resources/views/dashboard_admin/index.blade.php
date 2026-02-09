@@ -132,7 +132,7 @@
                 <h4 class="mb-0"><i class="fa fa-bolt"></i> Quick Actions</h4>
             </div>
             <div class="card-body">
-                <a href="{{ url('/data_buku/create') }}" class="btn btn-primary btn-block mb-2">
+                <a href="{{ url('admin.buku.create') }}" class="btn btn-primary btn-block mb-2">
                     <i class="fa fa-plus"></i> Tambah Buku
                 </a>
                 <a href="{{ url('/data_agt/create') }}" class="btn btn-success btn-block mb-2">
