@@ -5,7 +5,7 @@
     <div class="row align-items-center">
         <div class="col-md-8">
             <h2 class="mb-2">Dashboard Administrator</h2>
-            <p class="text-muted mb-0">Selamat datang kembali, <strong>{{ Auth::user()->nama_pengguna }}</strong>! Berikut ringkasan sistem perpustakaan Anda.</p>
+            <p class="text-muted mb-0">Selamat datang kembali, <strong>{{ Auth::user()->nama }}</strong>! Berikut ringkasan sistem perpustakaan Anda.</p>
         </div>
         <div class="col-md-4 text-right">
             <small class="text-muted">
@@ -132,7 +132,7 @@
                 <h4 class="mb-0"><i class="fa fa-bolt"></i> Quick Actions</h4>
             </div>
             <div class="card-body">
-                <a href="{{ url('/data_buku/create') }}" class="btn btn-primary btn-block mb-2">
+                <a href="{{ url('admin.buku.create') }}" class="btn btn-primary btn-block mb-2">
                     <i class="fa fa-plus"></i> Tambah Buku
                 </a>
                 <a href="{{ url('/data_agt/create') }}" class="btn btn-success btn-block mb-2">
