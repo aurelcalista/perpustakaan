@@ -20,19 +20,26 @@ class AdminAuthController extends Controller
             'password' => 'required|string',
         ]);
 
+        // Login tanpa cek role dulu
         if (! Auth::attempt([
             'username' => $request->username,
             'password' => $request->password,
-            'role' => 'admin',
-        ])) {
+        ], $request->filled('remember'))) {
             return back()->withErrors([
-                'username' => 'Login admin gagal',
-            ]);
+                'username' => 'Username atau password salah',
+            ])->withInput($request->only('username'));
+        }
+
+        // Cek role setelah berhasil login
+        if (Auth::user()->role !== 'admin') {
+            Auth::logout();
+            return back()->withErrors([
+                'username' => 'Anda tidak memiliki akses sebagai admin',
+            ])->withInput($request->only('username'));
         }
 
         $request->session()->regenerate();
 
-        return redirect()->route('admin.dashboard');
+        return redirect()->intended(route('admin.dashboard'));
     }
 }
-
