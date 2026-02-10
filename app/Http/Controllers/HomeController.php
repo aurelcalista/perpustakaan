@@ -2,13 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function detail($id)
     {
-        $categories = Category::all();
-        return view('frontend.home', compact('categories'));
+        // simulasi data buku (boleh sebelum pakai database)
+        $buku = [
+            'id' => $id,
+            'judul' => 'Pemrograman Web Laravel',
+            'penulis' => 'Eko Kurniawan',
+            'kategori' => 'Teknologi',
+            'deskripsi' => 'Buku ini membahas dasar hingga lanjutan framework Laravel.',
+        ];
+
+        return view('frontend.detail-buku', compact('buku'));
     }
 }

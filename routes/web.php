@@ -15,9 +15,11 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/buku/detail', function () {
-    return view('frontend.detail-buku');
-})->name('buku.detail');
+use App\Http\Controllers\HomeController;
+
+Route::get('/buku/{id}', [HomeController::class, 'detail'])
+    ->name('buku.detail');
+
 
 /*
 |--------------------------------------------------------------------------
