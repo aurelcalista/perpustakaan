@@ -1,62 +1,67 @@
 @extends('layouts.frontend')
 
 @section('content')
-<section class="bg-gray-50 min-h-screen py-16">
-    <div class="max-w-4xl mx-auto px-4">
-        
-        <!-- Card -->
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-            
-            <!-- Header -->
-            <div class="bg-blue-700 px-8 py-6">
-                <h1 class="text-3xl font-bold text-white">
-                    {{ $buku['judul'] }}
-                </h1>
-                <p class="text-blue-100 mt-1">
-                    Kategori: {{ $buku['kategori'] }}
-                </p>
+<section class="bg-gradient-to-b from-blue-50 to-white min-h-screen py-20">
+    <div class="max-w-6xl mx-auto px-4">
+
+        <!-- Breadcrumb -->
+        <div class="mb-6 text-sm text-gray-500">
+            <a href="/" class="hover:text-blue-600">Beranda</a> /
+            <span class="text-blue-700 font-medium">Detail Buku</span>
+        </div>
+
+        <div class="bg-white rounded-3xl shadow-xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
+
+            <!-- FOTO BUKU -->
+            <div class="bg-blue-700 flex items-center justify-center p-10">
+                <img 
+                    src="{{ asset('images/buku/' . $buku['cover']) }}"
+                    alt="{{ $buku['judul'] }}"
+                    class="w-60 h-80 object-cover rounded-xl shadow-2xl"
+                >
             </div>
 
-            <!-- Content -->
-            <div class="p-8 space-y-6">
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <p class="text-sm text-gray-500">Penulis</p>
-                        <p class="text-lg font-semibold text-gray-800">
-                            {{ $buku['penulis'] }}
-                        </p>
-                    </div>
+            <!-- DETAIL -->
+            <div class="p-10 space-y-6">
+                <span class="inline-block bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full">
+                    {{ $buku['kategori'] }}
+                </span>
 
+                <h1 class="text-4xl font-extrabold text-gray-800">
+                    {{ $buku['judul'] }}
+                </h1>
+
+                <div class="grid grid-cols-2 gap-4 text-sm text-gray-600">
                     <div>
-                        <p class="text-sm text-gray-500">ID Buku</p>
-                        <p class="text-lg font-semibold text-gray-800">
-                            {{ $buku['id'] }}
-                        </p>
+                        <p class="font-semibold text-gray-800">Penulis</p>
+                        <p>{{ $buku['penulis'] }}</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-gray-800">ID Buku</p>
+                        <p>{{ $buku['id'] }}</p>
                     </div>
                 </div>
 
+                <hr>
+
                 <div>
-                    <p class="text-sm text-gray-500 mb-2">Deskripsi Buku</p>
-                    <p class="text-gray-700 leading-relaxed">
+                    <h3 class="font-semibold text-gray-800 mb-2">Deskripsi</h3>
+                    <p class="text-gray-600 leading-relaxed">
                         {{ $buku['deskripsi'] }}
                     </p>
                 </div>
 
-                <!-- Action -->
-                <div class="pt-4 flex justify-between items-center">
-                    <a href="/" class="text-blue-700 hover:underline font-medium">
-                        ← Kembali ke Beranda
-                    </a>
-
-                    <button class="bg-blue-700 text-white px-6 py-2 rounded-lg hover:bg-blue-800 transition">
-                        Pinjam Buku
+                <div class="flex gap-4 pt-4">
+                    <button class="bg-blue-700 text-white px-6 py-3 rounded-xl hover:bg-blue-800 transition shadow-md">
+                        📚 Pinjam Buku
                     </button>
+                    <a href="/" class="text-gray-500 hover:text-blue-700 font-medium">
+                        ← Kembali
+                    </a>
                 </div>
-
             </div>
-        </div>
 
+        </div>
     </div>
 </section>
 @endsection

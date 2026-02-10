@@ -6,15 +6,15 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function detail($id)
+    public function detail()
     {
-        // simulasi data buku (boleh sebelum pakai database)
         $buku = [
-            'id' => $id,
-            'judul' => 'Pemrograman Web Laravel',
-            'penulis' => 'Eko Kurniawan',
+            'id' => 'BK001',
+            'judul' => 'Pemrograman Laravel Dasar',
+            'penulis' => 'SMKN 1 Cirebon',
             'kategori' => 'Teknologi',
-            'deskripsi' => 'Buku ini membahas dasar hingga lanjutan framework Laravel.',
+            'deskripsi' => 'Buku ini membahas dasar-dasar framework Laravel untuk siswa SMK.',
+            'cover' => 'laravel.jpg'
         ];
 
         return view('frontend.detail-buku', compact('buku'));

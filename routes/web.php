@@ -17,9 +17,8 @@ Route::get('/', function () {
 
 use App\Http\Controllers\HomeController;
 
-Route::get('/buku/{id}', [HomeController::class, 'detail'])
+Route::get('/buku/detail', [HomeController::class, 'detail'])
     ->name('buku.detail');
-
 
 /*
 |--------------------------------------------------------------------------
