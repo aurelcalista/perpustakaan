@@ -1,67 +1,75 @@
 @extends('layouts.frontend')
 
 @section('content')
-<section class="bg-gradient-to-b from-blue-50 to-white min-h-screen py-20">
-    <div class="max-w-6xl mx-auto px-4">
+<div class="bg-gray-50 py-10">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-        <!-- Breadcrumb -->
-        <div class="mb-6 text-sm text-gray-500">
-            <a href="/" class="hover:text-blue-600">Beranda</a> /
-            <span class="text-blue-700 font-medium">Detail Buku</span>
+        {{-- KIRI: COVER BUKU --}}
+        <div class="bg-white rounded-xl shadow p-6 flex justify-center">
+            <img 
+                src="{{ asset('images/buku/aldebaran.jpg') }}" 
+                alt="Cover Buku"
+                class="rounded-lg w-64 object-cover hover:scale-105 transition"
+            >
         </div>
 
-        <div class="bg-white rounded-3xl shadow-xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
+        {{-- KANAN: DETAIL BUKU --}}
+        <div class="lg:col-span-2 bg-white rounded-xl shadow p-8">
+            <h1 class="text-3xl font-bold mb-2">Aldebaran Bagian 1</h1>
+            <p class="text-gray-600 mb-3">
+                Tere Liye <span class="text-sm">(Pengarang)</span>
+            </p>
 
-            <!-- FOTO BUKU -->
-            <div class="bg-blue-700 flex items-center justify-center p-10">
-                <img 
-                    src="{{ asset('images/buku/' . $buku['cover']) }}"
-                    alt="{{ $buku['judul'] }}"
-                    class="w-60 h-80 object-cover rounded-xl shadow-2xl"
-                >
-            </div>
-
-            <!-- DETAIL -->
-            <div class="p-10 space-y-6">
-                <span class="inline-block bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full">
-                    {{ $buku['kategori'] }}
+            <div class="flex items-center gap-3 mb-6">
+                <span class="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-sm">
+                    Fiksi Indonesia / Novel
                 </span>
-
-                <h1 class="text-4xl font-extrabold text-gray-800">
-                    {{ $buku['judul'] }}
-                </h1>
-
-                <div class="grid grid-cols-2 gap-4 text-sm text-gray-600">
-                    <div>
-                        <p class="font-semibold text-gray-800">Penulis</p>
-                        <p>{{ $buku['penulis'] }}</p>
-                    </div>
-                    <div>
-                        <p class="font-semibold text-gray-800">ID Buku</p>
-                        <p>{{ $buku['id'] }}</p>
-                    </div>
-                </div>
-
-                <hr>
-
-                <div>
-                    <h3 class="font-semibold text-gray-800 mb-2">Deskripsi</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        {{ $buku['deskripsi'] }}
-                    </p>
-                </div>
-
-                <div class="flex gap-4 pt-4">
-                    <button class="bg-blue-700 text-white px-6 py-3 rounded-xl hover:bg-blue-800 transition shadow-md">
-                        📚 Pinjam Buku
-                    </button>
-                    <a href="/" class="text-gray-500 hover:text-blue-700 font-medium">
-                        ← Kembali
-                    </a>
-                </div>
+                <span class="text-yellow-500 text-sm">⭐ 5.0</span>
             </div>
 
+            {{-- TABEL INFO --}}
+            <div class="border rounded-lg overflow-hidden">
+                <table class="w-full text-sm">
+                    <tbody class="divide-y">
+                        <tr>
+                            <td class="px-4 py-3 font-medium bg-gray-50 w-1/3">Edisi</td>
+                            <td class="px-4 py-3">Cetakan ketiga</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 font-medium bg-gray-50">Penerbit</td>
+                            <td class="px-4 py-3">Depok : Sabak Grip, 2025</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 font-medium bg-gray-50">Deskripsi Fisik</td>
+                            <td class="px-4 py-3">368 halaman ; 20 cm</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 font-medium bg-gray-50">ISBN</td>
+                            <td class="px-4 py-3">9786347046017</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 font-medium bg-gray-50">Bahasa</td>
+                            <td class="px-4 py-3">Indonesia</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 font-medium bg-gray-50">Call Number</td>
+                            <td class="px-4 py-3">813 TER a</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            {{-- TOMBOL --}}
+            <div class="mt-6 flex gap-4">
+                <button class="bg-blue-700 text-white px-6 py-3 rounded-lg hover:bg-blue-800 transition">
+                    + Pinjam Buku
+                </button>
+                <button class="border px-6 py-3 rounded-lg hover:bg-gray-100 transition">
+                    Tambahkan ke Favorit
+                </button>
+            </div>
         </div>
+
     </div>
-</section>
+</div>
 @endsection
