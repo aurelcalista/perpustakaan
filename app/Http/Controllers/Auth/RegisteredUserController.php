@@ -29,15 +29,26 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'nis' => ['required', 'string', 'max:8', 'unique:users,nis'],
-            'nama' => ['required', 'string', 'max:255'],
-            'noidentitas' => ['required', 'string'],
-            'alamat' => ['required', 'string'],
-            'notlp' => ['required', 'string'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+       $request->validate([
+            'nis' => 'required|string|max:8|unique:users,nis',
+            'nama' => 'required|string|max:255',
+            'noidentitas' => 'required|string',
+            'alamat' => 'required|string',
+            'notlp' => 'required|string',
+            'email' => 'required|email|max:255|unique:users,email',
+            'password' => 'required|min:8|confirmed',
+        ], [
+            'nis.required' => 'NIS wajib diisi.',
+            'nis.max'=>'NIS maksimal 8 karakter',
+            'nis.unique' => 'NIS sudah terdaftar.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah digunakan.',
+            'password.required' => 'Kata sandi wajib diisi.',
+            'password.min' => 'Kata sandi minimal 8 karakter.',
+            'password.confirmed' => 'Konfirmasi kata sandi tidak cocok.',
         ]);
+
 
         $user = User::create([
             'nis' => $request->nis,
@@ -51,9 +62,7 @@ class RegisteredUserController extends Controller
         ]);
 
         event(new Registered($user));
+        return redirect()->route('login')->with('success', 'Registrasi berhasil! Silakan login.');
 
-        Auth::login($user);
-
-        return redirect(route('/home'));
     }
 }

@@ -64,7 +64,7 @@ Route::middleware(['auth', 'role:petugas'])->group(function () {
 Route::middleware(['auth', 'role:siswa'])->group(function () {
     Route::get('/home', function () {
         return view('home');
-    })->name('siswa.home');
+    })->name('home');
 });
 
 

@@ -1,6 +1,6 @@
 @extends('layout.app')
+
 @section('content')
-@include('layout.profile-show')
 
 <div class="library-profile-container">
     <!-- Profile Layout -->
@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="profile-info-list">
-                    <div class="info-row">
+                    <!-- <div class="info-row">
                         <span class="info-icon">📧</span>
                         <span class="info-text">{{ Auth::user()->email }}</span>
                     </div>
@@ -54,16 +54,22 @@
                     <div class="info-row">
                         <span class="info-icon">🏫</span>
                         <span class="info-text">Kelas: {{ Auth::user()->noidentitas }}</span>
-                    </div>
+                    </div> -->
                     <div class="info-row">
                         <span class="info-icon">📅</span>
                         <span class="info-text">Anggota sejak {{ date('M Y', strtotime(Auth::user()->created_at ?? now())) }}</span>
                     </div>
                 </div>
-
                 <div class="profile-actions">
                     <a href="{{ route('profile.edit') }}" class="btn btn-primary">Edit Profil</a>
                     <button class="btn btn-outline">Perpanjang Keanggotaan</button>
+
+                    <form method="POST" action="{{ route('logout') }}" style="margin-top:10px;">
+                        @csrf
+                        <button type="submit" class="btn btn-danger">
+                            Logout
+                        </button>
+                    </form>
                 </div>
             </div>
         </aside>
