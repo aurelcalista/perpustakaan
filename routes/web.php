@@ -15,10 +15,10 @@ Route::get('/', function () {
     return view('home');
 });
 
-use App\Http\Controllers\HomeController;
+Route::get('/buku/detail', function () {
+    return view('frontend.detail-buku');
+});
 
-Route::get('/buku/detail', [HomeController::class, 'detail'])
-    ->name('buku.detail');
 
 /*
 |--------------------------------------------------------------------------
