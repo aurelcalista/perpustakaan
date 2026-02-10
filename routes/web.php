@@ -97,8 +97,28 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
     Route::put('/buku/{id}', [BukuController::class, 'update'])->name('admin.buku.update');
 
   
+// Buku
 Route::get('/buku', [BukuController::class, 'index'])
     ->name('dashboard_admin.buku.data_buku');
+
+// Form tambah buku
+Route::get('/buku/create', [BukuController::class, 'create'])
+    ->name('dashboard_admin.buku.create');
+
+// Simpan buku baru
+Route::post('/buku/store', [BukuController::class, 'store'])
+    ->name('dashboard_admin.buku.store');
+
+// Edit & Update
+Route::get('/buku/{id}/edit', [BukuController::class, 'edit'])
+    ->name('admin.buku.edit');
+Route::put('/buku/{id}', [BukuController::class, 'update'])
+    ->name('admin.buku.update');
+
+// Hapus
+Route::delete('/buku/{id}', [BukuController::class, 'destroy'])
+    ->name('admin.buku.destroy');
+
 
 });
 
