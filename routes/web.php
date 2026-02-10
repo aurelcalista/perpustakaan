@@ -21,6 +21,15 @@ Route::get('/buku/detail', function () {
 });
 
 
+Route::get('/informasi', function () {
+    return view('pages.informasi');
+})->name('informasi');
+
+Route::get('/panduan', function () {
+    return view('pages.panduan');
+})->name('panduan');
+
+
 
 Route::get('/admin/login', [AdminAuthController::class, 'create'])
     ->name('admin.login');
