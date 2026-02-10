@@ -4,92 +4,115 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Buku;
+use App\Models\Category;
 
 class BukuController extends Controller
 {
     // Menampilkan semua data buku
     public function index()
     {
-        $buku = Buku::all();
-        return view('dashboard_admin.buku.data_buku', compact('buku'));
+        $buku = \App\Models\Buku::with('kategori')->get();
+         return view('dashboard_admin.buku.data_buku', compact('buku'));
     }
+
 
     // Menampilkan form tambah buku
-    public function create()
-    {
-        return view('dashboard_admin.buku.add_buku');
+public function create()
+{
+  
+    $kategori = Category::all();
+
+        $lastBuku = Buku::orderBy('id_buku', 'desc')->first();
+
+    if ($lastBuku) {
+        $lastNumber = (int) substr($lastBuku->id_buku, 1);
+        $newNumber = $lastNumber + 1;
+    } else {
+        $newNumber = 1;
     }
+
+    $format = 'B' . str_pad($newNumber, 3, '0', STR_PAD_LEFT);
+
+   
+    return view('dashboard_admin.buku.add_buku', compact('format', 'kategori'));
+}
+
 
     // Menyimpan data buku baru
-    public function store(Request $request)
-    {
-        $request->validate([
-            'id_buku' => 'required|unique:tb_buku,id_buku|max:10',
-            'judul_buku' => 'required|max:30',
-            'pengarang' => 'required|max:30',
-            'penerbit' => 'required|max:30',
-            'th_terbit' => 'required|digits:4|integer|min:1900|max:' . date('Y'),
-        ], [
-            'id_buku.required' => 'ID Buku wajib diisi',
-            'id_buku.unique' => 'ID Buku sudah ada',
-            'judul_buku.required' => 'Judul Buku wajib diisi',
-            'pengarang.required' => 'Pengarang wajib diisi',
-            'penerbit.required' => 'Penerbit wajib diisi',
-            'th_terbit.required' => 'Tahun Terbit wajib diisi',
-        ]);
+public function store(Request $request)
+{
+    $request->validate([
+        'id_buku' => 'required',
+        'judul_buku' => 'required',
+        'pengarang' => 'required',
+        'penerbit' => 'required',
+        'th_terbit' => 'required',
+        'id_kategori' => 'required',
+        'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+    ]);
 
-        try {
-            Buku::create([
-                'id_buku' => $request->id_buku,
-                'judul_buku' => $request->judul_buku,
-                'pengarang' => $request->pengarang,
-                'penerbit' => $request->penerbit,
-                'th_terbit' => $request->th_terbit,
-            ]);
-
-            return redirect()->route('buku.index')
-                ->with('success', 'Data buku berhasil ditambahkan!');
-        } catch (\Exception $e) {
-            return redirect()->back()
-                ->with('error', 'Gagal menambahkan data: ' . $e->getMessage())
-                ->withInput();
-        }
+   
+    $pathFoto = null;
+    if ($request->hasFile('foto')) {
+        $pathFoto = $request->file('foto')->store('cover_buku', 'public');
     }
 
+    Buku::create([
+        'id_buku' => $request->id_buku,
+        'judul_buku' => $request->judul_buku,
+        'pengarang' => $request->pengarang,
+        'penerbit' => $request->penerbit,
+        'th_terbit' => $request->th_terbit,
+        'id_kategori' => $request->id_kategori,
+        'penyunting' => $request->penyunting,
+        'edisi' => $request->edisi,
+        'deskripsi_fisik' => $request->deskripsi_fisik,
+        'isbn' => $request->isbn,
+        'bahasa' => $request->bahasa,
+        'call_number' => $request->call_number,
+        'sinopsis' => $request->sinopsis,
+        'foto' => $pathFoto 
+    ]);
+
+    return redirect()->route('admin.buku.index')
+        ->with('success', 'Data buku berhasil ditambahkan');
+}
+
+
+
     // Menampilkan form edit buku
+
     public function edit($id)
     {
-        $buku = Buku::findOrFail($id);
-        return view('dashboard_admin.buku.edit_buku', compact('buku'));
+        $buku = Buku::where('id_buku', $id)->firstOrFail();
+        $kategori = Category::all(); 
+
+        return view('dashboard_admin.buku.edit_buku', compact('buku', 'kategori'));
     }
 
     // Update data buku
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'judul_buku' => 'required|max:30',
-            'pengarang' => 'required|max:30',
-            'penerbit' => 'required|max:30',
-            'th_terbit' => 'required|digits:4|integer|min:1900|max:' . date('Y'),
-        ]);
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'judul_buku' => 'required',
+        'pengarang' => 'required',
+        'penerbit' => 'required',
+        'th_terbit' => 'required'
+    ]);
 
-        try {
-            $buku = Buku::findOrFail($id);
-            $buku->update([
-                'judul_buku' => $request->judul_buku,
-                'pengarang' => $request->pengarang,
-                'penerbit' => $request->penerbit,
-                'th_terbit' => $request->th_terbit,
-            ]);
+    $buku = Buku::where('id_buku', $id)->firstOrFail();
 
-            return redirect()->route('buku.index')
-                ->with('success', 'Data buku berhasil diupdate!');
-        } catch (\Exception $e) {
-            return redirect()->back()
-                ->with('error', 'Gagal mengupdate data: ' . $e->getMessage())
-                ->withInput();
-        }
-    }
+    $buku->update([
+        'judul_buku' => $request->judul_buku,
+        'pengarang' => $request->pengarang,
+        'penerbit' => $request->penerbit,
+        'th_terbit' => $request->th_terbit,
+        'id_kategori' => $request->id_kategori ?? $buku->id_kategori
+    ]);
+
+    return redirect()->route('admin.buku.index')
+        ->with('success', 'Data buku berhasil diubah');
+}
 
     // Hapus data buku
     public function destroy($id)
@@ -98,7 +121,7 @@ class BukuController extends Controller
             $buku = Buku::findOrFail($id);
             $buku->delete();
 
-            return redirect()->route('buku.index')
+            return redirect()->route('admin.buku.index')
                 ->with('success', 'Data buku berhasil dihapus!');
         } catch (\Exception $e) {
             return redirect()->back()

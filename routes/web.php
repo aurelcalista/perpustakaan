@@ -9,8 +9,7 @@ use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\DashboardPetugasController;
 use App\Http\Controllers\BukuController;
-
-
+use App\Http\Controllers\CategoryController;
 
 Route::get('/', function () {
     return view('home');
@@ -74,5 +73,16 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
+
+Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
+    Route::get('/kategori', [CategoryController::class, 'index'])->name('admin.kategori.index');
+    Route::get('/kategori/create', [CategoryController::class, 'create'])->name('admin.kategori.create');
+    Route::post('/kategori/store', [CategoryController::class, 'store'])->name('admin.kategori.store');
+     Route::get('/buku/{id}/edit', [BukuController::class, 'edit'])->name('admin.buku.edit');
+    Route::put('/buku/{id}', [BukuController::class, 'update'])->name('admin.buku.update');
+});
+
 
 require __DIR__.'/auth.php';

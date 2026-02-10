@@ -1,8 +1,4 @@
-/* ========================================
-   DASHBOARD ADMIN - GRADIENT THEME
-   ======================================== */
 
-/* Dashboard Header */
 .dashboard-header {
     padding: 30px !important;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
@@ -183,7 +179,7 @@
     opacity: 0.8;
 }
 
-/* Cards */
+
 .card {
     border-radius: 20px !important;
     border: 1px solid rgba(0,0,0,0.05) !important;
@@ -219,7 +215,7 @@
     background: white !important;
 }
 
-/* Stat Box */
+
 .stat-box {
     padding: 25px !important;
     border-radius: 15px !important;
@@ -249,7 +245,6 @@
     letter-spacing: 0.5px;
 }
 
-/* Text Colors for Stat Box */
 .text-primary {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
     -webkit-background-clip: text !important;
@@ -278,7 +273,6 @@
     background-clip: text !important;
 }
 
-/* Buttons */
 .btn-block {
     display: block !important;
     width: 100% !important;
@@ -332,9 +326,7 @@
     font-size: 16px;
 }
 
-/* ========== SIDEBAR STYLING ========== */
 
-/* Main Sidebar */
 .main-sidebar {
     background: linear-gradient(180deg, #667eea 0%, #764ba2 100%) !important;
 }
@@ -343,7 +335,7 @@
     padding-top: 0;
 }
 
-/* User Panel */
+
 .user-panel {
     border-bottom: 1px solid rgba(255,255,255,0.2) !important;
     padding: 15px;
@@ -366,7 +358,7 @@
     letter-spacing: 0.5px;
 }
 
-/* Sidebar Menu */
+
 .sidebar-menu > li.header {
     background: rgba(255,255,255,0.1) !important;
     color: rgba(255,255,255,0.9) !important;
@@ -394,7 +386,7 @@
     font-weight: 600 !important;
 }
 
-/* Treeview Menu */
+
 .sidebar-menu .treeview-menu {
     background: rgba(0,0,0,0.1) !important;
 }
@@ -415,19 +407,19 @@
     font-weight: 600 !important;
 }
 
-/* Icons */
+
 .sidebar-menu > li > a > .fa,
 .sidebar-menu > li > a > .glyphicon,
 .sidebar-menu > li > a > .ion {
     color: rgba(255,255,255,0.9) !important;
 }
 
-/* Treeview Arrow */
+
 .sidebar-menu .treeview > a > .pull-right-container > .fa-angle-left {
     color: rgba(255,255,255,0.7) !important;
 }
 
-/* Logo Area */
+
 .main-header .logo {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
     color: white !important;
@@ -439,7 +431,7 @@
     background: linear-gradient(135deg, #764ba2 0%, #667eea 100%) !important;
 }
 
-/* Navbar */
+
 .main-header .navbar {
     background: linear-gradient(90deg, #667eea 0%, #764ba2 100%) !important;
 }
@@ -499,4 +491,84 @@
     .stat-box h5 {
         font-size: 28px !important;
     }
+}
+
+.page-title {
+    font-weight: 700;
+    color: #667eea;
+    margin-bottom: 20px;
+}
+
+
+.form-card {
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08) !important;
+    border: none !important;
+    overflow: hidden;
+}
+
+
+.form-card .card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+
+.form-card .card-body {
+    padding: 30px !important;
+}
+
+.form-card label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #444;
+}
+
+.form-card .form-control {
+    border-radius: 10px;
+    padding: 10px 12px;
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s;
+}
+
+
+.form-card .form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.15rem rgba(102,126,234,0.2);
+}
+
+
+.form-card input[type="file"] {
+    padding: 6px;
+}
+
+
+.btn-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border: none !important;
+    color: white !important;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-gradient-primary:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(102,126,234,0.3);
+}
+
+
+.btn-gradient-secondary {
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-weight: 600;
+}
+
+
+.alert {
+    border-radius: 12px !important;
 }
