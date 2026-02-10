@@ -42,57 +42,83 @@
 
 			<div class="table-responsive">
 				<table id="example1" class="table table-bordered table-striped">
-					<thead>
-						<tr>
-							<th>No</th>
-							<th>Id Buku</th>
-							<th>Judul Buku</th>
-							<th>Pengarang</th>
-							<th>Penerbit</th>
-							<th>Tahun</th>
-							<th>Kelola</th>
-						</tr>
-					</thead>
-					<tbody>
-						@php $no = 1; @endphp
-						
-						@forelse($buku as $data)
-							<tr>
-								<td>{{ $no++ }}</td>
-								<td>{{ $data->id_buku }}</td>
-								<td>{{ $data->judul_buku }}</td>
-								<td>{{ $data->pengarang }}</td>
-								<td>{{ $data->penerbit }}</td>
-								<td>{{ $data->th_terbit }}</td>
-								<td>
-									<a href="{{ route('admin.buku.edit', $data->id_buku) }}" 
-									   title="Ubah" 
-									   class="btn btn-success btn-sm">
-										<i class="glyphicon glyphicon-edit"></i>
-									</a>
-									
-									<form action="{{ route('admin.buku.destroy', $data->id_buku) }}" 
-									      method="POST" 
-									      style="display:inline;">
-										@csrf
-										@method('DELETE')
-										<button type="submit" 
-										        onclick="return confirm('Yakin Hapus Data Ini ?')" 
-										        title="Hapus" 
-										        class="btn btn-danger btn-sm">
-											<i class="glyphicon glyphicon-trash"></i>
-										</button>
-									</form>
-								</td>
-							</tr>
-						@empty
-							<tr>
-								<td colspan="7" class="text-center">
-									<i class="fa fa-info-circle"></i> Tidak ada data buku
-								</td>
-							</tr>
-						@endforelse
-					</tbody>
+			<thead>
+			<tr>
+				<th>No</th>
+				<th>Foto</th>
+				<th>ID Buku</th>
+				<th>Judul</th>
+				<th>Pengarang</th>
+				<th>Kategori</th>
+				<th>Penerbit</th>
+				<th>Tahun</th>
+				<th>ISBN</th>
+				<th>Bahasa</th>
+				<th>Kelola</th>
+			</tr>
+			</thead>
+
+			<tbody>
+			@php $no = 1; @endphp
+
+			@forelse($buku as $data)
+			<tr>
+				<td>{{ $no++ }}</td>
+
+				{{-- FOTO COVER --}}
+				<td>
+					@if($data->foto)
+						<img src="{{ asset('storage/'.$data->foto) }}" 
+							width="60" height="80" 
+							style="object-fit:cover;">
+					@else
+						<span class="text-muted">No Image</span>
+					@endif
+				</td>
+
+				<td>{{ $data->id_buku }}</td>
+				<td>{{ $data->judul_buku }}</td>
+				<td>{{ $data->pengarang }}</td>
+
+				{{-- NAMA KATEGORI --}}
+				<td>
+					{{ $data->kategori->nama_kategori ?? '-' }}
+				</td>
+
+				<td>{{ $data->penerbit }}</td>
+				<td>{{ $data->th_terbit }}</td>
+				<td>{{ $data->isbn }}</td>
+				<td>{{ $data->bahasa }}</td>
+
+				<td>
+					<a href="{{ route('admin.buku.edit', $data->id_buku) }}" 
+					class="btn btn-success btn-sm">
+						<i class="glyphicon glyphicon-edit"></i>
+					</a>
+
+					<form action="{{ route('admin.buku.destroy', $data->id_buku) }}" 
+						method="POST" 
+						style="display:inline;">
+						@csrf
+						@method('DELETE')
+						<button type="submit" 
+								onclick="return confirm('Yakin Hapus Data Ini?')" 
+								class="btn btn-danger btn-sm">
+							<i class="glyphicon glyphicon-trash"></i>
+						</button>
+					</form>
+				</td>
+			</tr>
+
+			@empty
+			<tr>
+				<td colspan="11" class="text-center">
+					Tidak ada data buku
+				</td>
+			</tr>
+			@endforelse
+			</tbody>
+
 				</table>
 			</div>
 		</div>

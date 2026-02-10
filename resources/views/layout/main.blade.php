@@ -109,6 +109,12 @@
 										<i class="fa fa-users"></i>Data Anggota
 									</a>
 								</li>
+								<li>
+											<a href="{{ route('admin.kategori.index') }}">
+												<i class="fa fa-users"></i>Kategori
+											</a>
+
+								</li>
 							</ul>
 						</li>
 
