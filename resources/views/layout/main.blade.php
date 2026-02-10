@@ -100,7 +100,7 @@
 							</a>
 							<ul class="treeview-menu">
 								<li>
-									<a href="{{ route('admin.buku.index') }}">
+									<a href="{{ route('dashboard_admin.buku.data_buku') }}">
 										<i class="fa fa-book"></i>Data Buku
 									</a>
 								</li>

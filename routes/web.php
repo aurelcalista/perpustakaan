@@ -95,6 +95,11 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
     // Buku
     Route::get('/buku/{id}/edit', [BukuController::class, 'edit'])->name('admin.buku.edit');
     Route::put('/buku/{id}', [BukuController::class, 'update'])->name('admin.buku.update');
+
+  
+Route::get('/buku', [BukuController::class, 'index'])
+    ->name('dashboard_admin.buku.data_buku');
+
 });
 
 
