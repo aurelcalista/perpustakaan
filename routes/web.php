@@ -8,11 +8,7 @@ use App\Http\Controllers\DashboardPetugasController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\CategoryController;
 
-/*
-|--------------------------------------------------------------------------
-| PUBLIC
-|--------------------------------------------------------------------------
-*/
+
 Route::get('/', function () {
     return view('home');
 });
@@ -22,11 +18,6 @@ Route::get('/buku/detail', function () {
 });
 
 
-/*
-|--------------------------------------------------------------------------
-| ADMIN LOGIN
-|--------------------------------------------------------------------------
-*/
 Route::get('/admin/login', [AdminAuthController::class, 'create'])
     ->name('admin.login');
 
@@ -34,33 +25,18 @@ Route::post('/admin/login', [AdminAuthController::class, 'store'])
     ->name('admin.login.store');
 
 
-/*
-|--------------------------------------------------------------------------
-| ADMIN
-|--------------------------------------------------------------------------
-*/
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [DashboardAdminController::class, 'index'])
         ->name('admin.dashboard');
 });
 
 
-/*
-|--------------------------------------------------------------------------
-| PETUGAS
-|--------------------------------------------------------------------------
-*/
+
 Route::middleware(['auth', 'role:petugas'])->group(function () {
     Route::get('/petugas/dashboard', [DashboardPetugasController::class, 'index'])
         ->name('petugas.dashboard');
 });
 
-
-/*
-|--------------------------------------------------------------------------
-| SISWA
-|--------------------------------------------------------------------------
-*/
 Route::middleware(['auth', 'role:siswa'])->group(function () {
     Route::get('/siswa/home', function () {
         return view('siswa.home');
@@ -68,11 +44,6 @@ Route::middleware(['auth', 'role:siswa'])->group(function () {
 });
 
 
-/*
-|--------------------------------------------------------------------------
-| PROFILE
-|--------------------------------------------------------------------------
-*/
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -80,11 +51,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
-/*
-|--------------------------------------------------------------------------
-| ADMIN - BUKU & KATEGORI
-|--------------------------------------------------------------------------
-*/
+
 Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
 
     // Kategori
