@@ -27,7 +27,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nis' => ['required', 'digits:8', 'exists:users,nis'],
+            'nis' => ['required', 'digits:8'],
             'password' => ['required', 'string'],
         ];
     }
@@ -45,7 +45,7 @@ class LoginRequest extends FormRequest
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'nis' => trans('auth.failed'),
+                'nis' =>  'NIS atau password salah.',
             ]);
         }
 
