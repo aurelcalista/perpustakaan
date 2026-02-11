@@ -13,13 +13,16 @@ use App\Http\Controllers\CategoryController;
 | PUBLIC
 |--------------------------------------------------------------------------
 */
+
+// Home utama
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
 
+// Detail Buku
 Route::get('/buku/detail', function () {
     return view('frontend.detail-buku');
-});
+})->name('buku.detail');
 
 
 /*
@@ -36,12 +39,30 @@ Route::post('/admin/login', [AdminAuthController::class, 'store'])
 
 /*
 |--------------------------------------------------------------------------
-| ADMIN
+| ADMIN AREA
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', [DashboardAdminController::class, 'index'])
+Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
+
+    Route::get('/dashboard', [DashboardAdminController::class, 'index'])
         ->name('admin.dashboard');
+
+    // Kategori
+    Route::get('/kategori', [CategoryController::class, 'index'])
+        ->name('admin.kategori.index');
+
+    Route::get('/kategori/create', [CategoryController::class, 'create'])
+        ->name('admin.kategori.create');
+
+    Route::post('/kategori', [CategoryController::class, 'store'])
+        ->name('admin.kategori.store');
+
+    // Buku
+    Route::get('/buku/{id}/edit', [BukuController::class, 'edit'])
+        ->name('admin.buku.edit');
+
+    Route::put('/buku/{id}', [BukuController::class, 'update'])
+        ->name('admin.buku.update');
 });
 
 
@@ -62,9 +83,9 @@ Route::middleware(['auth', 'role:petugas'])->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'role:siswa'])->group(function () {
-    Route::get('/home', function () {
-        return view('home');
-    })->name('home');
+    Route::get('/siswa/dashboard', function () {
+        return view('siswa.home');
+    })->name('siswa.dashboard');
 });
 
 
@@ -74,28 +95,14 @@ Route::middleware(['auth', 'role:siswa'])->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
+
+    Route::patch('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
+
+    Route::delete('/profile', [ProfileController::class, 'destroy'])
+        ->name('profile.destroy');
 });
-
-
-/*
-|--------------------------------------------------------------------------
-| ADMIN - BUKU & KATEGORI
-|--------------------------------------------------------------------------
-*/
-Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
-
-    // Kategori
-    Route::get('/kategori', [CategoryController::class, 'index'])->name('admin.kategori.index');
-    Route::get('/kategori/create', [CategoryController::class, 'create'])->name('admin.kategori.create');
-    Route::post('/kategori/store', [CategoryController::class, 'store'])->name('admin.kategori.store');
-
-    // Buku
-    Route::get('/buku/{id}/edit', [BukuController::class, 'edit'])->name('admin.buku.edit');
-    Route::put('/buku/{id}', [BukuController::class, 'update'])->name('admin.buku.update');
-});
-
 
 require __DIR__.'/auth.php';
