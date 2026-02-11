@@ -21,14 +21,6 @@ Route::get('/buku/detail', function () {
     return view('frontend.detail-buku');
 });
 
-Route::get('/informasi', function () {
-    return view('pages.informasi');
-})->name('informasi');
-
-Route::get('/panduan', function () {
-    return view('pages.panduan');
-})->name('panduan');
-
 
 /*
 |--------------------------------------------------------------------------
@@ -70,9 +62,9 @@ Route::middleware(['auth', 'role:petugas'])->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'role:siswa'])->group(function () {
-    Route::get('/home', function () {
-        return view('home');
-    })->name('home');
+    Route::get('/siswa/home', function () {
+        return view('siswa.home');
+    })->name('siswa.home');
 });
 
 
@@ -103,6 +95,32 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
     // Buku
     Route::get('/buku/{id}/edit', [BukuController::class, 'edit'])->name('admin.buku.edit');
     Route::put('/buku/{id}', [BukuController::class, 'update'])->name('admin.buku.update');
+
+  
+// Buku
+Route::get('/buku', [BukuController::class, 'index'])
+    ->name('dashboard_admin.buku.data_buku');
+
+// Form tambah buku
+Route::get('/buku/create', [BukuController::class, 'create'])
+    ->name('dashboard_admin.buku.create');
+
+// Simpan buku baru
+Route::post('/buku/store', [BukuController::class, 'store'])
+    ->name('dashboard_admin.buku.store');
+
+// Edit & Update
+Route::get('/buku/{id}/edit', [BukuController::class, 'edit'])
+    ->name('admin.buku.edit');
+Route::put('/buku/{id}', [BukuController::class, 'update'])
+    ->name('admin.buku.update');
+
+// Hapus
+Route::delete('/buku/{id}', [BukuController::class, 'destroy'])
+    ->name('admin.buku.destroy');
+
+
 });
+
 
 require __DIR__.'/auth.php';
