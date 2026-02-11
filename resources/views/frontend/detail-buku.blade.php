@@ -1,76 +1,59 @@
-@extends('layouts.frontend')
+@extends('layouts.app')
 
 @section('content')
-<section class="section-padding">
-    <div class="container">
-        <div class="row g-4">
+<div class="bg-gray-100 min-h-screen py-10">
+    <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-lg p-8">
 
-            <!-- COVER -->
-            <div class="col-lg-4">
-                <img src="https://via.placeholder.com/350x500"
-                     class="img-fluid rounded shadow-sm"
-                     alt="Cover Buku">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {{-- FOTO BUKU --}}
+            <div class="flex justify-center">
+                <img src="{{ asset('images/contoh-buku.jpg') }}"
+                     alt="Cover Buku"
+                     class="rounded-xl shadow-md w-60 h-auto">
             </div>
 
-            <!-- DETAIL -->
-            <div class="col-lg-8">
-                <h2 class="fw-bold mb-2">Laut Bercerita</h2>
+            {{-- DETAIL BUKU --}}
+            <div class="md:col-span-2 space-y-4">
+                <h1 class="text-3xl font-bold text-gray-800">
+                    Aldebaran Bagian 1
+                </h1>
 
-                <p class="mb-1">
-                    <strong>Penulis:</strong> Leila S. Chudori
-                </p>
-                <p class="mb-2 text-muted">
-                    <strong>Penyunting:</strong> Endah Sulwesi, Christina M. Udiani
-                </p>
-
-                <span class="badge bg-primary mb-3">
-                    Fiksi Indonesia / Novel
-                </span>
-
-                <div class="mt-4">
-                    <table class="table table-borderless table-sm">
-                        <tr>
-                            <th width="200">Edisi</th>
-                            <td>Cetakan ke-91</td>
-                        </tr>
-                        <tr>
-                            <th>Penerbit</th>
-                            <td>Jakarta : KPG, 2025</td>
-                        </tr>
-                        <tr>
-                            <th>Deskripsi Fisik</th>
-                            <td>xxi, 338 halaman ; 23 cm</td>
-                        </tr>
-                        <tr>
-                            <th>ISBN</th>
-                            <td>9786024246945</td>
-                        </tr>
-                        <tr>
-                            <th>Subjek</th>
-                            <td>Fiksi Indonesia</td>
-                        </tr>
-                        <tr>
-                            <th>Bahasa</th>
-                            <td>Indonesia</td>
-                        </tr>
-                        <tr>
-                            <th>Call Number</th>
-                            <td>813 LEI l</td>
-                        </tr>
-                    </table>
+                <div class="flex items-center gap-2 text-yellow-500">
+                    ⭐⭐⭐⭐⭐
+                    <span class="text-gray-500 text-sm">(5.0)</span>
                 </div>
 
-                <div class="mt-4">
-                    <a href="#" class="btn btn-primary px-4">
-                        + Pinjam buku ini
-                    </a>
-                    <a href="/" class="btn btn-outline-secondary ms-2">
-                        Kembali
-                    </a>
+                <p class="text-gray-600">
+                    <span class="font-semibold">Pengarang:</span> Tere Liye
+                </p>
+                <p class="text-gray-600">
+                    <span class="font-semibold">Penerbit:</span> Sabak Grip
+                </p>
+                <p class="text-gray-600">
+                    <span class="font-semibold">Tahun:</span> 2025
+                </p>
+                <p class="text-gray-600">
+                    <span class="font-semibold">Bahasa:</span> Indonesia
+                </p>
+
+                <p class="text-gray-700 mt-4">
+                    Novel inspiratif yang membahas perjuangan hidup,
+                    persahabatan, dan nilai kehidupan dengan bahasa yang ringan.
+                </p>
+
+                {{-- BUTTON --}}
+                <div class="flex gap-4 mt-6">
+                    <button class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                        📚 Pinjam Buku
+                    </button>
+
+                    <button class="px-6 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition">
+                        ⭐ Favorit
+                    </button>
                 </div>
             </div>
-
         </div>
+
     </div>
-</section>
+</div>
 @endsection

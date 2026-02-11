@@ -21,6 +21,9 @@
 
         <link href="{{asset('css/bootstrap-icons.css')}}" rel="stylesheet">
 
-        <link href="{{asset('css/templatemo-topic-listing.css')}}" rel="stylesheet">     
+        <link href="{{asset('css/templatemo-topic-listing.css')}}" rel="stylesheet">  
+        <link rel="stylesheet" href="{{asset('css/profile.css')}}"> 
+
+        
          
     </head>

@@ -1,3 +1,6 @@
+@extends('layout.app')
+
+@section('content')
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900">
@@ -35,7 +38,7 @@
                 name="username"
                 type="text"
                 class="mt-1 block w-full"
-                :value="old('username', $user->username)"
+                :value="old('username', $user->nama)"
                 required
             />
             <x-input-error class="mt-2" :messages="$errors->get('username')" />
@@ -106,3 +109,4 @@
         </div>
     </form>
 </section>
+@endsection

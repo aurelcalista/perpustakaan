@@ -5,7 +5,9 @@
 </head>
 <body>
     @include('partials.navbar')
-    @yield('content')
+    <main>
+        @yield('content')
+    </main>
     
     @include('partials.footer')
 </body>
