@@ -34,10 +34,11 @@ public function store(LoginRequest $request): RedirectResponse
     $user->save();
 
     if ($user && $user->role === 'admin') {
-        return redirect('/admin/dashboard')->with('success', 'Selamat datang, Admin!');
+
+        return redirect('/admin/dashboard_admin.index')->with('status', 'Selamat datang, Admin!');
     }
 
-    return redirect('/home')->with('success', 'Login berhasil! Selamat datang, ' . $user->nama);
+    return redirect('/')->with('status', 'Login berhasil! Selamat datang, ' . $user->nama);
 }
 
 public function destroy(Request $request): RedirectResponse
@@ -47,6 +48,6 @@ public function destroy(Request $request): RedirectResponse
     $request->session()->invalidate();
     $request->session()->regenerateToken();
 
-    return redirect('/')->with('success', 'Anda telah berhasil logout.');
+    return redirect('/')->with('status', 'Anda telah berhasil logout.');
 }
 }
