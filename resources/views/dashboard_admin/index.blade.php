@@ -27,7 +27,7 @@
                 <p class="stat-label">Total Buku</p>
             </div>
             <div class="stat-footer">
-        <a href="{{ route('dashboard_admin.buku.data_buku') }}" class="stat-link">
+        <a href="{{ route('admin.buku.index') }}" class="stat-link">
             Lihat Detail <i class="fa fa-arrow-right"></i>
         </a>
 
@@ -47,7 +47,7 @@
                 <p class="stat-label">Total Anggota</p>
             </div>
             <div class="stat-footer">
-                <a href="{{ url('/data_agt') }}" class="stat-link">
+               <a href="{{ route('admin.anggota.index') }}">
                     Lihat Detail <i class="fa fa-arrow-right"></i>
                 </a>
             </div>
@@ -134,10 +134,10 @@
                 <h4 class="mb-0"><i class="fa fa-bolt"></i> Quick Actions</h4>
             </div>
             <div class="card-body">
-                <a href="{{ url('admin.buku.create') }}" class="btn btn-primary btn-block mb-2">
+                <a href="{{ route('admin.buku.create') }}" class="btn btn-primary btn-block mb-2">
                     <i class="fa fa-plus"></i> Tambah Buku
                 </a>
-                <a href="{{ url('/data_agt/create') }}" class="btn btn-success btn-block mb-2">
+                <a href="{{ url('admin.pengguna.create') }}" class="btn btn-success btn-block mb-2">
                     <i class="fa fa-user-plus"></i> Tambah Anggota
                 </a>
                 <a href="{{ url('/data_sirkul/create') }}" class="btn btn-info btn-block">

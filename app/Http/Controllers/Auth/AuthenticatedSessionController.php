@@ -28,9 +28,13 @@ public function store(LoginRequest $request): RedirectResponse
     $request->session()->regenerate();
 
     $user = Auth::user();
+    
+    // Update last login time
+    $user->last_login_at = now();
+    $user->save();
 
     if ($user && $user->role === 'admin') {
-        return redirect('/admin/dashboard_admin.index')->with('success', 'Selamat datang, Admin!');
+        return redirect('/admin/dashboard')->with('success', 'Selamat datang, Admin!');
     }
 
     return redirect('/home')->with('success', 'Login berhasil! Selamat datang, ' . $user->nama);

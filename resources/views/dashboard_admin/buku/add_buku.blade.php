@@ -114,7 +114,6 @@
 					Batal
 				</a>
 			</div>
-            <a href="{{ route('admin.buku.index') }}" class="btn btn-secondary">Batal</a>
 
         </form>
 

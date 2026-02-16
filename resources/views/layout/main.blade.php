@@ -100,12 +100,12 @@
 							</a>
 							<ul class="treeview-menu">
 								<li>
-									<a href="{{ route('dashboard_admin.buku.data_buku') }}">
+									<a href="{{ route('admin.buku.index') }}">
 										<i class="fa fa-book"></i>Data Buku
 									</a>
 								</li>
 								<li>
-									<a href="{{ url('/data_agt') }}">
+									<a href="{{ route('admin.anggota.index') }}">
 										<i class="fa fa-users"></i>Data Anggota
 									</a>
 								</li>

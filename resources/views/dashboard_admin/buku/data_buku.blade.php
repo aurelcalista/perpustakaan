@@ -20,7 +20,7 @@
 <section class="content">
 	<div class="box box-primary">
 		<div class="box-header with-border">
-									<a href="{{ route('dashboard_admin.buku.create') }}">
+									<a href="{{ route('admin.buku.create') }}">
 										<i class="fa fa-book"></i>tambah data
 									</a>
 		</div>
