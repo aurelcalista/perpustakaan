@@ -105,12 +105,6 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
     Route::get('/anggota', [AnggotaController::class, 'index'])
         ->name('admin.anggota.index');  
 
-    Route::get('/anggota/create', [AnggotaController::class, 'create'])
-        ->name('admin.anggota.create');
-
-    Route::post('/anggota/store', [AnggotaController::class, 'store'])
-        ->name('admin.anggota.store');
-
     Route::get('/anggota/{nis}/edit', [AnggotaController::class, 'edit'])
         ->name('admin.anggota.edit');
 
