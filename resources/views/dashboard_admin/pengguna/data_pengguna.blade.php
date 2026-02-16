@@ -20,9 +20,6 @@
 <section class="content">
 	<div class="box box-primary">
 		<div class="box-header with-border">
-			<a href="{{ route('admin.anggota.create') }}" class="btn btn-primary">
-				<i class="fa fa-user-plus"></i> Tambah Data Anggota
-			</a>
 		</div>
 		
 		<div class="box-body">

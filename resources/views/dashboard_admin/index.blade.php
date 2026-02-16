@@ -137,9 +137,6 @@
                 <a href="{{ route('admin.buku.create') }}" class="btn btn-primary btn-block mb-2">
                     <i class="fa fa-plus"></i> Tambah Buku
                 </a>
-                <a href="{{ url('admin.pengguna.create') }}" class="btn btn-success btn-block mb-2">
-                    <i class="fa fa-user-plus"></i> Tambah Anggota
-                </a>
                 <a href="{{ url('/data_sirkul/create') }}" class="btn btn-info btn-block">
                     <i class="fa fa-exchange"></i> Peminjaman Baru
                 </a>
