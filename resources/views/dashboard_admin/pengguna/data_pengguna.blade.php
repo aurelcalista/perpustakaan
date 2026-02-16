@@ -48,6 +48,7 @@
 						<tr>
 							<th>No</th>
 							<th>NIS</th>
+							<th>Barcode</th>
 							<th>Username</th>
 							<th>Nama Lengkap</th>
 							<th>No Identitas</th>
@@ -66,6 +67,12 @@
 						<tr>
 							<td>{{ $no++ }}</td>
 							<td><strong>{{ $data->nis }}</strong></td>
+							<td class="text-center">
+								<div style="max-width:120px; margin:auto;">
+									<img src="data:image/png;base64,{{ DNS1D::getBarcodePNG($data->nis, 'C128', 1.5, 50) }}" alt="barcode">
+								</div>
+								<div class="text-xs mt-1">{{ $data->nis }}</div>
+							</td>
 							<td>{{ $data->username ?? '-' }}</td>
 							<td>{{ $data->nama }}</td>
 							<td>{{ $data->noidentitas }}</td>

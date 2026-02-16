@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Milon\Barcode\DNS1D;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,9 +18,20 @@ class ProfileController extends Controller
 
     public function show(Request $request): View
     {
+        $user = $request->user();
+
+        // Buat instance DNS1D
+        $d = new DNS1D();
+
+        // Generate barcode dari NIS
+        $barcode = $d->getBarcodePNG($user->nis, 'C128', 2, 50);
+
         return view('profile.show', [
-            'user' => $request->user(),
+            'user' => $user,
+            'barcode' => $barcode,
         ]);
+
+
     }
 
     public function edit(Request $request): View
@@ -42,7 +54,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('profile.show')->with('status', 'profile-updated');
     }
 
     /**

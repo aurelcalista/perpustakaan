@@ -63,11 +63,11 @@ Route::middleware(['auth', 'role:siswa'])->group(function () {
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])
-        ->name('profile.edit');
-
     Route::get('/profile', [ProfileController::class, 'show'])
         ->name('profile.show');
+        
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
 
     Route::patch('/profile', [ProfileController::class, 'update'])
         ->name('profile.update');

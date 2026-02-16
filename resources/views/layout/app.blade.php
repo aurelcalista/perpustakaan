@@ -77,5 +77,16 @@ function confirmLogout() {
 }
 </script>
 
+<script>
+function openBarcodeModal() {
+    document.getElementById('barcodeModal').style.display = 'flex';
+}
+
+function closeBarcodeModal() {
+    document.getElementById('barcodeModal').style.display = 'none';
+}
+</script>
+
+
 </body>
 </html>

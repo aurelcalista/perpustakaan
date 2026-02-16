@@ -18,7 +18,23 @@
                 <h1 class="profile-name">{{ Auth::user()->nama }}</h1>
                 <p class="profile-id">ID Anggota: {{ Auth::user()->nis }}</p>
                 <span class="member-badge">⭐ Anggota Aktif</span>
-                <span class="member-badge">Barcode Anggota</span>
+                <!-- Badge yang bisa diklik -->
+                <span class="member-badge" style="cursor:pointer;" onclick="openBarcodeModal()">
+                    Barcode Anggota
+                </span>
+
+                <!-- Modal -->
+                <div id="barcodeModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
+                    background: rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:1000;">
+                    <div style="background:#fff; padding:20px; border-radius:10px; text-align:center; position:relative; max-width:400px; width:90%;">
+                        <span style="position:absolute; top:10px; right:15px; cursor:pointer;" onclick="closeBarcodeModal()">&#10006;</span>
+                        <h3>Barcode Anggota</h3>
+                        <img src="data:image/png;base64,{{ $barcode }}" alt="Barcode NIS" style="margin-top:10px; width:100%; max-width:350px; height:auto;">
+                        <!-- NIS angka di bawah barcode -->
+                        <p style="margin-top:10px; font-weight:bold; font-size:16px;">{{ $user->nis }}</p>
+                    </div>
+                </div>
+
 
                 <div class="profile-stats">
                     <div class="stat-box">
