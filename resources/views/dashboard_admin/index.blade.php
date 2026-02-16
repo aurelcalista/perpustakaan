@@ -27,9 +27,10 @@
                 <p class="stat-label">Total Buku</p>
             </div>
             <div class="stat-footer">
-                <a href="{{ url('/data_buku') }}" class="stat-link">
-                    Lihat Detail <i class="fa fa-arrow-right"></i>
-                </a>
+        <a href="{{ route('dashboard_admin.buku.data_buku') }}" class="stat-link">
+            Lihat Detail <i class="fa fa-arrow-right"></i>
+        </a>
+
             </div>
         </div>
     </div>

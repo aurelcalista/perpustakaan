@@ -20,9 +20,9 @@
 <section class="content">
 	<div class="box box-primary">
 		<div class="box-header with-border">
-			<a href="{{ route('admin.buku.create') }}" title="Tambah Data" class="btn btn-primary">
-				<i class="glyphicon glyphicon-plus"></i> Tambah Data
-			</a>
+									<a href="{{ route('dashboard_admin.buku.create') }}">
+										<i class="fa fa-book"></i>tambah data
+									</a>
 		</div>
 		
 		<div class="box-body">

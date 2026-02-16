@@ -22,7 +22,7 @@
 <div class="card">
     <div class="card-body">
 
-        <form action="{{ route('admin.buku.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('dashboard_admin.buku.add_buku') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             {{-- ID Buku --}}
