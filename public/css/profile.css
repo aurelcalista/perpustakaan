@@ -2,10 +2,21 @@
     box-sizing: border-box;
 }
 
+
+.library-profile-container .navbar {
+    background-color: var(--secondary-color);
+}
+
+
 .library-profile-container {
     background:white;
     min-height: 100vh;
     padding: 20px;
+    margin-top: 100px;
+}
+
+.profile-page .navbar {
+    background-color: var(--secondary-color) !important;
 }
 
 
@@ -31,7 +42,7 @@
 
 .profile-cover {
     height: 100px;
-    background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+    background-color: var(--secondary-color) !important;
     position: relative;
 }
 
@@ -481,3 +492,4 @@
         grid-template-columns: 1fr;
     }
 }
+

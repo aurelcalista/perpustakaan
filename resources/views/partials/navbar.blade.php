@@ -1,3 +1,4 @@
+<div class="sticky-wrapper">
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid px-3">
        <a href="/" class="navbar-brand d-flex align-items-center gap-2 m-0 p-0">
@@ -65,3 +66,4 @@
                     </div>
                 </div>
             </nav>
+        </div>

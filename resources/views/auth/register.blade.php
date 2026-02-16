@@ -1,9 +1,6 @@
 @extends('layout.login')
 @section('content')
 
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
-
     <form method="POST" action="{{ route('register') }}">
         @csrf
       <!-- logo -->
@@ -48,7 +45,12 @@
                         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
                         </svg>
-                        <input type="text" id="noidentitas" name="noidentitas" placeholder="Masukkan Kelas Anda" required>
+                        <select id="noidentitas" name="noidentitas" required>
+                            <option value=""> Pilih Kelas Anda </option>
+                            <option value="XI RPL 1" {{ old('noidentitas') == 'X RPL 1' ? 'selected' : '' }}>XI RPL 1</option>
+                            <option value="XI RPL 2" {{ old('noidentitas') == 'X RPL 2' ? 'selected' : '' }}>XI RPL 2</option>
+                        </select>
+
                     </div>
                 </div>
             </div>

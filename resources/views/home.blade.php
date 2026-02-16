@@ -1,5 +1,6 @@
 @extends('layout.app')
 @section('content')
+
             <section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
                 <div class="container">
                     <div class="row">
