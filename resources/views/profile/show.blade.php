@@ -14,7 +14,7 @@
                 <div class="profile-avatar-wrapper" onclick="openPhotoModal()">
                     @if(Auth::user()->avatar)
                         <img src="{{ Storage::url(Auth::user()->avatar) }}"
-                             alt="avatar"
+                             alt="Foto Profil"
                              class="profile-avatar-img"
                              id="profile-avatar-preview">
                     @else
@@ -97,7 +97,7 @@
                     <div id="save-photo-area" style="display:none;">
                         <form id="upload-photo-form" action="{{ route('profile.updatePhoto') }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <input type="file" id="foto-upload-input" name="foto_profil" style="display:none;">
+                            <input type="file" id="foto-upload-input" name="avatar" style="display:none;">
                             <input type="hidden" id="foto-base64-input" name="foto_base64">
                             <button type="submit" class="photo-btn photo-btn-save">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
@@ -175,7 +175,10 @@
                 </div>
 
                 <div class="profile-actions">
-                    <a href="{{ route('profile.edit') }}" class="btn btn-primary">Edit Profil</a>
+                    <a href="{{ route('profile.edit') }}" class="btn btn-primary">✏️ Edit Profil</a>
+                    <a href="{{ route('profile.edit') }}#ganti-password" class="btn btn-outline">
+                        🔒 Ganti Password
+                    </a>
                     <button class="btn btn-outline">Perpanjang Keanggotaan</button>
 
                     <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display:none;">
@@ -353,6 +356,8 @@
     </div>
 </div>
 
+
+
 <script>
 let cameraStream = null;
 let selectedFile = null;
@@ -366,6 +371,11 @@ function closePhotoModal() {
     stopCamera();
     document.getElementById('photoModal').style.display = 'none';
     document.getElementById('save-photo-area').style.display = 'none';
+    // Reset state
+    selectedFile = null;
+    capturedBlob = null;
+    // Reset file input supaya bisa pilih file yang sama lagi
+    document.getElementById('foto-input').value = '';
 }
 
 /* ---- Preview dari file/galeri ---- */
@@ -421,16 +431,20 @@ function stopCamera() {
 }
 
 function capturePhoto() {
-    const video = document.getElementById('camera-video');
+    const video  = document.getElementById('camera-video');
     const canvas = document.getElementById('camera-canvas');
-    canvas.width = video.videoWidth;
+    canvas.width  = video.videoWidth;
     canvas.height = video.videoHeight;
-    canvas.getContext('2d').drawImage(video, 0, 0);
+
+    const ctx = canvas.getContext('2d');
+    // Flip balik saat capture supaya hasil TIDAK mirror
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
+    ctx.drawImage(video, 0, 0);
 
     const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
     showPreview(dataUrl);
 
-    // Simpan base64 ke hidden input untuk dikirim form
     document.getElementById('foto-base64-input').value = dataUrl;
     capturedBlob = dataUrl;
     selectedFile = null;
@@ -442,34 +456,62 @@ function capturePhoto() {
 /* ---- Submit form upload ---- */
 document.getElementById('upload-photo-form').addEventListener('submit', function(e) {
     e.preventDefault();
-    const formData = new FormData(this);
 
-    // Kalau dari galeri, pakai file input
+    // Buat FormData baru (kosong), jangan pakai FormData(this)
+    // supaya kita bisa kontrol persis field apa yang dikirim
+    const formData = new FormData();
+
+    // CSRF token — ambil dari meta tag, bukan dari input form lain
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
+                   || '{{ csrf_token() }}';
+
+    formData.append('_token', csrfToken);
+
     if (selectedFile) {
-        formData.set('avatar', selectedFile);
-        formData.delete('foto_base64');
+        // Dari galeri: kirim file langsung
+        formData.append('avatar', selectedFile, selectedFile.name);
+    } else if (capturedBlob) {
+        // Dari kamera: kirim base64
+        formData.append('foto_base64', capturedBlob);
+    } else {
+        alert('Pilih foto terlebih dahulu.');
+        return;
     }
+
+    // Disable tombol supaya tidak double-submit
+    const btnSave = this.querySelector('.photo-btn-save');
+    btnSave.disabled = true;
+    btnSave.textContent = 'Menyimpan...';
 
     fetch(this.action, {
         method: 'POST',
         body: formData,
         headers: {
-            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+            'X-CSRF-TOKEN': csrfToken,
             'Accept': 'application/json'
         }
     })
     .then(res => res.json())
     .then(data => {
         if (data.success) {
-            // Update avatar di halaman utama juga
             updateAvatarOnPage(data.url);
             closePhotoModal();
             showToast('Foto profil berhasil diperbarui! ✅');
+            // Reset state
+            selectedFile = null;
+            capturedBlob = null;
         } else {
             alert(data.message || 'Gagal mengunggah foto.');
         }
     })
-    .catch(() => alert('Terjadi kesalahan. Silakan coba lagi.'));
+    .catch(err => {
+        console.error(err);
+        alert('Terjadi kesalahan koneksi. Silakan coba lagi.');
+    })
+    .finally(() => {
+        btnSave.disabled = false;
+        btnSave.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg> Simpan Foto';
+    });
 });
 
 /* ---- Update avatar di sidebar tanpa reload ---- */
@@ -504,7 +546,13 @@ function showToast(msg) {
     setTimeout(() => toast.remove(), 3000);
 }
 
-
+/* ---- Barcode modal ---- */
+function openBarcodeModal() {
+    document.getElementById('barcodeModal').style.display = 'flex';
+}
+function closeBarcodeModal() {
+    document.getElementById('barcodeModal').style.display = 'none';
+}
 </script>
 
 @endsection
