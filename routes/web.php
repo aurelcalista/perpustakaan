@@ -71,6 +71,14 @@ Route::middleware('auth')->group(function () {
 
     Route::patch('/profile', [ProfileController::class, 'update'])
         ->name('profile.update');
+        
+  // Upload / ganti foto profil (file atau base64 dari kamera)
+    Route::post('/profile/photo', [ProfileController::class, 'updatePhoto'])
+         ->name('profile.updatePhoto');
+
+    // Hapus foto profil
+    Route::delete('/profile/photo', [ProfileController::class, 'deletePhoto'])
+         ->name('profile.deletePhoto');
 
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
