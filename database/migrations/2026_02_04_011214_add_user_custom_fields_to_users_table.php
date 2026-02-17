@@ -16,19 +16,19 @@ return new class extends Migration
             
             // Tambah kolom baru
             if (!Schema::hasColumn('users', 'nis')) {
-                $table->string('nis')->unique()->after('id');
+                $table->string('nis')->nullable()->unique()->after('id'); 
             }
             if (!Schema::hasColumn('users', 'nama')) {
                 $table->string('nama')->after('nis');
             }
             if (!Schema::hasColumn('users', 'noidentitas')) {
-                $table->string('noidentitas')->after('nama');
+                $table->string('noidentitas')->nullable()->after('nama'); 
             }
             if (!Schema::hasColumn('users', 'alamat')) {
-                $table->text('alamat')->after('noidentitas');
+                $table->text('alamat')->nullable()->after('noidentitas'); 
             }
             if (!Schema::hasColumn('users', 'notlp')) {
-                $table->string('notlp')->after('alamat');
+                $table->string('notlp')->nullable()->after('alamat'); 
             }
         });
     }
