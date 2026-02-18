@@ -22,7 +22,7 @@
 <div class="card">
     <div class="card-body">
 
-        <form action="{{ route('dashboard_admin.buku.add_buku') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.buku.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             {{-- ID Buku --}}
@@ -80,7 +80,7 @@
                 <input type="text" name="deskripsi_fisik" class="form-control" value="{{ old('deskripsi_fisik') }}">
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3">d
                 <label>ISBN</label>
                 <input type="text" name="isbn" class="form-control" value="{{ old('isbn') }}">
             </div>

@@ -9,6 +9,12 @@ class LogPinjam extends Model
     protected $table = 'log_pinjam';
     protected $primaryKey = 'id_log';
 
+    protected $fillable = [
+        'id_buku',
+        'id_anggota',
+        'tgl_pinjam',
+    ];
+
     public function buku()
     {
         return $this->belongsTo(Buku::class, 'id_buku', 'id_buku');

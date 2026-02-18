@@ -3,11 +3,6 @@
     <section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
         <div class="container">
             <div class="row">
-
-            <section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
-                <div class="container">
-                    <div class="row">
-
                 <div class="col-lg-8 col-12 mx-auto">
                     <h1 class="text-white text-center">Perpustakaan SMKN 1 Cirebon</h1>
 
@@ -101,154 +96,36 @@
         <div class="container">
             <div class="col-12 text-center">
                 <h2 class="mb-4">Koleksi Perpustakaan</h2>
-            </div>
-        </div>
+                <div class="container">
+    <div class="row mt-4">
+        @foreach($buku as $item)
+            <div class="col-lg-4 col-md-6 col-12 mb-4">
+                <a href="{{ route('buku.detail', $item->id_buku) }}"
+                   style="text-decoration:none; color:inherit;">
 
-        <div class="container-fluid">
-            <div class="row">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#pelajaran">Buku
-                            Pelajaran</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#novel">Novel</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#pengetahuan">Buku
-                            Pengetahuan</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#referensi">Referensi</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#majalah">Majalah</button>
-                    </li>
-                </ul>
+                    <div class="card shadow text-center p-3">
+
+                        @if($item->foto)
+                            <img src="{{ asset('storage/'.$item->foto) }}"
+                                 class="img-fluid mb-3"
+                                 style="height:200px; object-fit:cover;">
+                        @endif
+
+                        <h5>{{ $item->judul_buku }}</h5>
+                        <p>{{ $item->pengarang }}</p>
+
+                    </div>
+                </a>
+            </div>
+        @endforeach
+    </div>
+</div>
+
             </div>
         </div>
 
         <div class="container">
-            <div class="tab-content mt-4">
-
-                <!-- Buku Pelajaran -->
-                <div class="tab-pane fade show active" id="pelajaran">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-6 col-12 mb-4">
-                            <div class="custom-block bg-white shadow-lg text-center p-4">
-                                <img src="{{ asset('images/mtk.jpg') }}" alt="Matematika" class="img-fluid mb-3"
-                                    style="width: 200; height: 200; object-fit: cover;">
-                                <h5 class="mt-3">Matematika</h5>
-                                <p>Buku pembelajaran matematika untuk memahami konsep hitungan dan logika.</p>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-12 mb-4">
-                            <div class="custom-block bg-white shadow-lg text-center p-4">
-                                <img src="{{ asset('images/indoo.jpg') }}" alt="Bahasa Indonesia" class="img-fluid mb-3"
-                                    style="width: 200; height: 200; object-fit: cover;">
-                                <h5 class="mt-3">Bahasa Indonesia</h5>
-                                <p>Buku pembelajaran Bahasa Indonesia.</p>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-12 mb-4">
-                            <div class="custom-block bg-white shadow-lg text-center p-4">
-                                <img src="{{ asset('images/sejarah.png') }}" alt="Sejarah" class="img-fluid mb-3"
-                                    style="width: 200; height: 200; object-fit: cover;">
-                                <h5 class="mt-3">Sejarah</h5>
-                                <p>Buku pembelajaran Sejarah.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Novel -->
-                <div class="tab-pane fade" id="novel">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-6 col-12 mb-4">
-                            <div class="custom-block bg-white shadow-lg text-center p-4">
-                                <i class="bi bi-heart fs-1 text-danger"></i>
-                                <h5 class="mt-3">Novel Romance</h5>
-                                <p>Kumpulan novel bertema percintaan.</p>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-12 mb-4">
-                            <div class="custom-block bg-white shadow-lg text-center p-4">
-                                <i class="bi bi-stars fs-1 text-warning"></i>
-                                <h5 class="mt-3">Novel Fantasi</h5>
-                                <p>Cerita dunia imajinasi dan petualangan.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Buku Pengetahuan -->
-                <div class="tab-pane fade" id="pengetahuan">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-6 col-12 mb-4">
-                            <div class="custom-block bg-white shadow-lg text-center p-4">
-                                <i class="bi bi-clock-history fs-1 text-secondary"></i>
-                                <h5 class="mt-3">Sejarah</h5>
-                                <p>Membahas peristiwa sejarah dunia dan Indonesia.</p>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-12 mb-4">
-                            <div class="custom-block bg-white shadow-lg text-center p-4">
-                                <i class="bi bi-cpu fs-1 text-dark"></i>
-                                <h5 class="mt-3">Teknologi</h5>
-                                <p>Buku perkembangan teknologi dan komputer.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Referensi -->
-                <div class="tab-pane fade" id="referensi">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-6 col-12 mb-4">
-                            <div class="custom-block bg-white shadow-lg text-center p-4">
-                                <i class="bi bi-journal-text fs-1 text-primary"></i>
-                                <h5 class="mt-3">Kamus</h5>
-                                <p>Referensi arti kata dan kosakata bahasa.</p>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-12 mb-4">
-                            <div class="custom-block bg-white shadow-lg text-center p-4">
-                                <i class="bi bi-collection fs-1 text-success"></i>
-                                <h5 class="mt-3">Ensiklopedia</h5>
-                                <p>Kumpulan informasi berbagai bidang ilmu.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Majalah -->
-                <div class="tab-pane fade" id="majalah">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-6 col-12 mb-4">
-                            <div class="custom-block bg-white shadow-lg text-center p-4">
-                                <i class="bi bi-newspaper fs-1 text-warning"></i>
-                                <h5 class="mt-3">Majalah Pendidikan</h5>
-                                <p>Informasi dan perkembangan dunia pendidikan.</p>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-12 mb-4">
-                            <div class="custom-block bg-white shadow-lg text-center p-4">
-                                <i class="bi bi-book-half fs-1 text-danger"></i>
-                                <h5 class="mt-3">Majalah Umum</h5>
-                                <p>Majalah hiburan dan lifestyle.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+            
     </section>
 
 

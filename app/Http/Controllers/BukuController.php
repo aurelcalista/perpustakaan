@@ -8,12 +8,32 @@ use App\Models\Category;
 
 class BukuController extends Controller
 {
+
+public function home()
+{
+    $buku = Buku::with('kategori')->latest()->get();
+    return view('home', compact('buku'));
+}
+
+
     // Menampilkan semua data buku
     public function index()
     {
         $buku = \App\Models\Buku::with('kategori')->get();
         return view('dashboard_admin.buku.data_buku', compact('buku'));  
     }
+
+
+    // Menampilkan detail buku untuk halaman user
+public function show($id)
+{
+    $buku = Buku::with('kategori')
+                ->where('id_buku', $id)
+                ->firstOrFail();
+
+    return view('layouts.detail', compact('buku'));
+}
+
 
 
     // Menampilkan form tambah buku

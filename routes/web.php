@@ -9,15 +9,14 @@ use App\Http\Controllers\BukuController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AnggotaController; 
 use App\Http\Controllers\LogPinjamController;
+use App\Http\Controllers\UserPinjamController;
+use App\Models\User;
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', [BukuController::class, 'home'])
+    ->name('home');
 
-
-Route::get('/buku/detail', function () {
-    return view('frontend.detail-buku');
-})->name('buku.detail');
+Route::get('/buku/{id}', [BukuController::class, 'show'])
+    ->name('buku.detail');
 
 
 Route::get('/admin/login', [AdminAuthController::class, 'create'])
@@ -126,6 +125,26 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
     Route::get('/log-peminjaman', [LogPinjamController::class, 'index'])->name('log.pinjam');
 
 });
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/pinjam-buku', [UserPinjamController::class, 'index'])->name('layouts.userpinjam');
+    Route::post('/pinjam-buku', [UserPinjamController::class, 'store'])->name('layouts.pinjam.store');
+});
+
+
+Route::middleware(['auth'])->group(function () {
+
+    // buka halaman form peminjaman
+    Route::get('/pinjam-buku/{id}', [UserPinjamController::class, 'create'])
+        ->name('pinjam.create');
+
+    // simpan data peminjaman
+    Route::post('/pinjam-buku', [UserPinjamController::class, 'store'])
+        ->name('pinjam.store');
+});
+
+
 
 Route::get('/informasi', function () {
     return view('informasi');
