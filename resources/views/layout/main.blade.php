@@ -105,7 +105,7 @@
 									</a>
 								</li>
 								<li>
-									<a href="{{ route('admin.anggota.index') }}">
+									<a href="{{ route('admin.agt.index') }}">
 										<i class="fa fa-users"></i>Data Anggota
 									</a>
 								</li>
