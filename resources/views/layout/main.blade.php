@@ -134,11 +134,11 @@
 								</span>
 							</a>
 							<ul class="treeview-menu">
-								<li>
-									<a href="{{ url('/log_pinjam') }}">
-										<i class="fa fa-arrow-circle-o-down"></i>Peminjaman
-									</a>
-								</li>
+							<li>
+								<a href="{{ route('log.pinjam') }}">
+									<i class="fa fa-arrow-circle-o-down"></i>Peminjaman
+								</a>
+							</li>
 								<li>
 									<a href="{{ url('/log_kembali') }}">
 										<i class="fa fa-arrow-circle-o-up"></i>Pengembalian

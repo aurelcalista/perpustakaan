@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardPetugasController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AnggotaController; 
+use App\Http\Controllers\LogPinjamController;
 
 Route::get('/', function () {
     return view('home');
@@ -121,6 +122,8 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
 
     Route::delete('/anggota/{nis}', [AnggotaController::class, 'destroy'])
         ->name('admin.anggota.destroy');
+
+    Route::get('/log-peminjaman', [LogPinjamController::class, 'index'])->name('log.pinjam');
 
 });
 
