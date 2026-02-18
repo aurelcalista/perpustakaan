@@ -47,7 +47,7 @@
                 <p class="stat-label">Total Anggota</p>
             </div>
             <div class="stat-footer">
-               <a href="{{ route('admin.anggota.index') }}">
+               <a href="{{ route('admin.agt.index') }}">
                     Lihat Detail <i class="fa fa-arrow-right"></i>
                 </a>
             </div>
