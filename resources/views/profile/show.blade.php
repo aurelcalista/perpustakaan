@@ -3,556 +3,383 @@
 @section('body-class', 'profile-page')
 @section('content')
 
-<div class="library-profile-container">
-    <!-- Profile Layout -->
-    <div class="profile-layout">
-        <!-- Sidebar -->
-        <aside class="profile-sidebar">
-            <div class="profile-cover"></div>
-            <div class="profile-avatar-container">
-                <!-- Avatar dengan tombol edit foto -->
-                <div class="profile-avatar-wrapper" onclick="openPhotoModal()">
-                    @if(Auth::user()->avatar)
-                        <img src="{{ Storage::url(Auth::user()->avatar) }}"
-                             alt="Foto Profil"
-                             class="profile-avatar-img"
-                             id="profile-avatar-preview">
-                    @else
-                        <div class="profile-avatar" id="profile-avatar-initials">
-                            {{ strtoupper(substr(Auth::user()->nama, 0, 2)) }}
-                        </div>
-                    @endif
-                    <!-- Overlay icon kamera -->
-                    <div class="avatar-edit-overlay">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="22" height="22">
-                            <path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4z"/>
-                            <path d="M9 3L7.17 5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2h-3.17L15 3H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
-                        </svg>
-                        <span>Ubah Foto</span>
+<div class="profile-page-wrap">
+    <div class="profile-container">
+
+        @if(session('success'))
+            <div class="alert-success">✅ {{ session('success') }}</div>
+        @endif
+
+        <!-- HEADER CARD -->
+        <div class="profile-header-card">
+            <div class="profile-avatar-wrap" onclick="openPhotoModal()">
+                @if(Auth::user()->avatar)
+                    <img src="{{ Storage::url(Auth::user()->avatar) }}"
+                         alt="Foto Profil" class="main-avatar"
+                         id="profile-avatar-preview">
+                @else
+                    <div class="profile-avatar-initials" id="profile-avatar-initials">
+                        {{ strtoupper(substr(Auth::user()->nama, 0, 2)) }}
                     </div>
+                @endif
+                <div class="avatar-edit-overlay">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="18" height="18">
+                        <path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4z"/>
+                        <path d="M9 3L7.17 5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2h-3.17L15 3H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+                    </svg>
+                    <span>Ubah</span>
                 </div>
             </div>
 
-            <!-- ===== MODAL FOTO PROFIL ===== -->
-            <div id="photoModal" class="photo-modal-overlay" style="display:none;">
-                <div class="photo-modal-box">
-                    <button class="photo-modal-close" onclick="closePhotoModal()">&#10006;</button>
-                    <h3 class="photo-modal-title">Ubah Foto Profil</h3>
+            <div class="profile-header-info">
+                <div class="profile-name-row">
+                    <h1>{{ Auth::user()->nama }}</h1>
+                    <!-- <span class="badge-unverified">Belum Terverifikasi</span> -->
+                </div>
+                <div class="profile-meta">
+                    <div class="profile-meta-item">
+                        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+                        Status: Anggota Perpustakaan
+                    </div>
+                    <div class="profile-meta-item">
+                        <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg>
+                        Bergabung: {{ date('d M Y', strtotime(Auth::user()->created_at ?? now())) }}
+                    </div>
+                    <!-- <div class="profile-meta-item">
+                        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                        Kadaluarsa: -
+                    </div> -->
+                </div>
 
-                    <!-- Preview area -->
-                    <div class="photo-preview-area">
-                        <div id="photo-preview-container">
-                            @if(Auth::user()->avatar)
-                                <img src="{{ Storage::url(Auth::user()->avatar) }}"
-                                     id="modal-preview-img"
-                                     class="photo-preview-img">
-                            @else
-                                <div id="modal-preview-initials" class="photo-preview-initials">
-                                    {{ strtoupper(substr(Auth::user()->nama, 0, 2)) }}
+                <button class="btn-kode-anggota" onclick="openBarcodeModal()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="15" height="15">
+                        <path d="M2 6h2v12H2zm3 0h1v12H5zm2 0h3v12H7zm4 0h1v12h-1zm2 0h2v12h-2zm3 0h1v12h-1zm2 0h3v12h-3z"/>
+                    </svg>
+                    Kode Anggota
+                </button>
+
+                <div class="profile-stats-row">
+                    <div class="stat-pill">
+                        <div class="stat-pill-icon green">
+                            <svg viewBox="0 0 24 24" fill="#2e7d32"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
+                        </div>
+                        <div>
+                            <div class="stat-pill-num">{{ $totalBukuDipinjam ?? 0 }}</div>
+                            <div class="stat-pill-label">Total Dipinjam</div>
+                        </div>
+                    </div>
+                    <div class="stat-pill">
+                        <div class="stat-pill-icon" style="background:#e8f0fe;">
+                            <svg viewBox="0 0 24 24" fill="#1a2d6b"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM7 11h5v5H7z"/></svg>
+                        </div>
+                        <div>
+                            <div class="stat-pill-num" style="font-size:14px; font-weight:800; padding-top:3px;">{{ date('M Y', strtotime(Auth::user()->created_at ?? now())) }}</div>
+                            <div class="stat-pill-label">Anggota Sejak</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="greeting-wrap">
+                    <span class="greeting-text" id="greeting-typed"></span><span class="greeting-cursor">|</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- BODY -->
+        <div class="profile-body">
+
+            <!-- SIDEBAR NAV -->
+            <nav class="profile-nav-card">
+                <a class="profile-nav-item active" href="javascript:void(0)" onclick="switchPanel('biodata', this)">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    Biodata
+                </a>
+                <a class="profile-nav-item" href="javascript:void(0)" onclick="switchPanel('dipinjam', this)">
+                    <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
+                    Buku Dipinjam
+                </a>
+                <a class="profile-nav-item" href="javascript:void(0)" onclick="switchPanel('peminjaman', this)">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                    Riwayat Pinjam
+                </a>
+                <a class="profile-nav-item" href="javascript:void(0)" onclick="switchPanel('pelanggaran', this)">
+                    <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                    Pelanggaran
+                </a>
+                <a class="profile-nav-item" href="javascript:void(0)" onclick="switchPanel('favorit', this)">
+                    <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    Buku Favorit
+                </a>
+                <a class="profile-nav-item" href="javascript:void(0)" onclick="switchPanel('akun', this)">
+                    <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                    Pengaturan Akun
+                </a>
+                <a class="profile-nav-item nav-danger" href="javascript:void(0)" onclick="confirmLogout()">
+                    <svg viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+                    Logout
+                </a>
+            </nav>
+
+            <!-- PANELS -->
+            <div>
+
+                <!-- BIODATA -->
+                <div class="profile-panel active" id="panel-biodata">
+                    <div class="panel-card">
+                        <div class="panel-card-header">
+                            <h2 class="panel-card-title">Biodata</h2>
+                            <a href="{{ route('profile.edit') }}" class="btn-edit-data">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="13" height="13">
+                                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                                </svg>
+                                Edit
+                            </a>
+                        </div>
+                        <div class="biodata-grid">
+                            <div class="biodata-field">
+                                <label>NIS / ID Anggota</label>
+                                <p>{{ Auth::user()->nis }}</p>
+                            </div>
+                            <div class="biodata-field">
+                                <label>Nama Lengkap</label>
+                                <p>{{ Auth::user()->nama }}</p>
+                            </div>
+                            <div class="biodata-field">
+                                <label>Email</label>
+                                <p>{{ Auth::user()->email }}</p>
+                            </div>
+                            <div class="biodata-field">
+                                <label>No. Telepon</label>
+                                <p>{{ Auth::user()->notlp ?? 'Belum diisi' }}</p>
+                            </div>
+                            <div class="biodata-field">
+                                <label>Kelas</label>
+                                <p>{{ Auth::user()->noidentitas ?? 'Belum diisi' }}</p>
+                            </div>
+                            <div class="biodata-field full">
+                                <label>Alamat</label>
+                                <p>{{ Auth::user()->alamat ?? 'Belum diisi' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BUKU DIPINJAM -->
+                <div class="profile-panel" id="panel-dipinjam">
+                    <div class="panel-card">
+                        <div class="panel-card-header">
+                            <h2 class="panel-card-title">Buku Sedang Dipinjam</h2>
+                            <span class="badge badge-info">3 buku</span>
+                        </div>
+
+                        <div class="item-card">
+                            <div class="item-card-icon">📖</div>
+                            <div class="item-card-body">
+                                <p class="item-card-title">Pemrograman Web Modern</p>
+                                <p class="item-card-sub">John Doe</p>
+                                <div class="item-card-badges">
+                                    <span class="badge badge-borrowed">Jatuh tempo: 10 Feb 2026</span>
                                 </div>
-                                <img id="modal-preview-img" class="photo-preview-img" style="display:none;">
-                            @endif
+                            </div>
+                        </div>
+
+                        <div class="item-card">
+                            <div class="item-card-icon">📘</div>
+                            <div class="item-card-body">
+                                <p class="item-card-title">Algoritma dan Struktur Data</p>
+                                <p class="item-card-sub">Jane Smith</p>
+                                <div class="item-card-badges">
+                                    <span class="badge badge-borrowed">Jatuh tempo: 12 Feb 2026</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item-card">
+                            <div class="item-card-icon">📕</div>
+                            <div class="item-card-body">
+                                <p class="item-card-title">Database Management System</p>
+                                <p class="item-card-sub">Robert Johnson</p>
+                                <div class="item-card-badges">
+                                    <span class="badge badge-overdue">Terlambat 2 hari</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Tombol pilihan -->
-                    <div class="photo-modal-actions">
-                        <!-- Ambil dari kamera -->
-                        <button class="photo-btn photo-btn-camera" onclick="openCamera()">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-                                <path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4z"/>
-                                <path d="M9 3L7.17 5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2h-3.17L15 3H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
-                            </svg>
-                            Buka Kamera
-                        </button>
-
-                        <!-- Pilih dari galeri/file -->
-                        <button class="photo-btn photo-btn-gallery" onclick="document.getElementById('foto-input').click()">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                            </svg>
-                            Pilih dari Galeri
-                        </button>
-
-                        <!-- Input file tersembunyi -->
-                        <input type="file" id="foto-input" accept="image/*" style="display:none;" onchange="previewPhoto(event)">
+                <!-- RIWAYAT PEMINJAMAN -->
+                <div class="profile-panel" id="panel-peminjaman">
+                    <div class="panel-card">
+                        <div class="panel-card-header">
+                            <h2 class="panel-card-title">Riwayat Peminjaman</h2>
+                        </div>
+                        <div style="overflow-x:auto;">
+                            <table class="history-tbl">
+                                <thead>
+                                    <tr>
+                                        <th>Judul Buku</th>
+                                        <th class="hide-mobile">Pengarang</th>
+                                        <th>Tgl Pinjam</th>
+                                        <th class="hide-mobile">Tgl Kembali</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Design Patterns</td>
+                                        <td class="hide-mobile">Gang of Four</td>
+                                        <td>15 Jan 2026</td>
+                                        <td class="hide-mobile">29 Jan 2026</td>
+                                        <td><span class="badge badge-returned">Dikembalikan</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Clean Code</td>
+                                        <td class="hide-mobile">Robert C. Martin</td>
+                                        <td>01 Jan 2026</td>
+                                        <td class="hide-mobile">15 Jan 2026</td>
+                                        <td><span class="badge badge-returned">Dikembalikan</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>The Pragmatic Programmer</td>
+                                        <td class="hide-mobile">Hunt & Thomas</td>
+                                        <td>20 Des 2025</td>
+                                        <td class="hide-mobile">05 Jan 2026</td>
+                                        <td><span class="badge badge-returned">Dikembalikan</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+                </div>
 
-                    <!-- Area Kamera (tersembunyi awalnya) -->
-                    <div id="camera-area" style="display:none;">
-                        <video id="camera-video" autoplay playsinline class="camera-video"></video>
-                        <div class="camera-controls">
-                            <button class="photo-btn photo-btn-capture" onclick="capturePhoto()">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-                                    <circle cx="12" cy="12" r="8"/>
+                <!-- PELANGGARAN -->
+                <div class="profile-panel" id="panel-pelanggaran">
+                    <div class="panel-card">
+                        <div class="panel-card-header">
+                            <h2 class="panel-card-title">Riwayat Pelanggaran</h2>
+                        </div>
+                        <div class="section-empty">
+                            <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-1 14H9V9h2v6zm4 0h-2V9h2v6z"/></svg>
+                            <p>Tidak ada riwayat pelanggaran</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAVORIT -->
+                <div class="profile-panel" id="panel-favorit">
+                    <div class="panel-card">
+                        <div class="panel-card-header">
+                            <h2 class="panel-card-title">Buku Favorit</h2>
+                        </div>
+                        <div class="section-empty">
+                            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                            <p>Belum ada buku favorit</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PENGATURAN AKUN -->
+                <div class="profile-panel" id="panel-akun">
+                    <div class="panel-card">
+                        <div class="panel-card-header">
+                            <h2 class="panel-card-title">Pengaturan Akun</h2>
+                            <a href="{{ route('profile.edit') }}" class="btn-edit-data">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="13" height="13">
+                                    <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
                                 </svg>
-                                Ambil Foto
-                            </button>
-                            <button class="photo-btn photo-btn-cancel" onclick="stopCamera()">Batal</button>
+                                Ganti Password
+                            </a>
                         </div>
-                        <canvas id="camera-canvas" style="display:none;"></canvas>
+                        <div class="biodata-grid">
+                            <div class="biodata-field">
+                                <label>Email</label>
+                                <p>{{ Auth::user()->email }}</p>
+                            </div>
+                            <div class="biodata-field">
+                                <label>Status Akun</label>
+                                <p>Anggota Reguler</p>
+                            </div>
+                            <div class="biodata-field">
+                                <label>ID Anggota</label>
+                                <p>{{ Auth::user()->nis }}</p>
+                            </div>
+                            <div class="biodata-field">
+                                <label>Bergabung</label>
+                                <p>{{ date('d M Y', strtotime(Auth::user()->created_at ?? now())) }}</p>
+                            </div>
+                        </div>
                     </div>
-
-                    <!-- Tombol simpan (muncul setelah ada foto dipilih) -->
-                    <div id="save-photo-area" style="display:none;">
-                        <form id="upload-photo-form" action="{{ route('profile.updatePhoto') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <input type="file" id="foto-upload-input" name="avatar" style="display:none;">
-                            <input type="hidden" id="foto-base64-input" name="foto_base64">
-                            <button type="submit" class="photo-btn photo-btn-save">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-                                    <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/>
-                                </svg>
-                                Simpan Foto
-                            </button>
-                        </form>
-                    </div>
-
                 </div>
+
+            </div><!-- end panels -->
+        </div><!-- end profile-body -->
+
+    </div><!-- end container -->
+</div><!-- end page wrap -->
+
+<!-- MODAL FOTO -->
+<div id="photoModal" class="photo-modal-overlay" style="display:none;">
+    <div class="photo-modal-box">
+        <button class="photo-modal-close" onclick="closePhotoModal()">&#10006;</button>
+        <h3 class="photo-modal-title">Ubah Foto Profil</h3>
+        <div class="photo-preview-area">
+            <div id="photo-preview-container">
+                @if(Auth::user()->avatar)
+                    <img src="{{ Storage::url(Auth::user()->avatar) }}" id="modal-preview-img" class="photo-preview-img">
+                @else
+                    <div id="modal-preview-initials" class="photo-preview-initials">
+                        {{ strtoupper(substr(Auth::user()->nama, 0, 2)) }}
+                    </div>
+                    <img id="modal-preview-img" class="photo-preview-img" style="display:none;">
+                @endif
             </div>
-            <!-- ===== END MODAL FOTO PROFIL ===== -->
-
-            <div class="profile-details">
-                <h1 class="profile-name">{{ Auth::user()->nama }}</h1>
-                <p class="profile-id">ID Anggota: {{ Auth::user()->nis }}</p>
-                <span class="member-badge">⭐ Anggota Aktif</span>
-                <!-- Badge barcode -->
-                <span class="member-badge" style="cursor:pointer;" onclick="openBarcodeModal()">
-                    <i class="bi bi-upc-scan"></i> Barcode Anggota
-                </span>
-
-                <!-- Modal Barcode -->
-                <div id="barcodeModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
-                    background: rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:1000;">
-                    <div style="background:#fff; padding:20px; border-radius:10px; text-align:center; position:relative; max-width:400px; width:90%;">
-                        <span style="position:absolute; top:10px; right:15px; cursor:pointer;" onclick="closeBarcodeModal()">&#10006;</span>
-                        <h3>Barcode Anggota</h3>
-                        <img src="data:image/png;base64,{{ $barcode }}" alt="Barcode NIS" style="margin-top:10px; width:100%; max-width:350px; height:auto;">
-                        <p style="margin-top:10px; font-weight:bold; font-size:16px;">{{ $user->nis }}</p>
-                    </div>
-                </div>
-
-                <div class="profile-stats">
-                    <div class="stat-box">
-                        <div class="stat-number">24</div>
-                        <div class="stat-label">Buku Dipinjam</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-number">156</div>
-                        <div class="stat-label">Total Pinjaman</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-number">3</div>
-                        <div class="stat-label">Sedang Dipinjam</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-number">98%</div>
-                        <div class="stat-label">Ketepatan</div>
-                    </div>
-                </div>
-
-                <div class="profile-info-list">
-                    <div class="info-row">
-                        <span class="info-icon">📧</span>
-                        <span class="info-text">{{ Auth::user()->email }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-icon">📱</span>
-                        <span class="info-text">{{ Auth::user()->notlp ?? '+62 812-xxxx-xxxx' }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-icon">📍</span>
-                        <span class="info-text">{{ Auth::user()->alamat ?? 'Jakarta, Indonesia' }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-icon">🏫</span>
-                        <span class="info-text">Kelas: {{ Auth::user()->noidentitas }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-icon">📅</span>
-                        <span class="info-text">Anggota sejak {{ date('M Y', strtotime(Auth::user()->created_at ?? now())) }}</span>
-                    </div>
-                </div>
-
-                <div class="profile-actions">
-                    <a href="{{ route('profile.edit') }}" class="btn btn-primary">✏️ Edit Profil</a>
-                    <a href="{{ route('profile.edit') }}#ganti-password" class="btn btn-outline">
-                        🔒 Ganti Password
-                    </a>
-                    <button class="btn btn-outline">Perpanjang Keanggotaan</button>
-
-                    <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display:none;">
-                        @csrf
-                    </form>
-
-                    <button type="button" onclick="confirmLogout()" class="btn btn-danger">
-                        Logout
-                    </button>
-                </div>
+        </div>
+        <div class="photo-modal-actions">
+            <button class="photo-btn photo-btn-camera" onclick="openCamera()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="15" height="15">
+                    <path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4z"/>
+                    <path d="M9 3L7.17 5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2h-3.17L15 3H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+                </svg>
+                Buka Kamera
+            </button>
+            <button class="photo-btn photo-btn-gallery" onclick="document.getElementById('foto-input').click()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="15" height="15">
+                    <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                </svg>
+                Galeri
+            </button>
+            <input type="file" id="foto-input" accept="image/*" style="display:none;" onchange="previewPhoto(event)">
+        </div>
+        <div id="camera-area" style="display:none;">
+            <video id="camera-video" autoplay playsinline class="camera-video"></video>
+            <div class="camera-controls">
+                <button class="photo-btn photo-btn-capture" onclick="capturePhoto()">Ambil Foto</button>
+                <button class="photo-btn photo-btn-cancel" onclick="stopCamera()">Batal</button>
             </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="profile-main">
-            <!-- Flash message sukses upload foto -->
-            @if(session('success'))
-                <div class="alert alert-success" style="background:#d4edda; color:#155724; padding:12px 16px; border-radius:8px; margin-bottom:16px; border:1px solid #c3e6cb;">
-                    ✅ {{ session('success') }}
-                </div>
-            @endif
-
-            <!-- Personal Information Card -->
-            <div class="content-card">
-                <div class="card-header">
-                    <h2 class="card-title">Informasi Pribadi</h2>
-                </div>
-                <div class="info-grid">
-                    <div class="info-item-main">
-                        <div class="info-icon-main">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
-                            </svg>
-                        </div>
-                        <div class="info-content-main">
-                            <label class="info-label-main">ID Anggota (NIS)</label>
-                            <p class="info-value-main">{{ Auth::user()->nis }}</p>
-                        </div>
-                    </div>
-
-                    <div class="info-item-main">
-                        <div class="info-icon-main">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                            </svg>
-                        </div>
-                        <div class="info-content-main">
-                            <label class="info-label-main">Nama Lengkap</label>
-                            <p class="info-value-main">{{ Auth::user()->nama }}</p>
-                        </div>
-                    </div>
-
-                    <div class="info-item-main">
-                        <div class="info-icon-main">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
-                            </svg>
-                        </div>
-                        <div class="info-content-main">
-                            <label class="info-label-main">Kelas</label>
-                            <p class="info-value-main">{{ Auth::user()->noidentitas }}</p>
-                        </div>
-                    </div>
-
-                    <div class="info-item-main">
-                        <div class="info-icon-main">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                            </svg>
-                        </div>
-                        <div class="info-content-main">
-                            <label class="info-label-main">Email</label>
-                            <p class="info-value-main">{{ Auth::user()->email }}</p>
-                        </div>
-                    </div>
-
-                    <div class="info-item-main">
-                        <div class="info-icon-main">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                            </svg>
-                        </div>
-                        <div class="info-content-main">
-                            <label class="info-label-main">Alamat</label>
-                            <p class="info-value-main">{{ Auth::user()->alamat ?? 'Belum diisi' }}</p>
-                        </div>
-                    </div>
-
-                    <div class="info-item-main">
-                        <div class="info-icon-main">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-                            </svg>
-                        </div>
-                        <div class="info-content-main">
-                            <label class="info-label-main">No Telepon</label>
-                            <p class="info-value-main">{{ Auth::user()->notlp ?? 'Belum diisi' }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Currently Borrowed Books -->
-            <div class="content-card">
-                <div class="card-header">
-                    <h2 class="card-title">Buku Sedang Dipinjam</h2>
-                    <a href="#" class="view-all">Lihat Semua →</a>
-                </div>
-                <div class="book-grid">
-                    <div class="book-card">
-                        <div class="book-cover">📖</div>
-                        <h3 class="book-title">Pemrograman Web Modern</h3>
-                        <p class="book-author">John Doe</p>
-                        <span class="book-status status-borrowed">Jatuh tempo: 10 Feb 2026</span>
-                    </div>
-                    <div class="book-card">
-                        <div class="book-cover">📘</div>
-                        <h3 class="book-title">Algoritma dan Struktur Data</h3>
-                        <p class="book-author">Jane Smith</p>
-                        <span class="book-status status-borrowed">Jatuh tempo: 12 Feb 2026</span>
-                    </div>
-                    <div class="book-card">
-                        <div class="book-cover">📕</div>
-                        <h3 class="book-title">Database Management System</h3>
-                        <p class="book-author">Robert Johnson</p>
-                        <span class="book-status status-overdue">Terlambat 2 hari</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Borrowing History -->
-            <div class="content-card">
-                <div class="card-header">
-                    <h2 class="card-title">Riwayat Peminjaman</h2>
-                    <a href="#" class="view-all">Lihat Semua →</a>
-                </div>
-                <div style="overflow-x: auto;">
-                    <table class="history-table">
-                        <thead>
-                            <tr>
-                                <th>Judul Buku</th>
-                                <th class="hide-mobile">Pengarang</th>
-                                <th>Tanggal Pinjam</th>
-                                <th>Tanggal Kembali</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Design Patterns</td>
-                                <td class="hide-mobile">Gang of Four</td>
-                                <td>15 Jan 2026</td>
-                                <td>29 Jan 2026</td>
-                                <td><span class="book-status status-returned">Dikembalikan</span></td>
-                            </tr>
-                            <tr>
-                                <td>Clean Code</td>
-                                <td class="hide-mobile">Robert C. Martin</td>
-                                <td>01 Jan 2026</td>
-                                <td>15 Jan 2026</td>
-                                <td><span class="book-status status-returned">Dikembalikan</span></td>
-                            </tr>
-                            <tr>
-                                <td>The Pragmatic Programmer</td>
-                                <td class="hide-mobile">Hunt & Thomas</td>
-                                <td>20 Dec 2025</td>
-                                <td>05 Jan 2026</td>
-                                <td><span class="book-status status-returned">Dikembalikan</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </main>
+            <canvas id="camera-canvas" style="display:none;"></canvas>
+        </div>
+        <div id="save-photo-area" style="display:none;">
+            <form id="upload-photo-form" action="{{ route('profile.updatePhoto') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="file" id="foto-upload-input" name="avatar" style="display:none;">
+                <input type="hidden" id="foto-base64-input" name="foto_base64">
+                <button type="submit" class="photo-btn photo-btn-save">💾 Simpan Foto</button>
+            </form>
+        </div>
     </div>
 </div>
 
+<!-- MODAL BARCODE -->
+<div id="barcodeModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:3000;">
+    <div class="barcode-modal-box">
+        <button class="barcode-modal-close" onclick="closeBarcodeModal()">&#10006;</button>
+        <h3>Kode Anggota</h3>
+        <img src="data:image/png;base64,{{ $barcode }}" alt="Barcode NIS">
+        <p class="barcode-nis">{{ $user->nis }}</p>
+    </div>
+</div>
 
-
-<script>
-let cameraStream = null;
-let selectedFile = null;
-let capturedBlob = null;
-
-/* ---- Buka / Tutup Modal ---- */
-function openPhotoModal() {
-    document.getElementById('photoModal').style.display = 'flex';
-}
-function closePhotoModal() {
-    stopCamera();
-    document.getElementById('photoModal').style.display = 'none';
-    document.getElementById('save-photo-area').style.display = 'none';
-    // Reset state
-    selectedFile = null;
-    capturedBlob = null;
-    // Reset file input supaya bisa pilih file yang sama lagi
-    document.getElementById('foto-input').value = '';
-}
-
-/* ---- Preview dari file/galeri ---- */
-function previewPhoto(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    selectedFile = file;
-    capturedBlob = null;
-
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        showPreview(e.target.result);
-    };
-    reader.readAsDataURL(file);
-    showSaveArea();
-}
-
-/* ---- Tampilkan gambar di preview ---- */
-function showPreview(src) {
-    const img = document.getElementById('modal-preview-img');
-    const initials = document.getElementById('modal-preview-initials');
-    img.src = src;
-    img.style.display = 'block';
-    if (initials) initials.style.display = 'none';
-}
-
-/* ---- Tampilkan tombol simpan ---- */
-function showSaveArea() {
-    document.getElementById('save-photo-area').style.display = 'block';
-}
-
-/* ---- Kamera ---- */
-async function openCamera() {
-    try {
-        cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
-        const video = document.getElementById('camera-video');
-        video.srcObject = cameraStream;
-        document.getElementById('camera-area').style.display = 'block';
-        document.querySelector('.photo-modal-actions').style.display = 'none';
-    } catch (err) {
-        alert('Tidak dapat mengakses kamera. Pastikan izin kamera sudah diberikan.');
-        console.error(err);
-    }
-}
-
-function stopCamera() {
-    if (cameraStream) {
-        cameraStream.getTracks().forEach(t => t.stop());
-        cameraStream = null;
-    }
-    document.getElementById('camera-area').style.display = 'none';
-    document.querySelector('.photo-modal-actions').style.display = 'flex';
-}
-
-function capturePhoto() {
-    const video  = document.getElementById('camera-video');
-    const canvas = document.getElementById('camera-canvas');
-    canvas.width  = video.videoWidth;
-    canvas.height = video.videoHeight;
-
-    const ctx = canvas.getContext('2d');
-    // Flip balik saat capture supaya hasil TIDAK mirror
-    ctx.translate(canvas.width, 0);
-    ctx.scale(-1, 1);
-    ctx.drawImage(video, 0, 0);
-
-    const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
-    showPreview(dataUrl);
-
-    document.getElementById('foto-base64-input').value = dataUrl;
-    capturedBlob = dataUrl;
-    selectedFile = null;
-
-    stopCamera();
-    showSaveArea();
-}
-
-/* ---- Submit form upload ---- */
-document.getElementById('upload-photo-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    // Buat FormData baru (kosong), jangan pakai FormData(this)
-    // supaya kita bisa kontrol persis field apa yang dikirim
-    const formData = new FormData();
-
-    // CSRF token — ambil dari meta tag, bukan dari input form lain
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
-                   || '{{ csrf_token() }}';
-
-    formData.append('_token', csrfToken);
-
-    if (selectedFile) {
-        // Dari galeri: kirim file langsung
-        formData.append('avatar', selectedFile, selectedFile.name);
-    } else if (capturedBlob) {
-        // Dari kamera: kirim base64
-        formData.append('foto_base64', capturedBlob);
-    } else {
-        alert('Pilih foto terlebih dahulu.');
-        return;
-    }
-
-    // Disable tombol supaya tidak double-submit
-    const btnSave = this.querySelector('.photo-btn-save');
-    btnSave.disabled = true;
-    btnSave.textContent = 'Menyimpan...';
-
-    fetch(this.action, {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRF-TOKEN': csrfToken,
-            'Accept': 'application/json'
-        }
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            updateAvatarOnPage(data.url);
-            closePhotoModal();
-            showToast('Foto profil berhasil diperbarui! ✅');
-            // Reset state
-            selectedFile = null;
-            capturedBlob = null;
-        } else {
-            alert(data.message || 'Gagal mengunggah foto.');
-        }
-    })
-    .catch(err => {
-        console.error(err);
-        alert('Terjadi kesalahan koneksi. Silakan coba lagi.');
-    })
-    .finally(() => {
-        btnSave.disabled = false;
-        btnSave.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg> Simpan Foto';
-    });
-});
-
-/* ---- Update avatar di sidebar tanpa reload ---- */
-function updateAvatarOnPage(url) {
-    const wrapper = document.querySelector('.profile-avatar-wrapper');
-    let img = wrapper.querySelector('.profile-avatar-img');
-    const initials = wrapper.querySelector('.profile-avatar');
-
-    if (!img) {
-        img = document.createElement('img');
-        img.className = 'profile-avatar-img';
-        img.id = 'profile-avatar-preview';
-        wrapper.insertBefore(img, wrapper.querySelector('.avatar-edit-overlay'));
-        if (initials) initials.style.display = 'none';
-    }
-    img.src = url + '?t=' + Date.now();
-    img.style.display = 'block';
-}
-
-/* ---- Toast notifikasi ---- */
-function showToast(msg) {
-    const toast = document.createElement('div');
-    toast.textContent = msg;
-    toast.style.cssText = `
-        position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
-        background:#1a1a2e; color:white; padding:12px 24px; border-radius:10px;
-        font-size:14px; font-weight:600; z-index:9999;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-        animation: fadeIn 0.3s ease;
-    `;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 3000);
-}
-
-/* ---- Barcode modal ---- */
-function openBarcodeModal() {
-    document.getElementById('barcodeModal').style.display = 'flex';
-}
-function closeBarcodeModal() {
-    document.getElementById('barcodeModal').style.display = 'none';
-}
-</script>
+<form id="logout-form" method="POST" action="{{ route('logout') }}">@csrf</form>
 
 @endsection
