@@ -1,93 +1,112 @@
-<nav class="navbar navbar-expand-lg">
-    <div class="container-fluid px-3">
-        <a href="/" class="navbar-brand d-flex align-items-center gap-2 m-0 p-0">
-            <img src="{{ asset('images/logosmk.png') }}" alt="Logo Sekolah" height="50">
-            <span class="fw-bold text-white" style="font-size:15px;">
-                Perpustakaan SMKN 1 Cirebon
-            </span>
-        </a>
+<div class="sticky-wrapper">
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid px-3">
 
-        <div class="d-lg-none ms-auto me-4">
-            <a href="#top" class="navbar-icon bi-person smoothscroll"></a>
-        </div>
+            {{-- LOGO --}}
+            <a href="/" class="navbar-brand d-flex align-items-center gap-2 m-0 p-0">
+                <img src="{{ asset('images/logosmk.png') }}" alt="Logo Sekolah" height="50">
+                <span class="fw-bold text-white" style="font-size:15px;">
+                    Perpustakaan SMKN 1 Cirebon
+                </span>
+            </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+            {{-- TOGGLER MOBILE --}}
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-controls="navbarNav"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-lg-5 me-lg-auto">
-                <li class="nav-item">
-                    <a class="nav-link click-scroll" href="#section_1">Beranda</a>
-                </li>
+            {{-- MENU --}}
+            <div class="collapse navbar-collapse" id="navbarNav">
 
-                <li class="nav-item">
-                    <a class="nav-link click-scroll" href="#section_2">Koleksi</a>
-                </li>
+                <ul class="navbar-nav ms-lg-5 me-lg-auto">
 
-                <li class="nav-item">
-                    <a class="nav-link click-scroll" href="#section_3">Penggunaan</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" href="#section_1">Beranda</a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link click-scroll" href="#section_4">FAQs</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" href="#section_2">Koleksi</a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link click-scroll" href="#section_5">Contact</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" href="#section_3">Penggunaan</a>
+                    </li>
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                        Pages
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a class="dropdown-item" href="{{ route('informasi') }}">
-                                Informasi
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" href="#section_4">FAQs</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" href="#section_5">Contact</a>
+                    </li>
+
+                    {{-- DROPDOWN PAGES --}}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button"
+                            data-bs-toggle="dropdown">
+                            Pages
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="{{ route('informasi') }}">
+                                    Informasi
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('panduan') }}">
+                                    Panduan
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+
+                {{-- AUTH AREA --}}
+                <ul class="navbar-nav">
+
+                    @guest
+                        {{-- BELUM LOGIN --}}
+                        <li class="nav-item">
+                            <a href="{{ route('login') }}" class="nav-link">
+                                Login
                             </a>
                         </li>
-                        <li>
-                            <a class="dropdown-item" href="{{ route('panduan') }}">
-                                Panduan
+                        <li class="nav-item">
+                            <a href="{{ route('register') }}" class="nav-link">
+                                Register
                             </a>
                         </li>
-                    </ul>
-                </li>
-
-            </ul>
-
-            <div class="d-none d-lg-block">
-                @guest
-                    {{-- belum login --}}
-                    <a href="{{ route('login') }}" class="navbar-icon bi-person"></a>
-                @else
-                    <ul class="navbar-nav">
-                        <li class="nav-item dropdown me-5">
-                            <a class="nav-link dropdown-toggle navbar-icon bi bi-person-fill" href="#" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
+                    @else
+                        {{-- SUDAH LOGIN --}}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle bi bi-person-fill"
+                               href="#" role="button"
+                               data-bs-toggle="dropdown">
                             </a>
 
                             <ul class="dropdown-menu dropdown-menu-end">
-                                {{-- PROFIL / DASHBOARD --}}
-                                <li>
-                                    @if (auth()->user()->role === 'admin')
+
+                                {{-- ADMIN --}}
+                                @if (auth()->user()->role === 'admin')
+                                    <li>
                                         <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
                                             👤 Dashboard
                                         </a>
-                                    @else
+                                    </li>
+                                @else
+                                    {{-- USER --}}
+                                    <li>
                                         <a class="dropdown-item" href="{{ route('profile.show') }}">
                                             👤 Profil
                                         </a>
-                                    @endif
-                                </li>
+                                    </li>
+                                @endif
 
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
+                                <li><hr class="dropdown-divider"></li>
 
-                                {{-- LOGOUT --}}
                                 <li>
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
@@ -96,12 +115,14 @@
                                         </button>
                                     </form>
                                 </li>
+
                             </ul>
                         </li>
-                    </ul>
-                @endguest
-            </div>
+                    @endguest
 
+                </ul>
+
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
+</div>

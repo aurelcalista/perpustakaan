@@ -12,17 +12,16 @@ class BukuController extends Controller
     public function index()
     {
         $buku = \App\Models\Buku::with('kategori')->get();
-         return view('dashboard_admin.buku.data_buku', compact('buku'));
+        return view('dashboard_admin.buku.data_buku', compact('buku'));  
     }
 
 
     // Menampilkan form tambah buku
 public function create()
 {
-  
     $kategori = Category::all();
 
-        $lastBuku = Buku::orderBy('id_buku', 'desc')->first();
+    $lastBuku = Buku::orderBy('id_buku', 'desc')->first();
 
     if ($lastBuku) {
         $lastNumber = (int) substr($lastBuku->id_buku, 1);
@@ -33,8 +32,7 @@ public function create()
 
     $format = 'B' . str_pad($newNumber, 3, '0', STR_PAD_LEFT);
 
-   
-    return view('dashboard_admin.buku.add_buku', compact('format', 'kategori'));
+    return view('dashboard_admin.buku.add_buku', compact('format', 'kategori')); 
 }
 
 
@@ -87,7 +85,7 @@ public function store(Request $request)
         $buku = Buku::where('id_buku', $id)->firstOrFail();
         $kategori = Category::all(); 
 
-        return view('dashboard_admin.buku.edit_buku', compact('buku', 'kategori'));
+        return view('dashboard_admin.buku.edit_buku', compact('buku', 'kategori'));  
     }
 
     // Update data buku

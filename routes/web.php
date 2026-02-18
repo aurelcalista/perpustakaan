@@ -7,12 +7,14 @@ use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\DashboardPetugasController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\AnggotaController; 
+use App\Http\Controllers\LogPinjamController;
 
 Route::get('/', function () {
     return view('home');
 })->name('home');
 
-// Detail Buku
+
 Route::get('/buku/detail', function () {
     return view('frontend.detail-buku');
 })->name('buku.detail');
@@ -62,11 +64,22 @@ Route::middleware(['auth', 'role:siswa'])->group(function () {
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])
+    Route::get('/profile', [ProfileController::class, 'show'])
+        ->name('profile.show');
+        
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])
         ->name('profile.edit');
 
     Route::patch('/profile', [ProfileController::class, 'update'])
         ->name('profile.update');
+        
+  // Upload / ganti foto profil (file atau base64 dari kamera)
+    Route::post('/profile/photo', [ProfileController::class, 'updatePhoto'])
+         ->name('profile.updatePhoto');
+
+    // Hapus foto profil
+    Route::delete('/profile/photo', [ProfileController::class, 'deletePhoto'])
+         ->name('profile.deletePhoto');
 
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
@@ -81,33 +94,36 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
     Route::get('/kategori/create', [CategoryController::class, 'create'])->name('admin.kategori.create');
     Route::post('/kategori/store', [CategoryController::class, 'store'])->name('admin.kategori.store');
 
-    // Buku
-    Route::get('/buku/{id}/edit', [BukuController::class, 'edit'])->name('admin.buku.edit');
-    Route::put('/buku/{id}', [BukuController::class, 'update'])->name('admin.buku.update');
+    Route::get('/buku', [BukuController::class, 'index'])
+        ->name('admin.buku.index');  
 
-  
-// Buku
-Route::get('/buku', [BukuController::class, 'index'])
-    ->name('dashboard_admin.buku.data_buku');
+    Route::get('/buku/create', [BukuController::class, 'create'])
+        ->name('admin.buku.create'); 
+    Route::post('/buku/store', [BukuController::class, 'store'])
+        ->name('admin.buku.store'); 
 
-// Form tambah buku
-Route::get('/buku/create', [BukuController::class, 'create'])
-    ->name('dashboard_admin.buku.create');
+    Route::get('/buku/{id}/edit', [BukuController::class, 'edit'])
+        ->name('admin.buku.edit');
 
-// Simpan buku baru
-Route::post('/buku/store', [BukuController::class, 'store'])
-    ->name('dashboard_admin.buku.store');
+    Route::put('/buku/{id}', [BukuController::class, 'update'])
+        ->name('admin.buku.update');
 
-// Edit & Update
-Route::get('/buku/{id}/edit', [BukuController::class, 'edit'])
-    ->name('admin.buku.edit');
-Route::put('/buku/{id}', [BukuController::class, 'update'])
-    ->name('admin.buku.update');
+    Route::delete('/buku/{id}', [BukuController::class, 'destroy'])
+        ->name('admin.buku.destroy');
 
-// Hapus
-Route::delete('/buku/{id}', [BukuController::class, 'destroy'])
-    ->name('admin.buku.destroy');
+    Route::get('/anggota', [AnggotaController::class, 'index'])
+        ->name('admin.anggota.index');  
 
+    Route::get('/anggota/{nis}/edit', [AnggotaController::class, 'edit'])
+        ->name('admin.anggota.edit');
+
+    Route::put('/anggota/{nis}', [AnggotaController::class, 'update'])
+        ->name('admin.anggota.update');
+
+    Route::delete('/anggota/{nis}', [AnggotaController::class, 'destroy'])
+        ->name('admin.anggota.destroy');
+
+    Route::get('/log-peminjaman', [LogPinjamController::class, 'index'])->name('log.pinjam');
 
 });
 

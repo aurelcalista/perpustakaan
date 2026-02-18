@@ -48,6 +48,7 @@ https://templatemo.com/tm-590-topic-listing
 body {
   background-color: var(--white-color);
   font-family: var(--body-font-family); 
+  
 }
 
 
@@ -277,10 +278,11 @@ strong {
   NAVIGATION              
 -----------------------------------------*/
 .sticky-wrapper {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   left: 0;
+  z-index: 999;
 }
 
 .sticky-wrapper.is-sticky .navbar {
@@ -290,7 +292,10 @@ strong {
 .navbar {
   background: transparent;
   border-bottom: 1px solid rgba(128, 208, 199, 0.35);
-  z-index: 9;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
 }
 
 .navbar-brand,

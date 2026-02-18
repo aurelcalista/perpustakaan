@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
@@ -22,27 +23,32 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-public function store(LoginRequest $request): RedirectResponse
-{
-    $request->authenticate();
-    $request->session()->regenerate();
+    public function store(LoginRequest $request): RedirectResponse
+    {
+        $request->authenticate();
+        $request->session()->regenerate();
 
-    $user = Auth::user();
+        $user = Auth::user();
+        
+        // Update last login time pakai DB query
+        DB::table('users')
+            ->where('id', $user->id)
+            ->update(['last_login_at' => now()]);
 
-    if ($user && $user->role === 'admin') {
-        return redirect('/admin/dashboard_admin.index')->with('success', 'Selamat datang, Admin!');
+        if ($user && $user->role === 'admin') {
+            return redirect('/admin/dashboard')->with('status', 'Selamat datang, Admin!');
+        }
+
+        return redirect('/')->with('status', 'Login berhasil! Selamat datang, ' . $user->nama);
     }
 
-    return redirect('/home')->with('success', 'Login berhasil! Selamat datang, ' . $user->nama);
-}
+    public function destroy(Request $request): RedirectResponse
+    {
+        Auth::guard('web')->logout();
 
-public function destroy(Request $request): RedirectResponse
-{
-    Auth::guard('web')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
-
-    return redirect('/')->with('success', 'Anda telah berhasil logout.');
-}
+        return redirect('/')->with('status', 'Anda telah berhasil logout.');
+    }
 }
