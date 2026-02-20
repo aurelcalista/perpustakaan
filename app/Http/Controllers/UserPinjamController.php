@@ -33,7 +33,7 @@ public function show($id)
             ->exists();
     }
 
-    return view('layouts.detail', compact('buku', 'sudahPinjam'));
+    return view('siswa.detail', compact('buku', 'sudahPinjam'));
 }
 
     // Proses Pinjam Buku (Request)
