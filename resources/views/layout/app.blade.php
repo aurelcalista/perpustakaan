@@ -225,12 +225,21 @@ if (window.location.hash === '#ganti-password') {
     if (akun) switchPanel('akun', akun);
 }
 (function() {
+    @auth
     const nama = "{{ Auth::user()->nama }}".split(' ')[0]; // ambil nama depan
     const messages = [
         `Halo, ${nama}! 👋 Selamat datang kembali.`,
         `Semoga harimu menyenangkan, ${nama}! 📚`,
         `Yuk, cari buku baru hari ini! 🔍`,
     ];
+    @else
+    const messages = [
+        `Selamat datang! 👋`,
+        `Jelajahi koleksi buku kami! 📚`,
+        `Temukan buku favoritmu! 🔍`,
+    ];
+    @endauth
+    
     let msgIdx = 0, charIdx = 0, deleting = false;
     const el = document.getElementById('greeting-typed');
 
