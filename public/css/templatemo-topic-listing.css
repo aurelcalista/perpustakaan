@@ -290,12 +290,13 @@ strong {
 }
 
 .navbar {
-  background: transparent;
-  border-bottom: 1px solid rgba(128, 208, 199, 0.35);
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 999;
+    background-color: var(--secondary-color); /* ganti dari transparent */
+    border-bottom: 1px solid rgba(128, 208, 199, 0.35);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+    transition: background-color 0.1s ease;
 }
 
 .navbar-brand,
