@@ -85,23 +85,24 @@ Route::middleware(['auth', 'role:petugas'])->group(function () {
 
 
 Route::middleware(['auth', 'role:siswa'])->group(function () {
+
     Route::get('/siswa/dashboard', function () {
         return view('siswa.home');
     })->name('siswa.dashboard');
 
-    // Buku Saya (yang sedang dipinjam)
     Route::get('/siswa/buku-saya', [UserPinjamController::class, 'bukuSaya'])
         ->name('siswa.buku.saya');
 
-    // Riwayat Pinjam
     Route::get('/siswa/riwayat', [UserPinjamController::class, 'riwayat'])
         ->name('siswa.riwayat');
 
-    // Proses Pinjam Buku (POST)
+    // ✅ TAMBAH INI
+    Route::get('/siswa/pinjam/{id}', [UserPinjamController::class, 'create'])
+        ->name('siswa.pinjam.create');
+
     Route::post('/pinjam-buku', [UserPinjamController::class, 'store'])
         ->name('siswa.pinjam.store');
 });
-
 
 
 Route::middleware('auth')->group(function () {

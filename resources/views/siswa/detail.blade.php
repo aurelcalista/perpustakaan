@@ -3,7 +3,7 @@
 @section('content')
     <div class="container my-5">
         {{-- Alert Success --}}
-        @if(session('success'))
+        @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <i class="fa fa-check-circle"></i> {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -11,7 +11,7 @@
         @endif
 
         {{-- Alert Error --}}
-        @if(session('error'))
+        @if (session('error'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <i class="fa fa-exclamation-circle"></i> {{ session('error') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -78,29 +78,40 @@
 
                     {{-- Tombol Pinjam (YANG DITAMBAHKAN) --}}
                     @auth
-                        @if(Auth::user()->role == 'siswa')
-                            @if($sudahPinjam)
+                        @if (Auth::user()->role == 'siswa')
+                            @if ($sudahPinjam)
                                 <button class="btn btn-secondary" disabled>
                                     <i class="fa fa-check"></i> Sudah Dipinjam
                                 </button>
                             @else
-                                <form action="{{ route('siswa.pinjam.store') }}" method="POST" class="d-inline">
-                                    @csrf
-                                    <input type="hidden" name="id_buku" value="{{ $buku->id_buku }}">
-                                    <button type="submit" 
-                                            class="btn btn-primary"
-                                            onclick="return confirm('Yakin ingin meminjam buku ini?')">
-                                        + Pinjam Buku
-                                    </button>
+                                <a href="{{ route('siswa.pinjam.create', $buku->id_buku) }}" class="btn btn-primary">
+                                    Pinjam Buku
+                                </a>
+                                
                                 </form>
                             @endif
                         @else
                             {{-- Kalau admin/petugas login, ga ada tombol pinjam --}}
                         @endif
                     @else
-                        <a href="{{ route('login') }}" class="btn btn-primary">
+                        <button type="button" class="btn btn-primary" onclick="alertLogin()">
                             + Pinjam Buku
-                        </a>
+                        </button>
+
+                        <script>
+                            function alertLogin() {
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Eits 😆',
+                                    text: 'Login dulu dong biar bisa pinjam buku 📚',
+                                    confirmButtonText: 'Login Sekarang',
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "{{ route('login') }}";
+                                    }
+                                });
+                            }
+                        </script>
                     @endauth
 
                 </div>
