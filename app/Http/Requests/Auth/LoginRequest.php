@@ -27,8 +27,16 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nis' => ['required', 'digits:8'],
+            'nis' => ['required','string','digits:8'],
             'password' => ['required', 'string'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'nis.digits'   => 'NIS harus berupa 8 digit angka.',
+            'password.string'   => 'Password tidak valid.',
         ];
     }
 

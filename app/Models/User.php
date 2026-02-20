@@ -96,6 +96,7 @@ class User extends Authenticatable
     {
         return ! empty($this->avatar);
     }
+
 }
 
      

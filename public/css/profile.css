@@ -914,3 +914,9 @@
         .form-actions { flex-direction: column; }
         .btn-save, .btn-cancel-link { width: 100%; justify-content: center; }
     }
+
+    @media (max-width: 768px) {
+    .edit-page-wrap .edit-container > div[style*="grid"] {
+        grid-template-columns: 1fr !important;
+    }
+}

@@ -110,11 +110,6 @@ function switchPanel(id, el) {
     if (el) el.classList.add('active');
 }
 
-function confirmLogout() {
-    if (confirm('Apakah kamu yakin ingin logout?')) {
-        document.getElementById('logout-form').submit();
-    }
-}
 
 function openBarcodeModal() { document.getElementById('barcodeModal').style.display = 'flex'; }
 function closeBarcodeModal() { document.getElementById('barcodeModal').style.display = 'none'; }
@@ -220,12 +215,9 @@ function showToast(msg) {
     setTimeout(() => t.remove(), 3000);
 }
 
-if (window.location.hash === '#ganti-password') {
-    const akun = document.querySelector('[onclick="switchPanel(\'akun\', this)"]');
-    if (akun) switchPanel('akun', akun);
-}
+
 (function() {
-    const nama = "{{ Auth::user()->nama }}".split(' ')[0]; // ambil nama depan
+    const nama = "{{ optional(Auth::user())->nama ?? 'Pengunjung' }}".split(' ')[0];
     const messages = [
         `Halo, ${nama}! 👋 Selamat datang kembali.`,
         `Semoga harimu menyenangkan, ${nama}! 📚`,

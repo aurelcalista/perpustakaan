@@ -12,25 +12,28 @@
 
         <!-- HEADER CARD -->
         <div class="profile-header-card">
-            <div class="profile-avatar-wrap" onclick="openPhotoModal()">
+            <div class="profile-avatar-wrap" onclick="openPhotoModal()" style="position:relative;">
                 @if(Auth::user()->avatar)
                     <img src="{{ Storage::url(Auth::user()->avatar) }}"
-                         alt="Foto Profil" class="main-avatar"
-                         id="profile-avatar-preview">
+                        alt="Foto Profil" class="main-avatar"
+                        id="profile-avatar-preview">
                 @else
                     <div class="profile-avatar-initials" id="profile-avatar-initials">
                         {{ strtoupper(substr(Auth::user()->nama, 0, 2)) }}
                     </div>
                 @endif
-                <div class="avatar-edit-overlay">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="18" height="18">
-                        <path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4z"/>
-                        <path d="M9 3L7.17 5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2h-3.17L15 3H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+
+                {{-- Icon edit di pojok kanan bawah --}}
+                <div style="position:absolute; bottom:6px; right:6px;
+                            width:26px; height:26px; border-radius:50%;
+                            background:#1a2d6b; border:2px solid #fff;
+                            display:flex; align-items:center; justify-content:center;
+                            box-shadow:0 2px 6px rgba(0,0,0,0.25);">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="13" height="13">
+                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
                     </svg>
-                    <span>Ubah</span>
                 </div>
             </div>
-
             <div class="profile-header-info">
                 <div class="profile-name-row">
                     <h1>{{ Auth::user()->nama }}</h1>
@@ -138,7 +141,22 @@
                         <div class="biodata-grid">
                             <div class="biodata-field">
                                 <label>NIS / ID Anggota</label>
-                                <p>{{ Auth::user()->nis }}</p>
+                                <div style="position:relative; display:flex; align-items:center;">
+                                    <input type="password" id="nis-display" value="{{ Auth::user()->nis }}"
+                                        readonly
+                                        style="width:100%; padding:10px 40px 10px 14px; background:#f7f9fc;
+                                                border:1px solid #e8edf2; border-radius:8px; font-size:14px;
+                                                font-weight:600; color:#1a2332; font-family:inherit;
+                                                cursor:default; outline:none;">
+                                    <button type="button"
+                                            onclick="const i=document.getElementById('nis-display'); i.type=i.type==='password'?'text':'password'"
+                                            style="position:absolute; right:10px; background:none; border:none;
+                                                cursor:pointer; color:#a0aec0; display:flex; align-items:center; padding:4px;">
+                                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                             <div class="biodata-field">
                                 <label>Nama Lengkap</label>

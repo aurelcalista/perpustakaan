@@ -8,31 +8,48 @@
     
 </head>
 <body>
-      @yield('content')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    @if(session('status'))
-    <script>
-    Swal.fire({
-        toast: true,
-        position: 'top-end',
-        icon: 'success',
-        title: "{{ session('status') }}",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true
-    });
-    </script>
-    @endif
+    @yield('content')
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    @if(session('error'))
-    <script>
+@if($errors->any())
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            icon: 'error',
+            title: 'Login Gagal',
+            text: "{{ $errors->first() }}",
+        });
+    });
+</script>
+@endif
+
+@if(session('status'))
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: "{{ session('status') }}",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
+    });
+</script>
+@endif
+
+@if(session('error'))
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
         Swal.fire({
             icon: 'error',
             title: 'Gagal',
             text: "{{ session('error') }}",
         });
-    </script>
-    @endif
+    });
+</script>
+@endif
 
 </body>
 </html>
