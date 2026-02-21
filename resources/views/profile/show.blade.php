@@ -6,10 +6,6 @@
 <div class="profile-page-wrap">
     <div class="profile-container">
 
-        @if(session('success'))
-            <div class="alert-success">✅ {{ session('success') }}</div>
-        @endif
-
         <!-- HEADER CARD -->
         <div class="profile-header-card">
             <div class="profile-avatar-wrap" onclick="openPhotoModal()" style="position:relative;">
@@ -245,7 +241,7 @@
 
                                     <div class="book-borrow-badges">
 
-                                        {{-- Status --}}
+                                        {{-- Status Badge --}}
                                         @if($item->status === 'pending')
                                             <span class="borrow-badge borrow-badge-pending">
                                                 🟡 Menunggu Persetujuan
@@ -282,6 +278,23 @@
                                             <span class="borrow-badge borrow-badge-denda">
                                                 💸 Denda: Rp {{ number_format($item->denda, 0, ',', '.') }}
                                             </span>
+                                        @endif
+
+                                        {{-- Tombol Batalkan (hanya untuk status pending) --}}
+                                        @if($item->status === 'pending')
+                                            <form id="cancel-form-{{ $item->id_sk }}"
+                                                  action="{{ route('siswa.pinjam.cancel', $item->id_sk) }}"
+                                                  method="POST"
+                                                  style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button"
+                                                        onclick="confirmCancel('cancel-form-{{ $item->id_sk }}')"
+                                                        class="borrow-badge borrow-badge-overdue"
+                                                        style="border:none; cursor:pointer;">
+                                                    ✕ Batalkan
+                                                </button>
+                                            </form>
                                         @endif
 
                                     </div>
@@ -403,176 +416,6 @@
     </div><!-- end container -->
 </div><!-- end page wrap -->
 
-<!-- ═══════════════════════════════════ -->
-<!-- CSS TAMBAHAN untuk Book Borrow Card -->
-<!-- ═══════════════════════════════════ -->
-<style>
-/* Nav badge (angka di sidebar) */
-.nav-badge {
-    margin-left: auto;
-    background: #e74c3c;
-    color: #fff;
-    font-size: 0.68rem;
-    font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 20px;
-    min-width: 20px;
-    text-align: center;
-}
-
-/* Legenda */
-.dipinjam-legend {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-}
-.legend-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 0.75rem;
-    color: #6b7280;
-}
-.legend-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-}
-.legend-dot.pending   { background: #f59e0b; }
-.legend-dot.dipinjam  { background: #10b981; }
-.legend-dot.terlambat { background: #ef4444; }
-
-/* Book Borrow Card */
-.book-borrow-card {
-    display: flex;
-    gap: 1rem;
-    background: #fff;
-    border: 1px solid #ececf1;
-    border-radius: 14px;
-    padding: 1rem 1.15rem;
-    margin-bottom: 0.9rem;
-    transition: box-shadow 0.2s, transform 0.2s;
-    position: relative;
-    overflow: hidden;
-}
-
-.book-borrow-card:hover {
-    box-shadow: 0 8px 24px rgba(26,45,107,0.09);
-    transform: translateY(-2px);
-}
-
-/* Garis kiri warna status */
-.book-borrow-card::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 4px;
-    border-radius: 4px 0 0 4px;
-}
-.book-borrow-card.status-pending::before   { background: #f59e0b; }
-.book-borrow-card.status-dipinjam::before  { background: #10b981; }
-.book-borrow-card.status-terlambat::before { background: #ef4444; }
-
-/* Cover */
-.book-borrow-cover {
-    width: 64px;
-    min-width: 64px;
-    height: 88px;
-    border-radius: 8px;
-    overflow: hidden;
-    background: #eef0f6;
-    box-shadow: 2px 3px 10px rgba(0,0,0,0.12);
-    flex-shrink: 0;
-}
-.book-borrow-cover img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-.book-borrow-cover-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.8rem;
-}
-
-/* Body */
-.book-borrow-body {
-    flex: 1;
-    min-width: 0;
-}
-
-.book-borrow-title {
-    font-weight: 700;
-    font-size: 0.93rem;
-    color: #1a2332;
-    margin: 0 0 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.book-borrow-author {
-    font-size: 0.78rem;
-    color: #6b7280;
-    margin: 0 0 0.55rem;
-}
-
-/* Dates */
-.book-borrow-dates {
-    display: flex;
-    gap: 0.6rem;
-    flex-wrap: wrap;
-    margin-bottom: 0.55rem;
-}
-.borrow-date-item {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 0.74rem;
-    background: #f7f9fc;
-    border: 1px solid #e8edf2;
-    border-radius: 6px;
-    padding: 3px 8px;
-}
-.borrow-date-label {
-    color: #9ca3af;
-}
-.borrow-date-val {
-    font-weight: 600;
-    color: #374151;
-}
-.borrow-date-val.text-red {
-    color: #dc2626;
-}
-
-/* Badges */
-.book-borrow-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-}
-.borrow-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    padding: 3px 9px;
-    border-radius: 20px;
-    letter-spacing: 0.02em;
-}
-.borrow-badge-pending  { background: #fef3c7; color: #92400e; }
-.borrow-badge-active   { background: #d1fae5; color: #065f46; }
-.borrow-badge-overdue  { background: #fee2e2; color: #991b1b; }
-.borrow-badge-time     { background: #eff6ff; color: #1e40af; }
-.borrow-badge-time.warn    { background: #fef9c3; color: #854d0e; }
-.borrow-badge-time.overdue { background: #fff1f2; color: #be123c; }
-.borrow-badge-denda    { background: #fff1f2; color: #be123c; border: 1px solid #fecdd3; }
-</style>
 
 <!-- MODAL FOTO -->
 <div id="photoModal" class="photo-modal-overlay" style="display:none;">
@@ -605,6 +448,16 @@
                 </svg>
                 Galeri
             </button>
+            {{-- Tombol hapus: selalu ada di DOM, visibility dikontrol JS --}}
+            <button id="btn-delete-photo"
+                    class="photo-btn photo-btn-delete"
+                    onclick="confirmDeletePhoto()"
+                    style="display:none;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="15" height="15">
+                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                </svg>
+                Hapus Foto
+            </button>
             <input type="file" id="foto-input" accept="image/*" style="display:none;" onchange="previewPhoto(event)">
         </div>
         <div id="camera-area" style="display:none;">
@@ -623,6 +476,12 @@
                 <button type="submit" class="photo-btn photo-btn-save">💾 Simpan Foto</button>
             </form>
         </div>
+
+        {{-- Form hapus foto (hidden, disubmit lewat JS) --}}
+        <form id="delete-photo-form" action="{{ route('profile.deletePhoto') }}" method="POST" style="display:none;">
+            @csrf
+            @method('DELETE')
+        </form>
     </div>
 </div>
 

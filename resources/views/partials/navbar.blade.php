@@ -23,23 +23,23 @@
                 <ul class="navbar-nav ms-lg-5 me-lg-auto">
 
                     <li class="nav-item">
-                        <a class="nav-link click-scroll" href="#section_1">Beranda</a>
+                        <a class="nav-link click-scroll" href="{{ route('home') }}#section_1">Beranda</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link click-scroll" href="#section_2">Koleksi</a>
+                        <a class="nav-link click-scroll" href="{{ route('home') }} #section_2">Koleksi</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link click-scroll" href="#section_3">Penggunaan</a>
+                        <a class="nav-link click-scroll" href="{{ route('home') }} #section_3">Penggunaan</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link click-scroll" href="#section_4">FAQs</a>
+                        <a class="nav-link click-scroll" href="{{ route('home') }} #section_4">FAQs</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link click-scroll" href="#section_5">Contact</a>
+                        <a class="nav-link click-scroll" href="{{ route('home') }} #section_5">Contact</a>
                     </li>
 
                     {{-- DROPDOWN PAGES --}}

@@ -105,7 +105,9 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
 });
 
 
-
+Route::delete('/pinjam-buku/{id_sk}/cancel', [UserPinjamController::class, 'cancel'])
+    ->name('siswa.pinjam.cancel')
+    ->middleware(['auth', 'role:siswa']);
 
 Route::middleware(['auth', 'role:petugas'])->group(function () {
     Route::get('/petugas/dashboard', [DashboardPetugasController::class, 'index'])

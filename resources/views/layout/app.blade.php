@@ -63,6 +63,49 @@
         });
     }
 
+    // ===== HAPUS FOTO PROFIL =====
+    function confirmDeletePhoto() {
+        // Tutup modal dulu agar SweetAlert tampil di atas
+        const photoModal = document.getElementById('photoModal');
+        if (photoModal) photoModal.style.display = 'none';
+
+        Swal.fire({
+            title: 'Hapus Foto Profil?',
+            text: 'Foto profilmu akan dihapus dan diganti dengan inisial nama.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Hapus',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-photo-form').submit();
+            } else {
+                // Buka lagi modal kalau user batal
+                if (photoModal) photoModal.style.display = 'flex';
+            }
+        });
+    }
+
+    // ===== BATALKAN PEMINJAMAN =====
+    function confirmCancel(formId) {
+        Swal.fire({
+            title: 'Batalkan Peminjaman?',
+            text: 'Permintaan peminjaman ini akan dibatalkan dan tidak bisa dikembalikan.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Batalkan',
+            cancelButtonText: 'Tidak'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById(formId).submit();
+            }
+        });
+    }
+
     // ===== TAB & PANEL =====
     function openTab(tabId, btn) {
         document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -94,11 +137,17 @@
     function openPhotoModal() {
         const el = document.getElementById('photoModal');
         if (el) el.style.display = 'flex';
+        // Tampilkan tombol hapus jika user punya avatar (cek dari DOM header)
+        const btnDelete = document.getElementById('btn-delete-photo');
+        if (btnDelete) {
+            const hasAvatar = !!document.querySelector('.profile-avatar-wrap .main-avatar, .profile-avatar-wrap #profile-avatar-preview');
+            btnDelete.style.display = hasAvatar ? 'flex' : 'none';
+        }
     }
     function closePhotoModal() {
         stopCamera();
-        const modal    = document.getElementById('photoModal');
-        const saveArea = document.getElementById('save-photo-area');
+        const modal     = document.getElementById('photoModal');
+        const saveArea  = document.getElementById('save-photo-area');
         const fotoInput = document.getElementById('foto-input');
         if (modal) modal.style.display = 'none';
         if (saveArea) saveArea.style.display = 'none';
@@ -134,8 +183,8 @@
     }
     function stopCamera() {
         if (cameraStream) { cameraStream.getTracks().forEach(t => t.stop()); cameraStream = null; }
-        const cameraArea    = document.getElementById('camera-area');
-        const modalActions  = document.querySelector('.photo-modal-actions');
+        const cameraArea   = document.getElementById('camera-area');
+        const modalActions = document.querySelector('.photo-modal-actions');
         if (cameraArea) cameraArea.style.display = 'none';
         if (modalActions) modalActions.style.display = 'flex';
     }
@@ -198,6 +247,9 @@
         img.src = url + '?t=' + Date.now();
         img.style.display = 'block';
         if (initials) initials.style.display = 'none';
+        // Tampilkan tombol hapus setelah foto berhasil diupload
+        const btnDelete = document.getElementById('btn-delete-photo');
+        if (btnDelete) btnDelete.style.display = 'flex';
     }
 
     function showToast(msg) {
@@ -207,11 +259,6 @@
         document.body.appendChild(t);
         setTimeout(() => t.remove(), 3000);
     }
-
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11">
-
 
     // ===== GREETING TYPEWRITER =====
     const greetingEl = document.getElementById('greeting-typed');

@@ -157,6 +157,28 @@ class UserPinjamController extends Controller
         return view('siswa.riwayat', compact('pinjaman'));
     }
 
+    public function cancel($id_sk)
+{
+    $idAnggota = $this->getIdAnggota();
+
+    // Pastikan yang membatalkan adalah pemiliknya & status masih pending
+    $pinjaman = DB::table('tb_sirkulasi')
+        ->where('id_sk', $id_sk)
+        ->where('id_anggota', $idAnggota)
+        ->where('status', 'pending') // hanya bisa batal kalau masih pending
+        ->first();
+
+    if (!$pinjaman) {
+        return redirect()->back()
+            ->with('error', 'Peminjaman tidak ditemukan atau sudah diproses admin.');
+    }
+
+    DB::table('tb_sirkulasi')->where('id_sk', $id_sk)->delete();
+
+    return redirect()->route('profile.show')
+        ->with('success', 'Peminjaman berhasil dibatalkan.');
+}
+
     public function index()
     {
         $buku = DB::table('tb_buku')

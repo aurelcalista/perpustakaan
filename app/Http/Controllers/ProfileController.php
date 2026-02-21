@@ -31,7 +31,7 @@ class ProfileController extends Controller
         // ── Ambil data buku yang sedang dipinjam / pending ──────────────────
         $pinjaman = DB::table('tb_sirkulasi as sk')
             ->join('tb_buku as b', 'sk.id_buku', '=', 'b.id_buku')
-            ->where('sk.id_anggota', $user->nis) // sesuaikan nama kolom di tb_anggota/users
+            ->where('sk.id_anggota', $user->nis)
             ->whereIn('sk.status', ['pending', 'dipinjam'])
             ->select(
                 'sk.id_sk',
@@ -150,8 +150,9 @@ class ProfileController extends Controller
 
     /**
      * Hapus foto profil (reset ke inisial).
+     * Form submit biasa — kembalikan redirect, bukan JSON.
      */
-    public function deletePhoto()
+    public function deletePhoto(): RedirectResponse
     {
         /** @var \App\Models\User $user */
         $user = Auth::user();
@@ -166,10 +167,8 @@ class ProfileController extends Controller
         $user->avatar = null;
         $user->save();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Foto profil berhasil dihapus.',
-        ]);
+        return Redirect::route('profile.show')
+            ->with('success', 'Foto profil berhasil dihapus.');
     }
 
     // ─────────────────────────────────────────────────────────────────────────
