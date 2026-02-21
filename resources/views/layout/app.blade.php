@@ -207,7 +207,7 @@
         document.body.appendChild(t);
         setTimeout(() => t.remove(), 3000);
     }
-}
+
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11">

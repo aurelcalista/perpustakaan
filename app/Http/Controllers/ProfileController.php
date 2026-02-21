@@ -7,10 +7,12 @@ use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 
 class ProfileController extends Controller
@@ -18,23 +20,61 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-
     public function show(Request $request): View
     {
         $user = $request->user();
 
-        // Buat instance DNS1D
+        // Barcode dari NIS
         $d = new DNS1D();
-
-        // Generate barcode dari NIS
         $barcode = $user->nis ? $d->getBarcodePNG($user->nis, 'C128', 2, 50) : null;
 
-        return view('profile.show', [
-            'user' => $user,
-            'barcode' => $barcode,
-        ]);
+        // ── Ambil data buku yang sedang dipinjam / pending ──────────────────
+        $pinjaman = DB::table('tb_sirkulasi as sk')
+            ->join('tb_buku as b', 'sk.id_buku', '=', 'b.id_buku')
+            ->where('sk.id_anggota', $user->nis) // sesuaikan nama kolom di tb_anggota/users
+            ->whereIn('sk.status', ['pending', 'dipinjam'])
+            ->select(
+                'sk.id_sk',
+                'sk.tgl_pinjam',
+                'sk.tgl_kembali',
+                'sk.status',
+                'b.judul_buku',
+                'b.pengarang',
+                'b.foto'
+            )
+            ->orderByRaw("FIELD(sk.status, 'dipinjam', 'pending')")
+            ->orderBy('sk.tgl_kembali', 'asc')
+            ->get()
+            ->map(function ($item) {
+                $today      = Carbon::today();
+                $tglKembali = Carbon::parse($item->tgl_kembali);
+                $diff       = $today->diffInDays($tglKembali, false); // negatif = terlambat
 
+                $item->sisa_hari = (int) $diff;
+                $item->terlambat = $diff < 0;
+                $item->denda     = $diff < 0 ? abs((int) $diff) * 1000 : 0; // Rp 1.000/hari
+                return $item;
+            });
 
+        // ── Total untuk stat pill di header ────────────────────────────────
+        $totalBukuDipinjam = $pinjaman->count();
+
+        // ── Riwayat peminjaman (sudah dikembalikan) ─────────────────────────
+        $riwayat = DB::table('tb_sirkulasi as sk')
+            ->join('tb_buku as b', 'sk.id_buku', '=', 'b.id_buku')
+            ->where('sk.id_anggota', $user->nis)
+            ->where('sk.status', 'dikembalikan')
+            ->select('sk.*', 'b.judul_buku', 'b.pengarang')
+            ->orderBy('sk.tgl_kembali', 'desc')
+            ->get();
+
+        return view('profile.show', compact(
+            'user',
+            'barcode',
+            'pinjaman',
+            'totalBukuDipinjam',
+            'riwayat'
+        ));
     }
 
     public function edit(Request $request): View
@@ -60,7 +100,7 @@ class ProfileController extends Controller
         return Redirect::route('profile.show')->with('status', 'profile-updated');
     }
 
-        /**
+    /**
      * Update foto profil — mendukung upload file MAUPUN hasil tangkapan kamera (base64).
      */
     public function updatePhoto(Request $request)
@@ -98,7 +138,6 @@ class ProfileController extends Controller
             }
         }
 
-        // IDE friendly
         $user->avatar = $path;
         $user->save();
 
@@ -108,7 +147,6 @@ class ProfileController extends Controller
             'url'     => Storage::url($path),
         ]);
     }
-
 
     /**
      * Hapus foto profil (reset ke inisial).
@@ -134,25 +172,16 @@ class ProfileController extends Controller
         ]);
     }
 
-
     // ─────────────────────────────────────────────────────────────────────────
     // PRIVATE HELPERS
     // ─────────────────────────────────────────────────────────────────────────
 
-    /**
-     * Simpan string base64 (dari kamera) sebagai file gambar di storage.
-     *
-     * @param  string $base64String  Format: "data:image/jpeg;base64,<data>"
-     * @return string|null           Path relatif di disk 'public', atau null bila gagal.
-     */
     private function storeBase64Photo(string $base64String): ?string
     {
-        // Pisah header dan data
         if (! preg_match('/^data:(image\/(jpeg|jpg|png|webp));base64,(.+)$/', $base64String, $matches)) {
             return null;
         }
 
-        $mimeType  = $matches[1];   // mis. "image/jpeg"
         $extension = $matches[2] === 'jpg' ? 'jpeg' : $matches[2];
         $imageData = base64_decode($matches[3]);
 
@@ -160,13 +189,11 @@ class ProfileController extends Controller
             return null;
         }
 
-        $filename  = 'avatar/' . Str::uuid() . '.' . $extension;
-
+        $filename = 'avatar/' . Str::uuid() . '.' . $extension;
         Storage::disk('public')->put($filename, $imageData);
 
         return $filename;
     }
-
 
     /**
      * Delete the user's account.

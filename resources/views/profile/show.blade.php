@@ -22,8 +22,6 @@
                         {{ strtoupper(substr(Auth::user()->nama, 0, 2)) }}
                     </div>
                 @endif
-
-                {{-- Icon edit di pojok kanan bawah --}}
                 <div style="position:absolute; bottom:6px; right:6px;
                             width:26px; height:26px; border-radius:50%;
                             background:#1a2d6b; border:2px solid #fff;
@@ -37,7 +35,6 @@
             <div class="profile-header-info">
                 <div class="profile-name-row">
                     <h1>{{ Auth::user()->nama }}</h1>
-                    <!-- <span class="badge-unverified">Belum Terverifikasi</span> -->
                 </div>
                 <div class="profile-meta">
                     <div class="profile-meta-item">
@@ -48,10 +45,6 @@
                         <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg>
                         Bergabung: {{ date('d M Y', strtotime(Auth::user()->created_at ?? now())) }}
                     </div>
-                    <!-- <div class="profile-meta-item">
-                        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-                        Kadaluarsa: -
-                    </div> -->
                 </div>
 
                 <button class="btn-kode-anggota" onclick="openBarcodeModal()">
@@ -68,7 +61,7 @@
                         </div>
                         <div>
                             <div class="stat-pill-num">{{ $totalBukuDipinjam ?? 0 }}</div>
-                            <div class="stat-pill-label">Total Dipinjam</div>
+                            <div class="stat-pill-label">Sedang Dipinjam</div>
                         </div>
                     </div>
                     <div class="stat-pill">
@@ -100,6 +93,9 @@
                 <a class="profile-nav-item" href="javascript:void(0)" onclick="switchPanel('dipinjam', this)">
                     <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
                     Buku Dipinjam
+                    @if($pinjaman->count() > 0)
+                        <span class="nav-badge">{{ $pinjaman->count() }}</span>
+                    @endif
                 </a>
                 <a class="profile-nav-item" href="javascript:void(0)" onclick="switchPanel('peminjaman', this)">
                     <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
@@ -182,46 +178,123 @@
                     </div>
                 </div>
 
-                <!-- BUKU DIPINJAM -->
+                <!-- ═══════════════════════════════════════ -->
+                <!-- BUKU DIPINJAM (data real dari database) -->
+                <!-- ═══════════════════════════════════════ -->
                 <div class="profile-panel" id="panel-dipinjam">
                     <div class="panel-card">
                         <div class="panel-card-header">
                             <h2 class="panel-card-title">Buku Sedang Dipinjam</h2>
-                            <span class="badge badge-info">3 buku</span>
+                            <span class="badge badge-info">{{ $pinjaman->count() }} buku</span>
                         </div>
 
-                        <div class="item-card">
-                            <div class="item-card-icon">📖</div>
-                            <div class="item-card-body">
-                                <p class="item-card-title">Pemrograman Web Modern</p>
-                                <p class="item-card-sub">John Doe</p>
-                                <div class="item-card-badges">
-                                    <span class="badge badge-borrowed">Jatuh tempo: 10 Feb 2026</span>
-                                </div>
-                            </div>
+                        {{-- Legenda status --}}
+                        @if($pinjaman->count() > 0)
+                        <div class="dipinjam-legend">
+                            <span class="legend-item"><span class="legend-dot pending"></span>Pending</span>
+                            <span class="legend-item"><span class="legend-dot dipinjam"></span>Dipinjam</span>
+                            <span class="legend-item"><span class="legend-dot terlambat"></span>Terlambat</span>
                         </div>
+                        @endif
 
-                        <div class="item-card">
-                            <div class="item-card-icon">📘</div>
-                            <div class="item-card-body">
-                                <p class="item-card-title">Algoritma dan Struktur Data</p>
-                                <p class="item-card-sub">Jane Smith</p>
-                                <div class="item-card-badges">
-                                    <span class="badge badge-borrowed">Jatuh tempo: 12 Feb 2026</span>
-                                </div>
-                            </div>
-                        </div>
+                        @forelse($pinjaman as $item)
+                            @php
+                                $cardClass = 'status-dipinjam';
+                                if ($item->status === 'pending') {
+                                    $cardClass = 'status-pending';
+                                } elseif ($item->terlambat) {
+                                    $cardClass = 'status-terlambat';
+                                }
+                            @endphp
 
-                        <div class="item-card">
-                            <div class="item-card-icon">📕</div>
-                            <div class="item-card-body">
-                                <p class="item-card-title">Database Management System</p>
-                                <p class="item-card-sub">Robert Johnson</p>
-                                <div class="item-card-badges">
-                                    <span class="badge badge-overdue">Terlambat 2 hari</span>
+                            <div class="book-borrow-card {{ $cardClass }}">
+
+                                {{-- Cover --}}
+                                <div class="book-borrow-cover">
+                                    @if($item->foto)
+                                        <img src="{{ asset('storage/' . $item->foto) }}"
+                                             alt="{{ $item->judul_buku }}">
+                                    @else
+                                        <div class="book-borrow-cover-placeholder">📚</div>
+                                    @endif
+                                </div>
+
+                                {{-- Info --}}
+                                <div class="book-borrow-body">
+                                    <p class="book-borrow-title" title="{{ $item->judul_buku }}">
+                                        {{ $item->judul_buku }}
+                                    </p>
+                                    <p class="book-borrow-author">{{ $item->pengarang }}</p>
+
+                                    <div class="book-borrow-dates">
+                                        <div class="borrow-date-item">
+                                            <span class="borrow-date-icon">📅</span>
+                                            <span class="borrow-date-label">Dipinjam</span>
+                                            <span class="borrow-date-val">
+                                                {{ \Carbon\Carbon::parse($item->tgl_pinjam)->translatedFormat('d M Y') }}
+                                            </span>
+                                        </div>
+                                        <div class="borrow-date-item">
+                                            <span class="borrow-date-icon">🔔</span>
+                                            <span class="borrow-date-label">Harus Kembali</span>
+                                            <span class="borrow-date-val {{ $item->terlambat ? 'text-red' : '' }}">
+                                                {{ \Carbon\Carbon::parse($item->tgl_kembali)->translatedFormat('d M Y') }}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="book-borrow-badges">
+
+                                        {{-- Status --}}
+                                        @if($item->status === 'pending')
+                                            <span class="borrow-badge borrow-badge-pending">
+                                                🟡 Menunggu Persetujuan
+                                            </span>
+                                        @elseif($item->terlambat)
+                                            <span class="borrow-badge borrow-badge-overdue">
+                                                🔴 Terlambat
+                                            </span>
+                                        @else
+                                            <span class="borrow-badge borrow-badge-active">
+                                                🟢 Dipinjam
+                                            </span>
+                                        @endif
+
+                                        {{-- Sisa / Keterlambatan --}}
+                                        @if($item->status !== 'pending')
+                                            @if($item->terlambat)
+                                                <span class="borrow-badge borrow-badge-time overdue">
+                                                    ⏰ Terlambat {{ abs($item->sisa_hari) }} hari
+                                                </span>
+                                            @elseif($item->sisa_hari == 0)
+                                                <span class="borrow-badge borrow-badge-time warn">
+                                                    ⚠️ Jatuh tempo hari ini
+                                                </span>
+                                            @else
+                                                <span class="borrow-badge borrow-badge-time">
+                                                    ⏳ {{ $item->sisa_hari }} hari lagi
+                                                </span>
+                                            @endif
+                                        @endif
+
+                                        {{-- Denda --}}
+                                        @if($item->denda > 0)
+                                            <span class="borrow-badge borrow-badge-denda">
+                                                💸 Denda: Rp {{ number_format($item->denda, 0, ',', '.') }}
+                                            </span>
+                                        @endif
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+
+                        @empty
+                            <div class="section-empty">
+                                <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
+                                <p>Tidak ada buku yang sedang dipinjam</p>
+                            </div>
+                        @endforelse
+
                     </div>
                 </div>
 
@@ -231,6 +304,7 @@
                         <div class="panel-card-header">
                             <h2 class="panel-card-title">Riwayat Peminjaman</h2>
                         </div>
+                        @if($riwayat->count() > 0)
                         <div style="overflow-x:auto;">
                             <table class="history-tbl">
                                 <thead>
@@ -243,30 +317,24 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach($riwayat as $r)
                                     <tr>
-                                        <td>Design Patterns</td>
-                                        <td class="hide-mobile">Gang of Four</td>
-                                        <td>15 Jan 2026</td>
-                                        <td class="hide-mobile">29 Jan 2026</td>
+                                        <td>{{ $r->judul_buku }}</td>
+                                        <td class="hide-mobile">{{ $r->pengarang }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($r->tgl_pinjam)->format('d M Y') }}</td>
+                                        <td class="hide-mobile">{{ \Carbon\Carbon::parse($r->tgl_kembali)->format('d M Y') }}</td>
                                         <td><span class="badge badge-returned">Dikembalikan</span></td>
                                     </tr>
-                                    <tr>
-                                        <td>Clean Code</td>
-                                        <td class="hide-mobile">Robert C. Martin</td>
-                                        <td>01 Jan 2026</td>
-                                        <td class="hide-mobile">15 Jan 2026</td>
-                                        <td><span class="badge badge-returned">Dikembalikan</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>The Pragmatic Programmer</td>
-                                        <td class="hide-mobile">Hunt & Thomas</td>
-                                        <td>20 Des 2025</td>
-                                        <td class="hide-mobile">05 Jan 2026</td>
-                                        <td><span class="badge badge-returned">Dikembalikan</span></td>
-                                    </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
+                        @else
+                        <div class="section-empty">
+                            <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                            <p>Belum ada riwayat peminjaman</p>
+                        </div>
+                        @endif
                     </div>
                 </div>
 
@@ -334,6 +402,177 @@
 
     </div><!-- end container -->
 </div><!-- end page wrap -->
+
+<!-- ═══════════════════════════════════ -->
+<!-- CSS TAMBAHAN untuk Book Borrow Card -->
+<!-- ═══════════════════════════════════ -->
+<style>
+/* Nav badge (angka di sidebar) */
+.nav-badge {
+    margin-left: auto;
+    background: #e74c3c;
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+    min-width: 20px;
+    text-align: center;
+}
+
+/* Legenda */
+.dipinjam-legend {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+.legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+.legend-dot.pending   { background: #f59e0b; }
+.legend-dot.dipinjam  { background: #10b981; }
+.legend-dot.terlambat { background: #ef4444; }
+
+/* Book Borrow Card */
+.book-borrow-card {
+    display: flex;
+    gap: 1rem;
+    background: #fff;
+    border: 1px solid #ececf1;
+    border-radius: 14px;
+    padding: 1rem 1.15rem;
+    margin-bottom: 0.9rem;
+    transition: box-shadow 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+.book-borrow-card:hover {
+    box-shadow: 0 8px 24px rgba(26,45,107,0.09);
+    transform: translateY(-2px);
+}
+
+/* Garis kiri warna status */
+.book-borrow-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    border-radius: 4px 0 0 4px;
+}
+.book-borrow-card.status-pending::before   { background: #f59e0b; }
+.book-borrow-card.status-dipinjam::before  { background: #10b981; }
+.book-borrow-card.status-terlambat::before { background: #ef4444; }
+
+/* Cover */
+.book-borrow-cover {
+    width: 64px;
+    min-width: 64px;
+    height: 88px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #eef0f6;
+    box-shadow: 2px 3px 10px rgba(0,0,0,0.12);
+    flex-shrink: 0;
+}
+.book-borrow-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.book-borrow-cover-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+}
+
+/* Body */
+.book-borrow-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.book-borrow-title {
+    font-weight: 700;
+    font-size: 0.93rem;
+    color: #1a2332;
+    margin: 0 0 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.book-borrow-author {
+    font-size: 0.78rem;
+    color: #6b7280;
+    margin: 0 0 0.55rem;
+}
+
+/* Dates */
+.book-borrow-dates {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.55rem;
+}
+.borrow-date-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.74rem;
+    background: #f7f9fc;
+    border: 1px solid #e8edf2;
+    border-radius: 6px;
+    padding: 3px 8px;
+}
+.borrow-date-label {
+    color: #9ca3af;
+}
+.borrow-date-val {
+    font-weight: 600;
+    color: #374151;
+}
+.borrow-date-val.text-red {
+    color: #dc2626;
+}
+
+/* Badges */
+.book-borrow-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+.borrow-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 20px;
+    letter-spacing: 0.02em;
+}
+.borrow-badge-pending  { background: #fef3c7; color: #92400e; }
+.borrow-badge-active   { background: #d1fae5; color: #065f46; }
+.borrow-badge-overdue  { background: #fee2e2; color: #991b1b; }
+.borrow-badge-time     { background: #eff6ff; color: #1e40af; }
+.borrow-badge-time.warn    { background: #fef9c3; color: #854d0e; }
+.borrow-badge-time.overdue { background: #fff1f2; color: #be123c; }
+.borrow-badge-denda    { background: #fff1f2; color: #be123c; border: 1px solid #fecdd3; }
+</style>
 
 <!-- MODAL FOTO -->
 <div id="photoModal" class="photo-modal-overlay" style="display:none;">

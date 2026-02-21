@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -9,6 +10,15 @@ use Carbon\Carbon;
 
 class UserPinjamController extends Controller
 {
+    /**
+     * Ambil id_anggota dari tb_anggota berdasarkan nis user yang login.
+     */
+    private function getIdAnggota()
+    {
+        
+        return Auth::user()->nis;
+    }
+
     public function show($id)
     {
         $buku = DB::table('tb_buku')
@@ -24,11 +34,14 @@ class UserPinjamController extends Controller
         $sudahPinjam = false;
 
         if (Auth::check() && Auth::user()->role == 'siswa') {
-            $sudahPinjam = DB::table('tb_sirkulasi')
-                ->where('id_buku', $id)
-                ->where('id_anggota', Auth::user()->nis)
-                ->whereIn('status', ['dipinjam', 'pending']) // ✅ Cek pending & dipinjam
-                ->exists();
+            $idAnggota = $this->getIdAnggota();
+            if ($idAnggota) {
+                $sudahPinjam = DB::table('tb_sirkulasi')
+                    ->where('id_buku', $id)
+                    ->where('id_anggota', $idAnggota)
+                    ->whereIn('status', ['dipinjam', 'pending'])
+                    ->exists();
+            }
         }
 
         return view('siswa.detail', compact('buku', 'sudahPinjam'));
@@ -53,13 +66,18 @@ class UserPinjamController extends Controller
             'id_buku' => 'required|exists:tb_buku,id_buku',
         ]);
 
-        $user = Auth::user();
+        $idAnggota = $this->getIdAnggota();
+
+        if (!$idAnggota) {
+            return redirect()->back()
+                ->with('error', 'Data anggota tidak ditemukan. Hubungi admin.');
+        }
 
         // Cek sudah pinjam buku ini
         $sudahPinjam = DB::table('tb_sirkulasi')
             ->where('id_buku', $request->id_buku)
-            ->where('id_anggota', $user->nis)
-            ->whereIn('status', ['dipinjam', 'pending']) // ✅ Cek pending & dipinjam
+            ->where('id_anggota', $idAnggota)
+            ->whereIn('status', ['dipinjam', 'pending'])
             ->exists();
 
         if ($sudahPinjam) {
@@ -69,8 +87,8 @@ class UserPinjamController extends Controller
 
         // Cek maksimal 3 buku aktif
         $jumlahPinjam = DB::table('tb_sirkulasi')
-            ->where('id_anggota', $user->nis)
-            ->whereIn('status', ['dipinjam', 'pending']) // ✅ Hitung pending & dipinjam
+            ->where('id_anggota', $idAnggota)
+            ->whereIn('status', ['dipinjam', 'pending'])
             ->count();
 
         if ($jumlahPinjam >= 3) {
@@ -78,59 +96,63 @@ class UserPinjamController extends Controller
                 ->with('error', 'Maksimal 3 buku sedang dipinjam!');
         }
 
-        $tglPinjam = Carbon::now();
+        // Generate id_sk unik: SK-YYYYMMDD-XXXX
+        do {
+            $id_sk = 'SK-' . now()->format('Ymd') . '-' . strtoupper(Str::random(4));
+        } while (DB::table('tb_sirkulasi')->where('id_sk', $id_sk)->exists());
+
+        $tglPinjam  = Carbon::now();
         $tglKembali = Carbon::now()->addDays(3);
 
         DB::table('tb_sirkulasi')->insert([
+            'id_sk'       => $id_sk,
             'id_buku'     => $request->id_buku,
-            'id_anggota'  => $user->nis,
+            'id_anggota'  => $idAnggota,
             'tgl_pinjam'  => $tglPinjam,
             'tgl_kembali' => $tglKembali,
-            'status'      => 'pending', // ✅ Status awal pending
+            'status'      => 'pending',
             'created_at'  => Carbon::now(),
             'updated_at'  => Carbon::now(),
         ]);
 
         return redirect()
-            ->route('siswa.buku.saya')
+            ->route('profile.show')
             ->with('success', 'Request peminjaman berhasil! Menunggu persetujuan admin.');
     }
 
     public function bukuSaya()
     {
-        $user = Auth::user();
+        $idAnggota = $this->getIdAnggota();
 
-        $bukuSaya = DB::table('tb_sirkulasi as s')
-            ->join('tb_buku as b', 's.id_buku', '=', 'b.id_buku')
-            ->where('s.id_anggota', $user->nis)
-            ->whereIn('s.status', ['dipinjam', 'pending']) // ✅ Tampilkan pending & dipinjam
-            ->select(
-                's.*',
-                'b.judul_buku',
-                'b.pengarang',
-                'b.foto'
-            )
-            ->orderBy('s.created_at', 'desc')
-            ->get();
+        $bukuSaya = collect();
+
+        if ($idAnggota) {
+            $bukuSaya = DB::table('tb_sirkulasi as s')
+                ->join('tb_buku as b', 's.id_buku', '=', 'b.id_buku')
+                ->where('s.id_anggota', $idAnggota)
+                ->whereIn('s.status', ['dipinjam', 'pending'])
+                ->select('s.*', 'b.judul_buku', 'b.pengarang', 'b.foto')
+                ->orderBy('s.created_at', 'desc')
+                ->get();
+        }
 
         return view('siswa.buku_saya', compact('bukuSaya'));
     }
 
     public function riwayat()
     {
-        $user = Auth::user();
+        $idAnggota = $this->getIdAnggota();
 
-        $pinjaman = DB::table('tb_sirkulasi as s')
-            ->join('tb_buku as b', 's.id_buku', '=', 'b.id_buku')
-            ->where('s.id_anggota', $user->nis)
-            ->select(
-                's.*',
-                'b.judul_buku',
-                'b.pengarang',
-                'b.foto'
-            )
-            ->orderBy('s.created_at', 'desc')
-            ->get();
+        $pinjaman = collect();
+
+        if ($idAnggota) {
+            $pinjaman = DB::table('tb_sirkulasi as s')
+                ->join('tb_buku as b', 's.id_buku', '=', 'b.id_buku')
+                ->where('s.id_anggota', $idAnggota)
+                ->select('s.*', 'b.judul_buku', 'b.pengarang', 'b.foto')
+                ->orderBy('s.created_at', 'desc')
+                ->get();
+        }
 
         return view('siswa.riwayat', compact('pinjaman'));
     }
