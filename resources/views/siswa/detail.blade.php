@@ -88,7 +88,7 @@
                                     Pinjam Buku
                                 </a>
                                 
-                                </form>
+                                
                             @endif
                         @else
                             {{-- Kalau admin/petugas login, ga ada tombol pinjam --}}

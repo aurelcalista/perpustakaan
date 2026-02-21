@@ -119,7 +119,7 @@
 						</li>
 
 						<li class="treeview">
-							<a href="{{ url('/data_sirkul') }}">
+							<a href="{{ route('admin.sirkul.index') }}">
 								<i class="fa fa-refresh"></i>
 								<span>Sirkulasi</span>
 							</a>

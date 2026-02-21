@@ -10,6 +10,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AnggotaController; 
 use App\Http\Controllers\LogPinjamController;
 use App\Http\Controllers\UserPinjamController;
+use App\Http\Controllers\SirkulasiController;
 use App\Models\User;
 
 
@@ -73,7 +74,36 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
 
     // Log Peminjaman
     Route::get('/log-peminjaman', [LogPinjamController::class, 'index'])->name('log.pinjam');
+
+        // Sirkulasi
+    Route::get('/sirkul', [SirkulasiController::class, 'index'])
+        ->name('admin.sirkul.index');
+    
+    Route::get('/sirkul/pending', [SirkulasiController::class, 'pending'])
+        ->name('admin.sirkul.pending');
+    
+    Route::post('/sirkul/approve/{id_sk}', [SirkulasiController::class, 'approve'])
+        ->name('admin.sirkul.approve');
+    
+    Route::delete('/sirkul/reject/{id_sk}', [SirkulasiController::class, 'reject'])
+        ->name('admin.sirkul.reject');
+    
+    Route::get('/sirkul/create', [SirkulasiController::class, 'create'])
+        ->name('admin.sirkul.create');
+    
+    Route::post('/sirkul/store', [SirkulasiController::class, 'store'])
+        ->name('admin.sirkul.store');
+    
+    Route::post('/sirkul/perpanjang/{id_sk}', [SirkulasiController::class, 'perpanjang'])
+        ->name('admin.sirkul.perpanjang');
+    
+    Route::post('/sirkul/kembali/{id_sk}', [SirkulasiController::class, 'kembali'])
+        ->name('admin.sirkul.kembali');
+    
+    Route::get('/sirkul/riwayat', [SirkulasiController::class, 'riwayat'])
+        ->name('admin.sirkul.riwayat');
 });
+
 
 
 
