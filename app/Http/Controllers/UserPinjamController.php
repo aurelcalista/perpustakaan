@@ -47,19 +47,6 @@ class UserPinjamController extends Controller
         return view('siswa.detail', compact('buku', 'sudahPinjam'));
     }
 
-    public function create($id)
-    {
-        $buku = DB::table('tb_buku')
-            ->where('id_buku', $id)
-            ->first();
-
-        if (!$buku) {
-            abort(404, 'Buku tidak ditemukan');
-        }
-
-        return view('siswa.pinjam', compact('buku'));
-    }
-
     public function store(Request $request)
     {
         $request->validate([
@@ -188,4 +175,6 @@ class UserPinjamController extends Controller
 
         return view('siswa.index', compact('buku'));
     }
+
+    
 }

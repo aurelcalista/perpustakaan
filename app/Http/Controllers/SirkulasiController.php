@@ -11,18 +11,18 @@ class SirkulasiController extends Controller
     // Tampilkan semua buku yang sedang dipinjam
     public function index()
     {
-        $sirkulasi = DB::table('tb_sirkulasi as s')
-            ->join('tb_buku as b', 's.id_buku', '=', 'b.id_buku')
-            ->join('users as u', 's.id_anggota', '=', 'u.nis')
-            ->where('s.status', 'dipinjam')
-            ->select(
-                's.*',
-                'b.judul_buku',
-                'u.nis',
-                'u.nama'
-            )
-            ->orderBy('s.tgl_pinjam', 'desc')
-            ->get();
+    $sirkulasi = DB::table('tb_sirkulasi as s')
+        ->join('tb_buku as b', 's.id_buku', '=', 'b.id_buku')
+        ->join('users as u', 's.id_anggota', '=', 'u.nis')
+        ->whereIn('s.status', ['dipinjam', 'pending'])
+        ->select(
+            's.*',
+            'b.judul_buku',
+            'u.nis',
+            'u.nama'
+        )
+        ->orderBy('s.created_at', 'desc')
+        ->get();
 
         // Hitung denda untuk setiap peminjaman
         $u_denda = 1000; // Denda per hari
@@ -68,17 +68,23 @@ class SirkulasiController extends Controller
     }
 
     // Approve peminjaman
-    public function approve($id_sk)
-    {
-        DB::table('tb_sirkulasi')
-            ->where('id_sk', $id_sk)
-            ->update([
-                'status' => 'dipinjam',
-                'updated_at' => Carbon::now()
-            ]);
+        public function approve($id_sk)
+        {
+            $tglPinjam   = Carbon::now();
+            $tglKembali  = $tglPinjam->copy()->addDays(7);
 
-        return redirect()->back()->with('success', 'Peminjaman berhasil disetujui!');
-    }
+            DB::table('tb_sirkulasi')
+                ->where('id_sk', $id_sk)
+                ->update([
+                    'status'      => 'dipinjam',
+                    'tgl_pinjam'  => $tglPinjam,
+                    'tgl_kembali' => $tglKembali,
+                    'updated_at'  => Carbon::now()
+                ]);
+
+            return redirect()->back()
+                ->with('success', 'Peminjaman berhasil disetujui!');
+        }
 
     // Reject peminjaman
     public function reject($id_sk)
@@ -121,30 +127,36 @@ class SirkulasiController extends Controller
             'updated_at' => Carbon::now(),
         ]);
 
-        return redirect()->route('admin.sirkulasi.index')
+        return redirect()->route('admin.sirkul.index')
             ->with('success', 'Data sirkulasi berhasil ditambahkan!');
     }
 
     // Perpanjang peminjaman
-    public function perpanjang($id_sk)
-    {
-        $sirkulasi = DB::table('tb_sirkulasi')->where('id_sk', $id_sk)->first();
-        
-        if (!$sirkulasi) {
-            return redirect()->back()->with('error', 'Data tidak ditemukan!');
-        }
+public function perpanjang($id_sk)
+{
+    $sirkulasi = DB::table('tb_sirkulasi')
+        ->where('id_sk', $id_sk)
+        ->first();
 
-        $tglKembaliBaru = Carbon::parse($sirkulasi->tgl_kembali)->addDays(7);
-
-        DB::table('tb_sirkulasi')
-            ->where('id_sk', $id_sk)
-            ->update([
-                'tgl_kembali' => $tglKembaliBaru,
-                'updated_at' => Carbon::now()
-            ]);
-
-        return redirect()->back()->with('success', 'Peminjaman berhasil diperpanjang 7 hari!');
+    if (!$sirkulasi) {
+        return redirect()->back()
+            ->with('error', 'Data tidak ditemukan!');
     }
+
+    // Tambah 3 hari dari tanggal kembali sekarang
+    $tglKembaliBaru = Carbon::parse($sirkulasi->tgl_kembali)
+        ->addDays(3);
+
+    DB::table('tb_sirkulasi')
+        ->where('id_sk', $id_sk)
+        ->update([
+            'tgl_kembali' => $tglKembaliBaru,
+            'updated_at'  => Carbon::now()
+        ]);
+
+    return redirect()->route('admin.sirkul.index')
+        ->with('success', 'Peminjaman diperpanjang 3 hari!');
+}
 
     // Kembalikan buku
     public function kembali($id_sk)

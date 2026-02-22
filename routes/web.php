@@ -128,11 +128,7 @@ Route::middleware(['auth', 'role:siswa'])->group(function () {
     Route::get('/siswa/riwayat', [UserPinjamController::class, 'riwayat'])
         ->name('siswa.riwayat');
 
-    // ✅ TAMBAH INI
-    Route::get('/siswa/pinjam/{id}', [UserPinjamController::class, 'create'])
-        ->name('siswa.pinjam.create');
-
-    Route::post('/pinjam-buku', [UserPinjamController::class, 'store'])
+    Route::post('/pinjam', [UserPinjamController::class, 'store'])
         ->name('siswa.pinjam.store');
 });
 

@@ -84,9 +84,13 @@
                                     <i class="fa fa-check"></i> Sudah Dipinjam
                                 </button>
                             @else
-                                <a href="{{ route('siswa.pinjam.create', $buku->id_buku) }}" class="btn btn-primary">
-                                    Pinjam Buku
-                                </a>
+                        <form action="{{ route('siswa.pinjam.store') }}" method="POST" style="display:inline;">
+                            @csrf
+                            <input type="hidden" name="id_buku" value="{{ $buku->id_buku }}">
+                            <button type="submit" class="btn btn-primary">
+                                Pinjam Buku
+                            </button>
+                        </form>
                                 
                                 
                             @endif

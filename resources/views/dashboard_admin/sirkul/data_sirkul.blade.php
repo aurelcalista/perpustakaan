@@ -16,12 +16,12 @@
     </ol>
 </section>
 
-<!-- Main content -->
 <section class="content">
+
     {{-- Alert Success --}}
     @if(session('success'))
     <div class="alert alert-success alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
         <h4><i class="icon fa fa-check"></i> Berhasil!</h4>
         {{ session('success') }}
     </div>
@@ -30,7 +30,7 @@
     {{-- Alert Error --}}
     @if(session('error'))
     <div class="alert alert-danger alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
         <h4><i class="icon fa fa-ban"></i> Gagal!</h4>
         {{ session('error') }}
     </div>
@@ -38,12 +38,11 @@
 
     <div class="box box-primary">
         <div class="box-header with-border">
-            <a href="{{ route('admin.sirkul.create') }}" title="Tambah Data" class="btn btn-primary">
+            <a href="{{ route('admin.sirkul.create') }}" class="btn btn-primary">
                 <i class="glyphicon glyphicon-plus"></i> Tambah Data
             </a>
         </div>
-        
-        <!-- /.box-header -->
+
         <div class="box-body">
             <div class="table-responsive">
                 <table id="example1" class="table table-bordered table-striped">
@@ -55,6 +54,7 @@
                             <th>Peminjam</th>
                             <th>Tgl Pinjam</th>
                             <th>Jatuh Tempo</th>
+                            <th>Status</th>
                             <th>Denda</th>
                             <th>Kelola</th>
                         </tr>
@@ -65,50 +65,99 @@
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $item->id_sk }}</td>
                             <td>{{ $item->judul_buku }}</td>
+                            <td>{{ $item->nis }} - {{ $item->nama }}</td>
+                            <td>{{ \Carbon\Carbon::parse($item->tgl_pinjam)->format('d/M/Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($item->tgl_kembali)->format('d/M/Y') }}</td>
+
+                            {{-- STATUS --}}
                             <td>
-                                {{ $item->nis }} - {{ $item->nama }}
-                            </td>
-                            <td>
-                                {{ \Carbon\Carbon::parse($item->tgl_pinjam)->format('d/M/Y') }}
-                            </td>
-                            <td>
-                                {{ \Carbon\Carbon::parse($item->tgl_kembali)->format('d/M/Y') }}
-                            </td>
-                            <td>
-                                @if($item->status_label == 'Masa Peminjaman')
-                                    <span class="label label-primary">Masa Peminjaman</span>
-                                @else
-                                    <span class="label label-danger">
-                                        Rp. {{ number_format($item->denda, 0, ',', '.') }}
-                                    </span>
-                                    <br> Terlambat: {{ $item->terlambat }} Hari
+                                @if($item->status == 'pending')
+                                    <span class="label label-warning">Pending</span>
+                                @elseif($item->status == 'dipinjam')
+                                    <span class="label label-success">Dipinjam</span>
+                                @elseif($item->status == 'dikembalikan')
+                                    <span class="label label-default">Dikembalikan</span>
                                 @endif
                             </td>
+
+                            {{-- DENDA --}}
                             <td>
-                                <form action="{{ route('admin.sirkulasi.perpanjang', $item->id_sk) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    <button type="submit" 
-                                            onclick="return confirm('Perpanjang peminjaman ini?')" 
-                                            title="Perpanjang" 
-                                            class="btn btn-success btn-sm">
-                                        <i class="glyphicon glyphicon-upload"></i>
-                                    </button>
-                                </form>
-                                
-                                <form action="{{ route('admin.sirkulasi.kembali', $item->id_sk) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    <button type="submit" 
-                                            onclick="return confirm('Kembalikan buku ini?')" 
-                                            title="Kembalikan" 
+                                @if($item->status == 'pending')
+                                    <span class="label label-info">Menunggu Approval</span>
+                                @else
+                                    @if($item->status_label == 'Masa Peminjaman')
+                                        <span class="label label-primary">
+                                            Masa Peminjaman
+                                        </span>
+                                    @else
+                                        <span class="label label-danger">
+                                            Rp {{ number_format($item->denda, 0, ',', '.') }}
+                                        </span>
+                                        <br> Terlambat: {{ $item->terlambat }} Hari
+                                    @endif
+                                @endif
+                            </td>
+
+                            {{-- KELOLA --}}
+                            <td>
+
+                                {{-- Kalau Pending --}}
+                                @if($item->status == 'pending')
+
+                                    <form action="{{ route('admin.sirkul.approve', $item->id_sk) }}" 
+                                          method="POST" style="display:inline;">
+                                        @csrf
+                                        <button type="submit"
+                                            onclick="return confirm('Setujui peminjaman ini?')"
+                                            class="btn btn-primary btn-sm">
+                                            Approve
+                                        </button>
+                                    </form>
+
+                                    <form action="{{ route('admin.sirkul.reject', $item->id_sk) }}" 
+                                          method="POST" style="display:inline;">
+                                        @csrf
+                                        <button type="submit"
+                                            onclick="return confirm('Tolak peminjaman ini?')"
                                             class="btn btn-danger btn-sm">
-                                        <i class="glyphicon glyphicon-download"></i>
-                                    </button>
-                                </form>
+                                            Reject
+                                        </button>
+                                    </form>
+
+                                {{-- Kalau Sudah Dipinjam --}}
+                                @elseif($item->status == 'dipinjam')
+
+                                    <form action="{{ route('admin.sirkul.perpanjang', $item->id_sk) }}" 
+                                        method="POST" 
+                                        style="display:inline;">
+                                        @csrf
+                                        <button type="submit"
+                                                class="btn btn-success btn-sm"
+                                                onclick="return confirm('Perpanjang peminjaman ini?')">
+                                            <i class="glyphicon glyphicon-upload"></i>
+                                        </button>
+                                    </form>
+
+                                    <form action="{{ route('admin.sirkul.kembali', $item->id_sk) }}" 
+                                          method="POST" style="display:inline;">
+                                        @csrf
+                                        <button type="submit"
+                                            onclick="return confirm('Kembalikan buku ini?')"
+                                            class="btn btn-danger btn-sm">
+                                            <i class="glyphicon glyphicon-download"></i>
+                                        </button>
+                                    </form>
+
+                                @endif
+
                             </td>
                         </tr>
+
                         @empty
                         <tr>
-                            <td colspan="8" class="text-center">Tidak ada data sirkulasi</td>
+                            <td colspan="9" class="text-center">
+                                Tidak ada data sirkulasi
+                            </td>
                         </tr>
                         @endforelse
                     </tbody>
@@ -118,10 +167,12 @@
     </div>
 
     <h4> *Note
-        <br> Masa peminjaman buku adalah <span style="color:red; font-weight:bold;">7 hari</span> dari tanggal peminjaman.
-        <br> Jika buku dikembalikan lebih dari masa peminjaman, maka akan dikenakan <span style="color:red; font-weight:bold;">denda</span>
-        <br> sebesar <span style="color:red; font-weight:bold;">Rp 1.000/hari</span>.
+        <br> Masa peminjaman buku adalah 
+        <span style="color:red; font-weight:bold;">7 hari</span>.
+        <br> Jika terlambat, denda 
+        <span style="color:red; font-weight:bold;">Rp 1.000/hari</span>.
     </h4>
+
 </section>
 @endsection
 
@@ -131,9 +182,8 @@
         $("#example1").DataTable({
             "responsive": true,
             "lengthChange": true,
-            "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            "autoWidth": false
+        });
     });
 </script>
 @endpush
