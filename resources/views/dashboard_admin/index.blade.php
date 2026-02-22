@@ -37,7 +37,7 @@
     
 
     <!-- Card Anggota -->
-    <div class="col-lg-3 col-md-6 mb-4">
+    <!-- <div class="col-lg-3 col-md-6 mb-4">
         <div class="stat-card card-gradient-green">
             <div class="stat-icon">
                 <i class="fa fa-users"></i>
@@ -52,7 +52,7 @@
                 </a>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Card Sirkulasi -->
     <div class="col-lg-3 col-md-6 mb-4">
@@ -79,11 +79,11 @@
                 <i class="fa fa-user"></i>
             </div>
             <div class="stat-content">
-                <h3 class="stat-number">{{ $pengguna }}</h3>
-                <p class="stat-label">Total Pengguna</p>
+                <h3 class="stat-number">{{ $agt }}</h3>
+                <p class="stat-label">Total anggota</p>
             </div>
             <div class="stat-footer">
-                <a href="{{ url('/data_pengguna') }}" class="stat-link">
+                <a href="{{ route('admin.agt.index') }}" class="stat-link">
                     Lihat Detail <i class="fa fa-arrow-right"></i>
                 </a>
             </div>

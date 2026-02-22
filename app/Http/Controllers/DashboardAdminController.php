@@ -4,23 +4,27 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 
 class DashboardAdminController extends Controller
 {
     public function index()
     {
-        // Hitung data
-        $buku = DB::table('tb_buku')->count('id_buku');
-        $agt = DB::table('tb_anggota')->count('id_anggota');
-        $pin = DB::table('tb_sirkulasi')->where('status', 'PIN')->count('id_sk');
-        $pengguna = DB::table('users')->count('id');
-        
-        return view('dashboard_admin.index', [  
-            'buku' => $buku,
-            'agt' => $agt,
-            'pin' => $pin,
-            'pengguna' => $pengguna,
-        ]);
+        // Total buku
+        $buku = DB::table('tb_buku')->count();
+
+        // Total anggota
+        $agt = DB::table('tb_anggota')->count();
+
+        // Buku yang sedang dipinjam
+        $pin = DB::table('tb_sirkulasi')->where('status', 'PIN')->count();
+
+        // Buku tersedia
+        $tersedia = $buku - $pin;
+
+        // Total pengguna (semua user)
+        $pengguna = DB::table('users')->count();
+
+        // Kirim ke view
+        return view('dashboard_admin.index', compact('buku', 'agt', 'pin', 'tersedia', 'pengguna'));
     }
 }
