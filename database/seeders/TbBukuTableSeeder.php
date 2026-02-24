@@ -3,43 +3,207 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class TbBukuTableSeeder extends Seeder
 {
-
-    /**
-     * Auto generated seed file
-     *
-     * @return void
-     */
-    public function run()
+    public function run(): void
     {
-        
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('tb_buku')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        \DB::table('tb_buku')->delete();
-        
-        \DB::table('tb_buku')->insert(array (
-            0 => 
-            array (
+        DB::table('tb_buku')->insert([
+
+            /*
+            ===============================
+            KATEGORI 1 - NOVEL
+            ===============================
+            */
+
+            [
                 'id_buku' => 'B001',
-                'judul_buku' => 'Hujann',
+                'judul_buku' => 'Bumi',
+                'pengarang' => 'Tere Liye',
+                'penerbit' => 'Gramedia Pustaka Utama',
+                'th_terbit' => '2014',
+                'id_kategori' => 1,
+                'penyunting' => 'Tim Editor Gramedia',
+                'edisi' => 'Cetakan ke-1',
+                'deskripsi_fisik' => '440 halaman ; 20 cm',
+                'isbn' => '9786020331218',
+                'bahasa' => 'Indonesia',
+                'call_number' => '813 TER b',
+                'sinopsis' => 'Raib memiliki kemampuan menghilang dan menemukan dunia paralel.',
+                'foto' => 'cover_buku/bumi.jpg',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'id_buku' => 'B002',
+                'judul_buku' => 'Bulan',
+                'pengarang' => 'Tere Liye',
+                'penerbit' => 'Gramedia Pustaka Utama',
+                'th_terbit' => '2015',
+                'id_kategori' => 1,
+                'penyunting' => 'Tim Editor Gramedia',
+                'edisi' => 'Cetakan ke-1',
+                'deskripsi_fisik' => '400 halaman ; 20 cm',
+                'isbn' => '9786020331676',
+                'bahasa' => 'Indonesia',
+                'call_number' => '813 TER b',
+                'sinopsis' => 'Petualangan Raib dan kawan-kawan berlanjut.',
+                'foto' => 'cover_buku/bulan.jpg',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'id_buku' => 'B003',
+                'judul_buku' => 'Matahari',
                 'pengarang' => 'Tere Liye',
                 'penerbit' => 'Gramedia Pustaka Utama',
                 'th_terbit' => '2016',
-                'id_kategori' => 2,
+                'id_kategori' => 1,
                 'penyunting' => 'Tim Editor Gramedia',
                 'edisi' => 'Cetakan ke-1',
-                'deskripsi_fisik' => 'x + 318 halaman ; 20 cm',
-                'isbn' => '978-602-033-295-6',
+                'deskripsi_fisik' => '428 halaman ; 20 cm',
+                'isbn' => '9786020332741',
                 'bahasa' => 'Indonesia',
-                'call_number' => '813 TER h',
-                'sinopsis' => 'Novel Hujan menceritakan kisah Lail dan Esok yang bertemu setelah bencana gempa dahsyat menghancurkan kota mereka. Di tengah kehilangan dan perubahan dunia akibat bencana, keduanya tumbuh bersama, belajar tentang persahabatan, harapan, dan perasaan yang perlahan berubah menjadi cinta. Cerita ini menggambarkan tentang kehilangan, kenangan, serta keberanian untuk melangkah maju dan melupakan masa lalu demi masa depan yang lebih baik.',
-                'foto' => 'cover_buku/AUlrsnyOxKOLtxl3S3bRNTsLFWR01FD3YGUyqOg7.jpg',
-                'created_at' => '2026-02-10 10:57:53',
-                'updated_at' => '2026-02-10 11:05:08',
-            ),
-        ));
-        
-        
+                'call_number' => '813 TER m',
+                'sinopsis' => 'Rahasia klan Matahari mulai terungkap.',
+                'foto' => 'cover_buku/matahari.jpg',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            /*
+            ===============================
+            KATEGORI 2 - MAPEL KELAS 11
+            ===============================
+            */
+
+            [
+                'id_buku' => 'B004',
+                'judul_buku' => 'Matematika SMK Kelas 11 Kurikulum Merdeka',
+                'pengarang' => 'Dicky Susanto, dkk.',
+                'penerbit' => 'Kementrian Pendidikan, Kebudayaan, Riset, dan Teknologi',
+                'th_terbit' => '2021',
+                'id_kategori' => 2,
+                'penyunting' => 'Tri Hartini',
+                'edisi' => 'Kurikulum Merdeka',
+                'deskripsi_fisik' => '152 halaman ; 17,6 x 25 cm',
+                'isbn' => '978-602-244-536-4',
+                'bahasa' => 'Indonesia',
+                'call_number' => '510 ARI m',
+                'sinopsis' => 'Materi barisan deret, trigonometri lanjutan, statistika dan peluang.',
+                'foto' => 'cover_buku/matematika11.jpg',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'id_buku' => 'B005',
+                'judul_buku' => 'Bahasa Indonesia Kelas 11 Kurikulum Merdeka',
+                'pengarang' => 'Heny Marwati & K. Waskitaningtyas',
+                'penerbit' => 'Kementrian Pendidikan, Kebudayaan, Riset, dan Teknologi',
+                'th_terbit' => '2021',
+                'id_kategori' => 2,
+                'penyunting' => 'Ahid Hidayat',
+                'edisi' => 'Kurikulum Merdeka',
+                'deskripsi_fisik' => '230 halaman ; 17,6 x 25 cm',
+                'isbn' => '978-602-244-324-7',
+                'bahasa' => 'Indonesia',
+                'call_number' => '410 IRM b',
+                'sinopsis' => 'Membahas berbagai jenis teks dan karya sastra berbasis literasi.',
+                'foto' => 'cover_buku/bindo11.jpg',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'id_buku' => 'B006',
+                'judul_buku' => 'Pendidikan Agama Islam dan Budi Pekerti Kelas 11 Kurikulum Merdeka',
+                'pengarang' => 'Abd. Rahman & Hery Nugroho',
+                'penerbit' => 'Kementrian Pendidikan, Kebudayaan, Riset, dan Teknologi',
+                'th_terbit' => '2021',
+                'id_kategori' => 2,
+                'penyunting' => 'Agus Imam Kharomen',
+                'edisi' => 'Kurikulum Merdeka',
+                'deskripsi_fisik' => '356 halaman ; 17,6 x 25 cm',
+                'isbn' => '9786020000013',
+                'bahasa' => 'Indonesia',
+                'call_number' => '420 OTO b',
+                'sinopsis' => 'Membahas nilai-nilai keimanan, akhlak mulia, toleransi, serta penerapan ajaran Islam dalam kehidupan sehari-hari guna membentuk karakter peserta didik yang beriman dan berakhlak baik.',
+                'foto' => 'cover_buku/pai11.jpg',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            /*
+            ===============================
+            KATEGORI 3 - KEJURUAN
+            ===============================
+            */
+
+            [
+                'id_buku' => 'B007',
+                'judul_buku' => 'Rekayasa Perangkat Lunak',
+                'pengarang' => 'Rosa A.S & M. Shalahuddin',
+                'penerbit' => 'Informatika',
+                'th_terbit' => '2018',
+                'id_kategori' => 3,
+                'penyunting' => 'Tim Editor Informatika',
+                'edisi' => 'Revisi',
+                'deskripsi_fisik' => '596 halaman ; 23 cm',
+                'isbn' => '9786026232656',
+                'bahasa' => 'Indonesia',
+                'call_number' => '005.1 ROS r',
+                'sinopsis' => 'Analisis dan desain sistem menggunakan UML dan manajemen proyek.',
+                'foto' => 'cover_buku/rpl.jpg',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'id_buku' => 'B008',
+                'judul_buku' => 'Pemrograman Laravel',
+                'pengarang' => 'Ade Rahmat Iskandar',
+                'penerbit' => 'Gramedia',
+                'th_terbit' => '2024',
+                'id_kategori' => 3,
+                'penyunting' => 'Tim Editor Gramedia',
+                'edisi' => 'Cetakan ke-1',
+                'deskripsi_fisik' => '350 halaman ; 23 cm',
+                'isbn' => '9786020000014',
+                'bahasa' => 'Indonesia',
+                'call_number' => '005.13 ADE p',
+                'sinopsis' => 'Belajar Laravel dari dasar hingga membangun project nyata.',
+                'foto' => 'cover_buku/laravel.jpg',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'id_buku' => 'B009',
+                'judul_buku' => 'Pemrograman Python & MySQL',
+                'pengarang' => 'Abdul Kadir',
+                'penerbit' => 'Elex Media',
+                'th_terbit' => '2023',
+                'id_kategori' => 3,
+                'penyunting' => 'Tim Editor Elex',
+                'edisi' => 'Cetakan ke-1',
+                'deskripsi_fisik' => '280 halaman ; 23 cm',
+                'isbn' => '9786020000015',
+                'bahasa' => 'Indonesia',
+                'call_number' => '005.75 ABD p',
+                'sinopsis' => 'Mempelajari koneksi Python dengan database MySQL dan operasi CRUD.',
+                'foto' => 'cover_buku/python.jpg',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+        ]);
     }
 }
