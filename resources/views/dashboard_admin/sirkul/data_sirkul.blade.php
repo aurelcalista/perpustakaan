@@ -162,8 +162,8 @@
 </section>
 @endsection
 
-@push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
@@ -195,8 +195,9 @@
         });
     });
 
-    var successMsg = '{{ session('success') }}';
-    var errorMsg = '{{ session('error') }}';
+
+    var successMsg = "{{ session("success") }}";
+    var errorMsg = "{{ session("error") }}";
 
     if (successMsg) {
         Swal.fire({ title: 'Berhasil!', text: successMsg, icon: 'success', confirmButtonText: 'OK' });
@@ -205,5 +206,4 @@
         Swal.fire({ title: 'Gagal!', text: errorMsg, icon: 'error', confirmButtonText: 'OK' });
     }
 </script>
-@endpush
 @endpush

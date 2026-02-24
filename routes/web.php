@@ -11,7 +11,7 @@ use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\LogPinjamController;
 use App\Http\Controllers\UserPinjamController;
 use App\Http\Controllers\SirkulasiController;
-use App\Http\Controllers\LogKembaliController;
+use App\Http\Controllers\LaporanController;
 use App\Models\User;
 
 
@@ -79,6 +79,9 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
     // Log Pengembalian
     Route::get('/log-kembali', [SirkulasiController::class, 'riwayat'])->name('log.kembali');
 
+    //laporan
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('admin.laporan.index');
+    Route::get('/laporan/print', [LaporanController::class, 'print'])->name('admin.laporan.print');
         // Sirkulasi
     Route::get('/sirkul', [SirkulasiController::class, 'index'])
         ->name('admin.sirkul.index');

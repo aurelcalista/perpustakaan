@@ -157,7 +157,7 @@
 							</a>
 							<ul class="treeview-menu">
 								<li>
-									<a href="{{ url('/laporan_sirkulasi') }}">
+									<a href="{{ route('admin.laporan.index') }}">
 										<i class="fa fa-file"></i>Laporan Sirkulasi
 									</a>
 								</li>
