@@ -140,7 +140,7 @@
 								</a>
 							</li>
 								<li>
-									<a href="{{ url('/log_kembali') }}">
+									<a href="{{ route('log.kembali') }}">
 										<i class="fa fa-arrow-circle-o-up"></i>Pengembalian
 									</a>
 								</li>

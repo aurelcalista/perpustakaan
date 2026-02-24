@@ -18,24 +18,6 @@
 
 <section class="content">
 
-    {{-- Alert Success --}}
-    @if(session('success'))
-    <div class="alert alert-success alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <h4><i class="icon fa fa-check"></i> Berhasil!</h4>
-        {{ session('success') }}
-    </div>
-    @endif
-
-    {{-- Alert Error --}}
-    @if(session('error'))
-    <div class="alert alert-danger alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <h4><i class="icon fa fa-ban"></i> Gagal!</h4>
-        {{ session('error') }}
-    </div>
-    @endif
-
     <div class="box box-primary">
         <div class="box-header with-border">
             <a href="{{ route('admin.sirkul.create') }}" class="btn btn-primary">
@@ -86,9 +68,7 @@
                                     <span class="label label-info">Menunggu Approval</span>
                                 @else
                                     @if($item->status_label == 'Masa Peminjaman')
-                                        <span class="label label-primary">
-                                            Masa Peminjaman
-                                        </span>
+                                        <span class="label label-primary">Masa Peminjaman</span>
                                     @else
                                         <span class="label label-danger">
                                             Rp {{ number_format($item->denda, 0, ',', '.') }}
@@ -100,64 +80,70 @@
 
                             {{-- KELOLA --}}
                             <td>
-
-                                {{-- Kalau Pending --}}
                                 @if($item->status == 'pending')
 
                                     <form action="{{ route('admin.sirkul.approve', $item->id_sk) }}" 
-                                          method="POST" style="display:inline;">
+                                          method="POST" style="display:inline;" class="form-konfirmasi"
+                                          data-title="Setujui Peminjaman?"
+                                          data-text="Peminjaman ini akan disetujui"
+                                          data-icon="question"
+                                          data-confirm="Setujui"
+                                          data-color="#3085d6">
                                         @csrf
-                                        <button type="submit"
-                                            onclick="return confirm('Setujui peminjaman ini?')"
-                                            class="btn btn-primary btn-sm">
+                                        <button type="submit" class="btn btn-primary btn-sm">
                                             Approve
                                         </button>
                                     </form>
 
                                     <form action="{{ route('admin.sirkul.reject', $item->id_sk) }}" 
-                                          method="POST" style="display:inline;">
+                                          method="POST" style="display:inline;" class="form-konfirmasi"
+                                          data-title="Tolak Peminjaman?"
+                                          data-text="Data peminjaman akan dihapus permanen"
+                                          data-icon="warning"
+                                          data-confirm="Tolak"
+                                          data-color="#d33">
                                         @csrf
-                                        <button type="submit"
-                                            onclick="return confirm('Tolak peminjaman ini?')"
-                                            class="btn btn-danger btn-sm">
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">
                                             Reject
                                         </button>
                                     </form>
 
-                                {{-- Kalau Sudah Dipinjam --}}
                                 @elseif($item->status == 'dipinjam')
 
                                     <form action="{{ route('admin.sirkul.perpanjang', $item->id_sk) }}" 
-                                        method="POST" 
-                                        style="display:inline;">
+                                          method="POST" style="display:inline;" class="form-konfirmasi"
+                                          data-title="Perpanjang Peminjaman?"
+                                          data-text="Peminjaman akan diperpanjang 3 hari"
+                                          data-icon="info"
+                                          data-confirm="Perpanjang"
+                                          data-color="#3085d6">
                                         @csrf
-                                        <button type="submit"
-                                                class="btn btn-success btn-sm"
-                                                onclick="return confirm('Perpanjang peminjaman ini?')">
+                                        <button type="submit" class="btn btn-success btn-sm">
                                             <i class="glyphicon glyphicon-upload"></i>
                                         </button>
                                     </form>
 
                                     <form action="{{ route('admin.sirkul.kembali', $item->id_sk) }}" 
-                                          method="POST" style="display:inline;">
+                                          method="POST" style="display:inline;" class="form-konfirmasi"
+                                          data-title="Kembalikan Buku?"
+                                          data-text="Buku ini akan ditandai sebagai dikembalikan"
+                                          data-icon="question"
+                                          data-confirm="Kembalikan"
+                                          data-color="#3085d6">
                                         @csrf
-                                        <button type="submit"
-                                            onclick="return confirm('Kembalikan buku ini?')"
-                                            class="btn btn-danger btn-sm">
+                                        <button type="submit" class="btn btn-danger btn-sm">
                                             <i class="glyphicon glyphicon-download"></i>
                                         </button>
                                     </form>
 
                                 @endif
-
                             </td>
                         </tr>
 
                         @empty
                         <tr>
-                            <td colspan="9" class="text-center">
-                                Tidak ada data sirkulasi
-                            </td>
+                            <td colspan="9" class="text-center">Tidak ada data sirkulasi</td>
                         </tr>
                         @endforelse
                     </tbody>
@@ -177,6 +163,9 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(function () {
         $("#example1").DataTable({
@@ -184,6 +173,37 @@
             "lengthChange": true,
             "autoWidth": false
         });
+
+        $('.form-konfirmasi').on('submit', function(e) {
+            e.preventDefault();
+            const form = this;
+
+            Swal.fire({
+                title: $(this).data('title'),
+                text: $(this).data('text'),
+                icon: $(this).data('icon'),
+                showCancelButton: true,
+                confirmButtonColor: $(this).data('color'),
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: $(this).data('confirm'),
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
     });
+
+    var successMsg = '{{ session('success') }}';
+    var errorMsg = '{{ session('error') }}';
+
+    if (successMsg) {
+        Swal.fire({ title: 'Berhasil!', text: successMsg, icon: 'success', confirmButtonText: 'OK' });
+    }
+    if (errorMsg) {
+        Swal.fire({ title: 'Gagal!', text: errorMsg, icon: 'error', confirmButtonText: 'OK' });
+    }
 </script>
+@endpush
 @endpush

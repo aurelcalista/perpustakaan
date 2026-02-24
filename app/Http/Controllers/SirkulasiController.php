@@ -70,20 +70,21 @@ class SirkulasiController extends Controller
     // Approve peminjaman
         public function approve($id_sk)
         {
-            $tglPinjam   = Carbon::now();
-            $tglKembali  = $tglPinjam->copy()->addDays(7);
+            $sirkulasi = DB::table('tb_sirkulasi')->where('id_sk', $id_sk)->first();
 
+            if (!$sirkulasi) {
+                return redirect()->back()->with('error', 'Data tidak ditemukan!');
+            }
+
+            // Update status jadi dipinjam
             DB::table('tb_sirkulasi')
                 ->where('id_sk', $id_sk)
                 ->update([
-                    'status'      => 'dipinjam',
-                    'tgl_pinjam'  => $tglPinjam,
-                    'tgl_kembali' => $tglKembali,
-                    'updated_at'  => Carbon::now()
+                    'status' => 'dipinjam',
+                    'updated_at' => Carbon::now()
                 ]);
 
-            return redirect()->back()
-                ->with('success', 'Peminjaman berhasil disetujui!');
+            return redirect()->back()->with('success', 'Peminjaman berhasil disetujui!');
         }
 
     // Reject peminjaman
@@ -159,34 +160,31 @@ public function perpanjang($id_sk)
 }
 
     // Kembalikan buku
-    public function kembali($id_sk)
-    {
-        DB::table('tb_sirkulasi')
-            ->where('id_sk', $id_sk)
-            ->update([
-                'status' => 'dikembalikan',
-                'updated_at' => Carbon::now()
-            ]);
+        public function kembali($id_sk)
+        {
+            DB::table('tb_sirkulasi')
+                ->where('id_sk', $id_sk)
+                ->update([
+                    'status' => 'dikembalikan',
+                    'updated_at' => Carbon::now()
+                ]);
 
-        return redirect()->back()->with('success', 'Buku berhasil dikembalikan!');
-    }
+            return redirect()->route('log.kembali')  // ✅ langsung ke log setelah kembali
+                ->with('success', 'Buku berhasil dikembalikan!');
+        }
 
     // Riwayat (semua yang sudah dikembalikan)
-    public function riwayat()
-    {
-        $riwayat = DB::table('tb_sirkulasi as s')
-            ->join('tb_buku as b', 's.id_buku', '=', 'b.id_buku')
-            ->join('users as u', 's.id_anggota', '=', 'u.nis')
-            ->where('s.status', 'dikembalikan')
-            ->select(
-                's.*',
-                'b.judul_buku',
-                'u.nis',
-                'u.nama'
-            )
-            ->orderBy('s.updated_at', 'desc')
-            ->get();
+public function riwayat()
+{
+    $riwayat = DB::table('tb_sirkulasi as s')
+        ->join('tb_buku as b', 's.id_buku', '=', 'b.id_buku')
+        ->join('users as u', 's.id_anggota', '=', 'u.nis')
+        ->where('s.status', 'dikembalikan')
+        ->select('s.*', 'b.judul_buku', 'u.nis', 'u.nama')
+        ->orderBy('s.updated_at', 'desc')
+        ->get();
 
-        return view('dashboard_admin.sirkul.riwayat_sirkul', compact('riwayat'));
-    }
+    // ✅ Pastikan view-nya mengarah ke log_kembali
+    return view('dashboard_admin.log.log_kembali', compact('riwayat'));
+}
 }

@@ -47,65 +47,75 @@ class UserPinjamController extends Controller
         return view('siswa.detail', compact('buku', 'sudahPinjam'));
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'id_buku' => 'required|exists:tb_buku,id_buku',
-        ]);
+public function store(Request $request)
+{
+    $request->validate([
+        'id_buku' => 'required|exists:tb_buku,id_buku',
+    ]);
 
-        $idAnggota = $this->getIdAnggota();
+    $idAnggota = $this->getIdAnggota();
 
-        if (!$idAnggota) {
-            return redirect()->back()
-                ->with('error', 'Data anggota tidak ditemukan. Hubungi admin.');
-        }
-
-        // Cek sudah pinjam buku ini
-        $sudahPinjam = DB::table('tb_sirkulasi')
-            ->where('id_buku', $request->id_buku)
-            ->where('id_anggota', $idAnggota)
-            ->whereIn('status', ['dipinjam', 'pending'])
-            ->exists();
-
-        if ($sudahPinjam) {
-            return redirect()->back()
-                ->with('error', 'Anda sudah meminjam buku ini!');
-        }
-
-        // Cek maksimal 3 buku aktif
-        $jumlahPinjam = DB::table('tb_sirkulasi')
-            ->where('id_anggota', $idAnggota)
-            ->whereIn('status', ['dipinjam', 'pending'])
-            ->count();
-
-        if ($jumlahPinjam >= 3) {
-            return redirect()->back()
-                ->with('error', 'Maksimal 3 buku sedang dipinjam!');
-        }
-
-        // Generate id_sk unik: SK-YYYYMMDD-XXXX
-        do {
-            $id_sk = 'SK-' . now()->format('Ymd') . '-' . strtoupper(Str::random(4));
-        } while (DB::table('tb_sirkulasi')->where('id_sk', $id_sk)->exists());
-
-        $tglPinjam  = Carbon::now();
-        $tglKembali = Carbon::now()->addDays(3);
-
-        DB::table('tb_sirkulasi')->insert([
-            'id_sk'       => $id_sk,
-            'id_buku'     => $request->id_buku,
-            'id_anggota'  => $idAnggota,
-            'tgl_pinjam'  => $tglPinjam,
-            'tgl_kembali' => $tglKembali,
-            'status'      => 'pending',
-            'created_at'  => Carbon::now(),
-            'updated_at'  => Carbon::now(),
-        ]);
-
-        return redirect()
-            ->route('profile.show')
-            ->with('success', 'Request peminjaman berhasil! Menunggu persetujuan admin.');
+    if (!$idAnggota) {
+        return redirect()->back()
+            ->with('error', 'Data anggota tidak ditemukan. Hubungi admin.');
     }
+
+    // Cek sudah pinjam buku ini
+    $sudahPinjam = DB::table('tb_sirkulasi')
+        ->where('id_buku', $request->id_buku)
+        ->where('id_anggota', $idAnggota)
+        ->whereIn('status', ['dipinjam', 'pending'])
+        ->exists();
+
+    if ($sudahPinjam) {
+        return redirect()->back()
+            ->with('error', 'Anda sudah meminjam buku ini!');
+    }
+
+    // Cek maksimal 3 buku aktif
+    $jumlahPinjam = DB::table('tb_sirkulasi')
+        ->where('id_anggota', $idAnggota)
+        ->whereIn('status', ['dipinjam', 'pending'])
+        ->count();
+
+    if ($jumlahPinjam >= 3) {
+        return redirect()->back()
+            ->with('error', 'Maksimal 3 buku sedang dipinjam!');
+    }
+
+    // Generate id_sk unik: SK-YYYYMMDD-XXXX
+    do {
+        $id_sk = 'SK-' . now()->format('Ymd') . '-' . strtoupper(Str::random(4));
+    } while (DB::table('tb_sirkulasi')->where('id_sk', $id_sk)->exists());
+
+    $tglPinjam  = Carbon::now();
+    $tglKembali = Carbon::now()->addDays(7); 
+
+    // Insert ke tb_sirkulasi
+    DB::table('tb_sirkulasi')->insert([
+        'id_sk'       => $id_sk,
+        'id_buku'     => $request->id_buku,
+        'id_anggota'  => $idAnggota,
+        'tgl_pinjam'  => $tglPinjam,
+        'tgl_kembali' => $tglKembali,
+        'status'      => 'pending',
+        'created_at'  => Carbon::now(),
+        'updated_at'  => Carbon::now(),
+    ]);
+
+    
+    DB::table('log_pinjam')->insert([
+        'id_buku'     => $request->id_buku,
+        'id_anggota'  => $idAnggota,
+        'tgl_pinjam'  => $tglPinjam,
+        'created_at'  => Carbon::now(),
+        'updated_at'  => Carbon::now(),
+    ]);
+
+    return redirect()
+        ->route('profile.show')
+        ->with('success', 'Request peminjaman berhasil! Menunggu persetujuan admin.');
+}
 
     public function bukuSaya()
     {

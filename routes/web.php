@@ -11,6 +11,7 @@ use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\LogPinjamController;
 use App\Http\Controllers\UserPinjamController;
 use App\Http\Controllers\SirkulasiController;
+use App\Http\Controllers\LogKembaliController;
 use App\Models\User;
 
 
@@ -74,6 +75,9 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
 
     // Log Peminjaman
     Route::get('/log-peminjaman', [LogPinjamController::class, 'index'])->name('log.pinjam');
+
+    // Log Pengembalian
+    Route::get('/log-kembali', [SirkulasiController::class, 'riwayat'])->name('log.kembali');
 
         // Sirkulasi
     Route::get('/sirkul', [SirkulasiController::class, 'index'])
