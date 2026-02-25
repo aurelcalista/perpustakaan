@@ -97,6 +97,7 @@
             <div class="col-12 text-center">
                 <h2 class="mb-4">Koleksi Perpustakaan</h2>
                 <div class="container">
+                    
     <div class="row mt-4">
         @foreach($buku as $item)
             <div class="col-lg-4 col-md-6 col-12 mb-4">

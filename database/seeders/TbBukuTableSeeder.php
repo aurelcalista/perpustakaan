@@ -203,7 +203,68 @@ class TbBukuTableSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            // ===== KBBI =====
+            [
+                'id_buku' => 'B023',
+                'judul_buku' => 'Kamus Besar Bahasa Indonesia Edisi Kelima',
+                'pengarang' => 'Pusat Bahasa Kemendikbud',
+                'penerbit' => 'Balai Pustaka',
+                'th_terbit' => '2016',
+                'id_kategori' => 4,
+                'penyunting' => 'Badan Pengembangan dan Pembinaan Bahasa',
+                'edisi' => 'Edisi Kelima',
+                'deskripsi_fisik' => 'xxviii + 1628 halaman ; 27 cm',
+                'isbn' => '978-979-407-182-1',
+                'bahasa' => 'Indonesia',
+                'call_number' => '499.221 KAM',
+                'sinopsis' => 'Kamus Besar Bahasa Indonesia Edisi Kelima memuat lebih dari 90.000 lema dan sublema beserta definisi, ejaan, dan contoh penggunaannya. Merupakan rujukan utama bahasa Indonesia yang baku dan standar, disusun oleh Badan Pengembangan dan Pembinaan Bahasa.',
+                'foto' => 'cover_buku/kamus.jpg',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
 
+            // ===== KAMUS INGGRIS-INDONESIA =====
+            [
+                'id_buku' => 'B024',
+                'judul_buku' => 'Kamus Inggris - Indonesia Edisi yang Diperbarui',
+                'pengarang' => 'John M. Echols & Hassan Shadily',
+                'penerbit' => 'Gramedia Pustaka Utama',
+                'th_terbit' => '2014',
+                'id_kategori' => 4,
+                'penyunting' => 'John U. Wolff & James T. Collins',
+                'edisi' => 'Edisi yang Diperbarui',
+                'deskripsi_fisik' => 'xxxii + 824 halaman ; 23 cm',
+                'isbn' => '978-602-030-564-6',
+                'bahasa' => 'Indonesia & Inggris',
+                'call_number' => '423.3 ECH k',
+                'sinopsis' => 'Kamus Inggris-Indonesia terlengkap karya John M. Echols dan Hassan Shadily yang telah direvisi dan diperbarui. Memuat lebih dari 31.000 entri dilengkapi contoh kalimat, penjelasan arti kata dalam disiplin ilmu tertentu, dan singkatan umum dalam bahasa Inggris.',
+                'foto' => 'cover_buku/kamusinggris.jpg',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+        
+            // ===== ENSIKLOPEDIA =====
+            [
+                'id_buku' => 'B026',
+                'judul_buku' => 'Ensiklopedia Sejarah Dunia',
+                'pengarang' => 'Tim Usborne',
+                'penerbit' => 'Bhuana Ilmu Populer',
+                'th_terbit' => '2018',
+                'id_kategori' => 4,
+                'penyunting' => 'Tim Editor BIP',
+                'edisi' => 'Edisi Revisi',
+                'deskripsi_fisik' => 'xii + 312 halaman ; 28 cm',
+                'isbn' => '978-602-XXX-XXX-X',
+                'bahasa' => 'Indonesia',
+                'call_number' => '900 TIM e',
+                'sinopsis' => 'Ensiklopedia Sejarah Dunia ini memuat berbagai fakta dan kisah tentang berbagai bangsa, tempat, dan peristiwa pada masa lalu yang membentuk dunia. Dilengkapi skema bergambar selama 12.000 tahun, lebih dari 100 peta, ilustrasi, grafik, dan foto yang lengkap.',
+                'foto' => 'cover_buku/ensiklopedia.jpg',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+          
         ]);
     }
 }
