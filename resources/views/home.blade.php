@@ -15,7 +15,7 @@
                             </span>
 
                             <input name="keyword" type="search" class="form-control" id="keyword"
-                                placeholder="Cari buku atau kategori buku ..." aria-label="Search">
+                                placeholder="Cari buku atau kategori buku ..." aria-label="Search" >
 
                             <button type="submit" class="form-control">Cari</button>
                         </div>

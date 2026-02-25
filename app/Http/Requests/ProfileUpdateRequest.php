@@ -16,7 +16,7 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nis' => ['required', 'string', 'max:8'],
+            'nis' => ['nullable', 'string', 'max:8'],
             'nama' => ['required', 'string', 'max:255'],
             'noidentitas' => ['required', 'string', 'max:50'],
             'alamat' => ['required', 'string'],

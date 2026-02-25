@@ -3,9 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Buku;
 
 class HomeController extends Controller
 {
+
+public function index(Request $request)
+{
+    $keyword = $request->keyword;
+
+    $buku = Buku::when($keyword, function ($query) use ($keyword) {
+        $query->where('judul_buku', 'like', "%{$keyword}%")
+              ->orWhere('pengarang', 'like', "%{$keyword}%")
+              ->orWhere('kategori', 'like', "%{$keyword}%");
+    })->get();
+
+    return view('home', compact('buku'));
+}
+
     public function detail()
     {
         $buku = [
