@@ -24,11 +24,11 @@ Route::get('/buku/{id}', [UserPinjamController::class, 'show'])
     ->name('buku.detail');
 
 Route::get('/informasi', function () {
-    return view('informasi');
+    return view('pages.informasi');
 })->name('informasi');
 
 Route::get('/panduan', function () {
-    return view('panduan');
+    return view('pages.panduan');
 })->name('panduan');
 
 
