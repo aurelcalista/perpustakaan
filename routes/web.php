@@ -116,11 +116,6 @@ Route::delete('/pinjam-buku/{id_sk}/cancel', [UserPinjamController::class, 'canc
     ->name('siswa.pinjam.cancel')
     ->middleware(['auth', 'role:siswa']);
 
-Route::middleware(['auth', 'role:petugas'])->group(function () {
-    Route::get('/petugas/dashboard', [DashboardPetugasController::class, 'index'])
-        ->name('petugas.dashboard');
-});
-
 
 
 Route::middleware(['auth', 'role:siswa'])->group(function () {

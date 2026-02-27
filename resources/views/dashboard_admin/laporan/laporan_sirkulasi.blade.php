@@ -34,7 +34,7 @@
                             <th>Tgl Pinjam</th>
                             <th>Jatuh Tempo</th>
                             <th>Tgl Dikembalikan</th>
-                            <th>Denda</th>
+                            <th data-orderable="false">Denda</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -63,7 +63,10 @@
                             <td colspan="8" class="text-center">Belum ada data laporan</td>
                         </tr>
                         @endforelse
+                    </tbody>
 
+                    {{-- Pindah ke tfoot agar tidak ikut dihitung DataTables --}}
+                    <tfoot>
                         <tr>
                             <th colspan="8" style="text-align:right;">
                                 Total Denda: 
@@ -72,7 +75,7 @@
                                 </span>
                             </th>
                         </tr>
-                    </tbody>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -86,7 +89,10 @@
         $("#example1").DataTable({
             "responsive": true,
             "lengthChange": true,
-            "autoWidth": false
+            "autoWidth": false,
+            "columnDefs": [
+                { "defaultContent": "", "targets": "_all" }
+            ]
         });
     });
 </script>

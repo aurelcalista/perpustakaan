@@ -45,7 +45,7 @@
 						<tr>
 							<th>No</th>
 							<th>NIS</th>
-							<th>Barcode</th>
+							<th data-orderable="false">Barcode</th>
 							<th>Username</th>
 							<th>Nama Lengkap</th>
 							<th>No Identitas</th>
@@ -53,7 +53,7 @@
 							<th>No Telepon</th>
 							<th>Email</th>
 							<th>Tanggal Daftar</th>
-							<th>Kelola</th>
+							<th data-orderable="false">Kelola</th>
 						</tr>
 					</thead>
 
@@ -76,7 +76,7 @@
 							<td>{{ Str::limit($data->alamat, 40) }}</td>
 							<td>{{ $data->notlp }}</td>
 							<td>{{ $data->email }}</td>
-							<td>{{ $data->created_at->format('d/m/Y') }}</td>
+							<td>{{ $data->created_at ? $data->created_at->format('d/m/Y') : '-' }}</td>
 							<td style="white-space: nowrap;">
 								{{-- Tombol Edit --}}
 								<a href="{{ route('admin.agt.edit', $data->nis) }}" 
@@ -102,7 +102,7 @@
 
 						@empty
 						<tr>
-							<td colspan="10" class="text-center">
+							<td colspan="11" class="text-center">
 								<i class="fa fa-info-circle"></i> Belum ada data anggota
 							</td>
 						</tr>
@@ -125,16 +125,19 @@
 
 @push('scripts')
 <script>
-	$(function () {
-		$("#example1").DataTable({
-			"responsive": true,
-			"autoWidth": false,
-			"language": {
-				"url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Indonesian.json"
-			},
-			"pageLength": 10,
-			"order": [[0, 'asc']] // Urutkan berdasarkan kolom No
-		});
-	});
+    $(function () {
+        $("#example1").DataTable({
+            "responsive": true,
+            "autoWidth": false,
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Indonesian.json"
+            },
+            "pageLength": 10,
+            "order": [[0, 'asc']],
+            "columnDefs": [
+                { "defaultContent": "", "targets": "_all" }
+            ]
+        });
+    });
 </script>
 @endpush

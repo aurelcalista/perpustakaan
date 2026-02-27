@@ -12,17 +12,18 @@ class DashboardAdminController extends Controller
         // Total buku
         $buku = DB::table('tb_buku')->count();
 
-        // Total anggota
-        $agt = DB::table('tb_anggota')->count();
+        // Total anggota — diambil dari users dengan role 'siswa'
+        // (AnggotaController menyimpan ke tabel users, bukan tb_anggota)
+        $agt = DB::table('users')->where('role', 'siswa')->count();
 
         // Buku yang sedang dipinjam
-        $pin = DB::table('tb_sirkulasi')->where('status', 'PIN')->count();
+        $pin = DB::table('tb_sirkulasi')->where('status', 'dipinjam')->count();
 
         // Buku tersedia
         $tersedia = $buku - $pin;
 
-        // Total pengguna (semua user)
-        $pengguna = DB::table('users')->count();
+        // Total pengguna sistem (admin/petugas)
+        $pengguna = DB::table('users')->whereIn('role', ['admin', 'petugas'])->count();
 
         // Kirim ke view
         return view('dashboard_admin.index', compact('buku', 'agt', 'pin', 'tersedia', 'pengguna'));

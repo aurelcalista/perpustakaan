@@ -4,13 +4,15 @@
 <div class="dashboard-header mb-4">
     <div class="row align-items-center">
         <div class="col-md-8">
-            <h2 class="mb-2">Dashboard Administrator</h2>
-            <p class="text-muted mb-0">Selamat datang kembali, <strong>{{ Auth::user()->nama }}</strong>! Berikut ringkasan sistem perpustakaan Anda.</p>
+            <h5 style="color:rgba(255,255,255,0.85); font-weight:400;" id="greeting-text"></h5>
+            <h2 class="mb-2">{{ Auth::user()->nama }}</h2>
+            <p class="text-muted mb-0">Berikut ringkasan sistem perpustakaan hari ini.</p>
         </div>
         <div class="col-md-4 text-right">
-            <small class="text-muted">
+            <small class="text-muted d-block">
                 <i class="fa fa-calendar"></i> {{ date('d F Y') }}
             </small>
+            <h4 style="color:white; font-weight:700; margin-top:5px;" id="realtime-clock">00:00:00</h4>
         </div>
     </div>
 </div>
@@ -148,4 +150,51 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+@endpush
+@push('scripts')
+<script>
+// 1. GREETING + CLOCK
+function updateClock() {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+
+    let greeting;
+    if (hours >= 5 && hours < 12) greeting = '🌅 Selamat Pagi';
+    else if (hours >= 12 && hours < 15) greeting = '☀️ Selamat Siang';
+    else if (hours >= 15 && hours < 18) greeting = '🌤️ Selamat Sore';
+    else greeting = '🌙 Selamat Malam';
+
+    const greetingEl = document.getElementById('greeting-text');
+    const clockEl = document.getElementById('realtime-clock');
+    if (greetingEl) greetingEl.textContent = greeting;
+    if (clockEl) clockEl.textContent = `${String(hours).padStart(2,'0')}:${minutes}:${seconds}`;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// 2. COUNT UP
+function countUp(el, target, duration = 1500) {
+    let start = 0;
+    const step = Math.ceil(target / (duration / 16));
+    const timer = setInterval(() => {
+        start += step;
+        if (start >= target) { el.textContent = target; clearInterval(timer); }
+        else el.textContent = start;
+    }, 16);
+}
+document.querySelectorAll('.stat-number').forEach(el => {
+    const target = parseInt(el.textContent.trim());
+    if (!isNaN(target)) { el.textContent = '0'; countUp(el, target); }
+});
+
+// 3. FADE IN
+document.querySelectorAll('.stat-card, .card').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = `opacity 0.5s ease ${i * 0.1}s, transform 0.5s ease ${i * 0.1}s`;
+    setTimeout(() => { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }, 100);
+});
+</script>
 @endpush

@@ -4,124 +4,117 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laporan Sirkulasi - Si Perpustakaan</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        :root {
+            --navy:     #1a2d6b;
+            --navy-mid: #3d56c0;
+            --bg:       #f0f4f8;
+            --border:   #e8edf2;
+            --text:     #1a2332;
+            --muted:    #5a6b7b;
+            --light:    #8a9bac;
+        }
+
         body {
-            font-family: 'DM Sans', sans-serif;
-            background: #f5f7fa;
-            color: #1a1a2e;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
         }
 
-        /* HEADER */
+        /* ════ HEADER — putih bersih + accent navy kiri ════ */
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 36px 48px 28px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 28px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             position: relative;
-            overflow: hidden;
         }
         .header::before {
             content: '';
             position: absolute;
-            top: -40px; right: -40px;
-            width: 200px; height: 200px;
-            border-radius: 50%;
-            background: rgba(255,255,255,.08);
+            left: 0; top: 0; bottom: 0;
+            width: 5px;
+            background: linear-gradient(180deg, var(--navy), var(--navy-mid));
+            border-radius: 0 3px 3px 0;
         }
-        .header::after {
-            content: '';
-            position: absolute;
-            bottom: -60px; left: 30%;
-            width: 300px; height: 300px;
-            border-radius: 50%;
-            background: rgba(255,255,255,.05);
-        }
-        .header-inner {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-        }
+        .header-left { padding-left: 16px; }
         .header-label {
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 3px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
             text-transform: uppercase;
-            color: #c4b5fd;
-            margin-bottom: 8px;
+            color: var(--light);
+            margin-bottom: 6px;
         }
         .header-title {
-            font-family: 'DM Serif Display', serif;
-            font-size: 32px;
-            line-height: 1.1;
-            color: white;
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--navy);
         }
         .header-subtitle {
-            font-size: 14px;
-            color: rgba(255,255,255,.6);
-            margin-top: 6px;
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 4px;
+            font-weight: 500;
         }
-        .header-date {
-            text-align: right;
-            font-size: 12px;
-            color: rgba(255,255,255,.55);
-        }
-        .header-date strong {
-            display: block;
-            font-size: 15px;
-            color: #e9d5ff;
+        .header-date { text-align: right; }
+        .header-date .date-label {
+            font-size: 11px;
+            color: var(--light);
             font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
         }
-        .purple-line {
-            height: 3px;
-            background: linear-gradient(90deg, rgba(255,255,255,.5), transparent);
-            margin-top: 24px;
+        .header-date .date-value {
+            font-size: 15px;
+            color: var(--navy);
+            font-weight: 700;
         }
 
-        /* TOOLBAR */
+        /* ════ TOOLBAR ════ */
         .toolbar {
             display: flex;
             gap: 10px;
-            padding: 20px 48px;
-            background: white;
-            border-bottom: 1px solid #e0e0f0;
+            padding: 16px 48px;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
         }
         .btn {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 9px 20px;
-            border-radius: 6px;
+            gap: 7px;
+            padding: 9px 18px;
+            border-radius: 8px;
             font-size: 13px;
-            font-weight: 600;
-            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             cursor: pointer;
             border: none;
             text-decoration: none;
             transition: all .2s;
         }
-        .btn-print {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
+        .btn-print { background: var(--navy); color: white; }
         .btn-print:hover {
-            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(102,126,234,.3);
+            background: #152356;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(26,45,107,.25);
         }
         .btn-back {
             background: white;
-            color: #667eea;
-            border: 1.5px solid #e0e0f0;
+            color: var(--muted);
+            border: 1.5px solid var(--border);
         }
-        .btn-back:hover { background: #f5f3ff; color: #667eea; }
-        .btn svg { width: 15px; height: 15px; }
+        .btn-back:hover { background: #eef1fb; color: var(--navy); border-color: var(--navy); }
+        .btn svg { width: 14px; height: 14px; }
 
-        /* SUMMARY CARDS */
+        /* ════ SUMMARY CARDS ════ */
         .summary {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -130,163 +123,138 @@
         }
         .card {
             background: white;
-            border: 1px solid #e0e0f0;
+            border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 20px 24px;
+            padding: 20px 22px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(102,126,234,.06);
-            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,.05);
+            transition: all 0.2s;
         }
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 40px rgba(102,126,234,.12);
-        }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(26,45,107,.10); }
         .card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 4px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            border-radius: 12px 12px 0 0;
         }
+        .card-navy::before   { background: linear-gradient(90deg, var(--navy), var(--navy-mid)); }
+        .card-green::before  { background: linear-gradient(90deg, #059669, #10b981); }
+        .card-orange::before { background: linear-gradient(90deg, #d97706, #f59e0b); }
+
         .card-label {
-            font-size: 11px;
-            font-weight: 600;
+            font-size: 10px;
+            font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: #6b7280;
+            color: var(--light);
             margin-bottom: 8px;
         }
-        .card-value {
-            font-family: 'DM Serif Display', serif;
-            font-size: 28px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .card-value.danger {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .card-value.success {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .card-sub {
-            font-size: 12px;
-            color: #6b7280;
-            margin-top: 4px;
-        }
+        .card-value { font-size: 30px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+        .card-value.navy    { color: var(--navy); }
+        .card-value.danger  { color: #dc2626; }
+        .card-value.success { color: #059669; }
+        .card-value.orange  { color: #d97706; }
+        .card-sub { font-size: 12px; color: var(--light); font-weight: 500; }
 
-        /* TABLE */
+        /* ════ TABLE ════ */
         .table-wrap { padding: 0 48px 48px; }
-        .table-wrap table {
-            width: 100%;
-            border-collapse: collapse;
+        .table-container {
             background: white;
+            border: 1px solid var(--border);
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(102,126,234,.08);
+            box-shadow: 0 2px 8px rgba(0,0,0,.05);
         }
-        thead tr {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
+        table { width: 100%; border-collapse: collapse; }
+
+        thead tr { background: var(--navy); }
         thead th {
-            padding: 14px 16px;
+            padding: 13px 16px;
             font-size: 11px;
-            font-weight: 600;
+            font-weight: 700;
             letter-spacing: 1.5px;
             text-transform: uppercase;
             text-align: center;
+            color: rgba(255,255,255,0.85);
         }
-        tbody tr { border-bottom: 1px solid #f0eeff; transition: background .15s; }
+
+        tbody tr { border-bottom: 1px solid var(--border); transition: background .12s; }
         tbody tr:last-child { border-bottom: none; }
-        tbody tr:hover { background: #f5f3ff; }
-        tbody td {
-            padding: 13px 16px;
-            font-size: 13.5px;
-            text-align: center;
-            color: #2d2d3a;
-        }
-        .no-col { font-weight: 700; color: #6b7280; }
+        tbody tr:hover { background: #f7f9fc; }
+        tbody td { padding: 12px 16px; font-size: 13.5px; text-align: center; color: var(--text); }
+
+        .no-col { font-weight: 700; color: var(--light); text-align: left; padding-left: 20px; }
         .id-col {
             font-family: monospace;
             font-size: 12px;
-            background: #ede9fe;
-            padding: 3px 8px;
-            border-radius: 4px;
-            color: #667eea;
+            background: #eef1fb;
+            padding: 3px 9px;
+            border-radius: 5px;
+            color: var(--navy);
+            font-weight: 700;
+            display: inline-block;
         }
         .buku-col { font-weight: 600; text-align: left; }
-        .peminjam-col { text-align: left; color: #6b7280; }
-        .denda-danger { color: #c0392b; font-weight: 700; }
-        .denda-ok { color: #1e7e5e; font-weight: 600; }
+        .peminjam-col { text-align: left; color: var(--muted); }
+        .denda-danger { color: #dc2626; font-weight: 700; }
+        .denda-ok { color: #059669; font-weight: 600; }
         .telat-badge {
             display: inline-block;
             margin-top: 3px;
             font-size: 11px;
-            background: #fde8e6;
-            color: #c0392b;
-            padding: 2px 7px;
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 2px 8px;
             border-radius: 20px;
+            font-weight: 600;
         }
         .total-row td {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: #eef1fb;
+            border-top: 2px solid var(--navy);
+            color: var(--navy);
             font-weight: 700;
-            font-size: 14px;
+            font-size: 13.5px;
             text-align: right;
-            padding: 16px 24px;
+            padding: 14px 20px;
         }
-        .total-amount {
-            color: #e9d5ff;
-            font-family: 'DM Serif Display', serif;
-            font-size: 18px;
-        }
-        .empty-row td { padding: 48px; color: #6b7280; font-style: italic; }
+        .total-amount { font-size: 16px; font-weight: 800; color: var(--navy); }
+        .empty-row td { padding: 48px; color: var(--light); font-style: italic; text-align: center; }
 
-        /* FOOTER */
+        /* ════ FOOTER ════ */
         .footer {
             text-align: center;
-            padding: 20px;
+            padding: 16px 48px 24px;
             font-size: 12px;
-            color: #6b7280;
-            border-top: 1px solid #e0e0f0;
-            margin: 0 48px;
+            color: var(--light);
+            font-weight: 500;
         }
 
-        /* PRINT */
+        /* ════ PRINT ════ */
         @media print {
             .no-print { display: none !important; }
             body { background: white; }
-            .header, thead tr, .total-row td {
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
+            .header, .table-container { box-shadow: none; border: 1px solid #ddd; }
+            .header::before { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            thead tr { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .total-row td { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .table-wrap { padding: 0 0 24px; }
         }
     </style>
 </head>
 <body onload="window.print()">
 
     <div class="header">
-        <div class="header-inner">
-            <div>
-                <div class="header-label">Si Perpustakaan</div>
-                <div class="header-title">Laporan Sirkulasi</div>
-                <div class="header-subtitle">Riwayat pengembalian buku &amp; rekapitulasi denda</div>
-            </div>
-            <div class="header-date">
-                Dicetak pada
-                <strong>{{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</strong>
-            </div>
+        <div class="header-left">
+            <div class="header-label">Si Perpustakaan &bull; Laporan</div>
+            <div class="header-title">Laporan Sirkulasi</div>
+            <div class="header-subtitle">Riwayat pengembalian buku &amp; rekapitulasi denda</div>
         </div>
-        <div class="purple-line"></div>
+        <div class="header-date">
+            <div class="date-label">Dicetak pada</div>
+            <div class="date-value">{{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</div>
+        </div>
     </div>
 
     <div class="toolbar no-print">
@@ -307,19 +275,19 @@
     </div>
 
     <div class="summary no-print">
-        <div class="card">
+        <div class="card card-navy">
             <div class="card-label">Total Peminjaman</div>
-            <div class="card-value">{{ $laporan->count() }}</div>
+            <div class="card-value navy">{{ $laporan->count() }}</div>
             <div class="card-sub">Data dikembalikan</div>
         </div>
-        <div class="card">
+        <div class="card card-orange">
             <div class="card-label">Total Denda</div>
-            <div class="card-value {{ $total_denda > 0 ? 'danger' : 'success' }}">
+            <div class="card-value {{ $total_denda > 0 ? 'orange' : 'success' }}">
                 Rp {{ number_format($total_denda, 0, ',', '.') }}
             </div>
             <div class="card-sub">Akumulasi keterlambatan</div>
         </div>
-        <div class="card">
+        <div class="card card-green">
             <div class="card-label">Tepat Waktu</div>
             <div class="card-value success">{{ $laporan->where('denda', 0)->count() }}</div>
             <div class="card-sub">dari {{ $laporan->count() }} peminjaman</div>
@@ -327,52 +295,54 @@
     </div>
 
     <div class="table-wrap">
-        <table>
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>ID SKL</th>
-                    <th>Judul Buku</th>
-                    <th>Peminjam</th>
-                    <th>Tgl Pinjam</th>
-                    <th>Jatuh Tempo</th>
-                    <th>Tgl Dikembalikan</th>
-                    <th>Denda</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($laporan as $index => $item)
-                <tr>
-                    <td class="no-col">{{ $index + 1 }}</td>
-                    <td><span class="id-col">{{ $item->id_sk }}</span></td>
-                    <td class="buku-col">{{ $item->judul_buku }}</td>
-                    <td class="peminjam-col">{{ $item->nama }}</td>
-                    <td>{{ \Carbon\Carbon::parse($item->tgl_pinjam)->format('d/m/Y') }}</td>
-                    <td>{{ \Carbon\Carbon::parse($item->tgl_kembali)->format('d/m/Y') }}</td>
-                    <td>{{ \Carbon\Carbon::parse($item->tgl_dikembalikan)->format('d/m/Y') }}</td>
-                    <td>
-                        @if($item->denda > 0)
-                            <span class="denda-danger">Rp {{ number_format($item->denda, 0, ',', '.') }}</span>
-                            <br><span class="telat-badge">{{ $item->telat_pengembalian }} hari terlambat</span>
-                        @else
-                            <span class="denda-ok">&#10003; Tepat Waktu</span>
-                        @endif
-                    </td>
-                </tr>
-                @empty
-                <tr class="empty-row">
-                    <td colspan="8">Tidak ada data pengembalian</td>
-                </tr>
-                @endforelse
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="text-align:left; padding-left:20px;">No</th>
+                        <th>ID SKL</th>
+                        <th>Judul Buku</th>
+                        <th>Peminjam</th>
+                        <th>Tgl Pinjam</th>
+                        <th>Jatuh Tempo</th>
+                        <th>Tgl Dikembalikan</th>
+                        <th>Denda</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($laporan as $index => $item)
+                    <tr>
+                        <td class="no-col">{{ $index + 1 }}</td>
+                        <td><span class="id-col">{{ $item->id_sk }}</span></td>
+                        <td class="buku-col">{{ $item->judul_buku }}</td>
+                        <td class="peminjam-col">{{ $item->nama }}</td>
+                        <td>{{ \Carbon\Carbon::parse($item->tgl_pinjam)->format('d/m/Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($item->tgl_kembali)->format('d/m/Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($item->tgl_dikembalikan)->format('d/m/Y') }}</td>
+                        <td>
+                            @if($item->denda > 0)
+                                <span class="denda-danger">Rp {{ number_format($item->denda, 0, ',', '.') }}</span>
+                                <br><span class="telat-badge">{{ $item->telat_pengembalian }} hari terlambat</span>
+                            @else
+                                <span class="denda-ok">&#10003; Tepat Waktu</span>
+                            @endif
+                        </td>
+                    </tr>
+                    @empty
+                    <tr class="empty-row">
+                        <td colspan="8">Tidak ada data pengembalian</td>
+                    </tr>
+                    @endforelse
 
-                <tr class="total-row">
-                    <td colspan="8">
-                        Total Denda Keseluruhan &nbsp;&rarr;&nbsp;
-                        <span class="total-amount">Rp {{ number_format($total_denda, 0, ',', '.') }}</span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    <tr class="total-row">
+                        <td colspan="8">
+                            Total Denda Keseluruhan &nbsp;&rarr;&nbsp;
+                            <span class="total-amount">Rp {{ number_format($total_denda, 0, ',', '.') }}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
         <div class="footer">
             Dokumen ini digenerate otomatis oleh sistem Si Perpustakaan

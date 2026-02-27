@@ -20,9 +20,9 @@
 <section class="content">
 	<div class="box box-primary">
 		<div class="box-header with-border">
-									<a href="{{ route('admin.buku.create') }}">
-										<i class="fa fa-book"></i>tambah data
-									</a>
+			<a href="{{ route('admin.buku.create') }}">
+				<i class="fa fa-book"></i> Tambah Data
+			</a>
 		</div>
 		
 		<div class="box-body">
@@ -42,83 +42,80 @@
 
 			<div class="table-responsive">
 				<table id="example1" class="table table-bordered table-striped">
-			<thead>
-			<tr>
-				<th>No</th>
-				<th>Foto</th>
-				<th>ID Buku</th>
-				<th>Judul</th>
-				<th>Pengarang</th>
-				<th>Kategori</th>
-				<th>Penerbit</th>
-				<th>Tahun</th>
-				<th>ISBN</th>
-				<th>Bahasa</th>
-				<th>Kelola</th>
-			</tr>
-			</thead>
+					<thead>
+						<tr>
+							<th>No</th>
+							<th data-orderable="false">Foto</th>
+							<th>ID Buku</th>
+							<th>Judul</th>
+							<th>Pengarang</th>
+							<th>Kategori</th>
+							<th>Penerbit</th>
+							<th>Tahun</th>
+							<th>ISBN</th>
+							<th>Bahasa</th>
+							<th data-orderable="false">Kelola</th>
+						</tr>
+					</thead>
 
-			<tbody>
-			@php $no = 1; @endphp
+					<tbody>
+						@php $no = 1; @endphp
 
-			@forelse($buku as $data)
-			<tr>
-				<td>{{ $no++ }}</td>
+						@forelse($buku as $data)
+						<tr>
+							<td>{{ $no++ }}</td>
 
-				{{-- FOTO COVER --}}
-				<td>
-					@if($data->foto)
-						<img src="{{ asset('storage/'.$data->foto) }}" 
-							width="60" height="80" 
-							style="object-fit:cover;">
-					@else
-						<span class="text-muted">No Image</span>
-					@endif
-				</td>
+							{{-- FOTO COVER --}}
+							<td>
+								@if($data->foto)
+									<img src="{{ asset('storage/'.$data->foto) }}" 
+										width="60" height="80" 
+										style="object-fit:cover;">
+								@else
+									<span class="text-muted">No Image</span>
+								@endif
+							</td>
 
-				<td>{{ $data->id_buku }}</td>
-				<td>{{ $data->judul_buku }}</td>
-				<td>{{ $data->pengarang }}</td>
+							<td>{{ $data->id_buku }}</td>
+							<td>{{ $data->judul_buku }}</td>
+							<td>{{ $data->pengarang }}</td>
 
-				{{-- NAMA KATEGORI --}}
-				<td>
-					{{ $data->kategori->nama_kategori ?? '-' }}
-				</td>
+							{{-- NAMA KATEGORI --}}
+							<td>{{ $data->kategori->nama_kategori ?? '-' }}</td>
 
-				<td>{{ $data->penerbit }}</td>
-				<td>{{ $data->th_terbit }}</td>
-				<td>{{ $data->isbn }}</td>
-				<td>{{ $data->bahasa }}</td>
+							<td>{{ $data->penerbit }}</td>
+							<td>{{ $data->th_terbit }}</td>
+							<td>{{ $data->isbn }}</td>
+							<td>{{ $data->bahasa }}</td>
 
-				<td>
-					<a href="{{ route('admin.buku.edit', $data->id_buku) }}" 
-					class="btn btn-success btn-sm">
-						<i class="glyphicon glyphicon-edit"></i>
-					</a>
+							<td>
+								<a href="{{ route('admin.buku.edit', $data->id_buku) }}" 
+								class="btn btn-success btn-sm">
+									<i class="glyphicon glyphicon-edit"></i>
+								</a>
 
-					<form action="{{ route('admin.buku.destroy', $data->id_buku) }}" 
-						method="POST" 
-						style="display:inline;">
-						@csrf
-						@method('DELETE')
-						<button type="submit" 
-								onclick="return confirm('Yakin Hapus Data Ini?')" 
-								class="btn btn-danger btn-sm">
-							<i class="glyphicon glyphicon-trash"></i>
-						</button>
-					</form>
-				</td>
-			</tr>
+								<form action="{{ route('admin.buku.destroy', $data->id_buku) }}" 
+									method="POST" 
+									style="display:inline;">
+									@csrf
+									@method('DELETE')
+									<button type="submit" 
+											onclick="return confirm('Yakin Hapus Data Ini?')" 
+											class="btn btn-danger btn-sm">
+										<i class="glyphicon glyphicon-trash"></i>
+									</button>
+								</form>
+							</td>
+						</tr>
 
-			@empty
-			<tr>
-				<td colspan="11" class="text-center">
-					Tidak ada data buku
-				</td>
-			</tr>
-			@endforelse
-			</tbody>
-
+						@empty
+						<tr>
+							<td colspan="11" class="text-center">
+								Tidak ada data buku
+							</td>
+						</tr>
+						@endforelse
+					</tbody>
 				</table>
 			</div>
 		</div>
@@ -129,14 +126,19 @@
 
 @push('scripts')
 <script>
-	$(function () {
-		$("#example1").DataTable({
-			"responsive": true,
-			"autoWidth": false,
-			"language": {
-				"url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Indonesian.json"
-			}
-		});
-	});
+    $(function () {
+        $("#example1").DataTable({
+            "responsive": true,
+            "autoWidth": false,
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Indonesian.json"
+            },
+            "pageLength": 10,
+            "order": [[0, 'asc']],
+            "columnDefs": [
+                { "defaultContent": "", "targets": "_all" }
+            ]
+        });
+    });
 </script>
 @endpush

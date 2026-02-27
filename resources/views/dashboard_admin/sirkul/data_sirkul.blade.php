@@ -36,9 +36,9 @@
                             <th>Peminjam</th>
                             <th>Tgl Pinjam</th>
                             <th>Jatuh Tempo</th>
-                            <th>Status</th>
-                            <th>Denda</th>
-                            <th>Kelola</th>
+                            <th data-orderable="false">Status</th>
+                            <th data-orderable="false">Denda</th>
+                            <th data-orderable="false">Kelola</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -162,8 +162,6 @@
 </section>
 @endsection
 
-
-
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
@@ -171,7 +169,10 @@
         $("#example1").DataTable({
             "responsive": true,
             "lengthChange": true,
-            "autoWidth": false
+            "autoWidth": false,
+            "columnDefs": [
+                { "defaultContent": "", "targets": "_all" }
+            ]
         });
 
         $('.form-konfirmasi').on('submit', function(e) {
@@ -193,17 +194,16 @@
                 }
             });
         });
+
+        var successMsg = "{{ session('success') }}";
+        var errorMsg = "{{ session('error') }}";
+
+        if (successMsg) {
+            Swal.fire({ title: 'Berhasil!', text: successMsg, icon: 'success', confirmButtonText: 'OK' });
+        }
+        if (errorMsg) {
+            Swal.fire({ title: 'Gagal!', text: errorMsg, icon: 'error', confirmButtonText: 'OK' });
+        }
     });
-
-
-    var successMsg = "{{ session("success") }}";
-    var errorMsg = "{{ session("error") }}";
-
-    if (successMsg) {
-        Swal.fire({ title: 'Berhasil!', text: successMsg, icon: 'success', confirmButtonText: 'OK' });
-    }
-    if (errorMsg) {
-        Swal.fire({ title: 'Gagal!', text: errorMsg, icon: 'error', confirmButtonText: 'OK' });
-    }
 </script>
 @endpush

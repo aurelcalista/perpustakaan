@@ -19,16 +19,15 @@
 	<!-- Select2 -->
 	<link rel="stylesheet" href="{{ asset('plugins/select2/select2.min.css') }}">
 	<!-- Theme style -->
-<!-- Theme style -->
-<link rel="stylesheet" href="{{ asset('dist/css/AdminLTE.min.css') }}">
-<link rel="stylesheet" href="{{ asset('dist/css/skins/_all-skins.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('dist/css/AdminLTE.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('dist/css/skins/_all-skins.min.css') }}">
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
-@stack('styles')
+	@stack('styles')
 
-<!-- Dashboard Custom CSS - HARUS PALING AKHIR -->
-<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+	<!-- Dashboard Custom CSS - HARUS PALING AKHIR -->
+	<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 </head>
 
 <body class="hold-transition skin-green sidebar-mini">
@@ -110,10 +109,9 @@
 									</a>
 								</li>
 								<li>
-											<a href="{{ route('admin.kategori.index') }}">
-												<i class="fa fa-users"></i>Kategori
-											</a>
-
+									<a href="{{ route('admin.kategori.index') }}">
+										<i class="fa fa-users"></i>Kategori
+									</a>
 								</li>
 							</ul>
 						</li>
@@ -134,11 +132,11 @@
 								</span>
 							</a>
 							<ul class="treeview-menu">
-							<li>
-								<a href="{{ route('log.pinjam') }}">
-									<i class="fa fa-arrow-circle-o-down"></i>Peminjaman
-								</a>
-							</li>
+								<li>
+									<a href="{{ route('log.pinjam') }}">
+										<i class="fa fa-arrow-circle-o-down"></i>Peminjaman
+									</a>
+								</li>
 								<li>
 									<a href="{{ route('log.kembali') }}">
 										<i class="fa fa-arrow-circle-o-up"></i>Pengembalian
@@ -283,24 +281,20 @@
 	<script src="{{ asset('dist/js/demo.js') }}"></script>
 
 	<script>
-		$(function() {
-			$("#example1").DataTable({
-				columnDefs: [{
-					"defaultContent": "-",
-					"targets": "_all"
-				}]
-			});
-			$('#example2').DataTable({
-				"paging": true,
-				"lengthChange": false,
-				"searching": false,
-				"ordering": true,
-				"info": true,
-				"autoWidth": false
-			});
-			$(".select2").select2();
+	$(function() {
+		$(".select2").select2();
+
+		$('#example2').DataTable({
+			"paging": true,
+			"lengthChange": false,
+			"searching": false,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false
 		});
+	});
 	</script>
+	@stack('scripts')
 </body>
 
 </html>
