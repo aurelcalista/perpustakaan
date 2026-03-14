@@ -109,6 +109,71 @@
   .course-card:hover .course-title { color: var(--primary); }
   .course-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 10px; font-size: 12px; color: var(--text-muted); gap: 8px; }
 
+  /* ===================== CATEGORY TABS ===================== */
+  .category-tabs {
+    display: flex; gap: 4px; margin-bottom: 36px;
+    overflow-x: auto; scrollbar-width: none; padding-bottom: 4px;
+  }
+  .category-tabs::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    padding: 10px 22px; border: 2px solid var(--border);
+    background: var(--white); border-radius: 24px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+    color: var(--text-muted); cursor: pointer; white-space: nowrap; transition: all .2s;
+  }
+  .tab-btn.active, .tab-btn:hover {
+    background: var(--primary); border-color: var(--primary); color: var(--white);
+  }
+
+  /* ===================== MENTORS ===================== */
+  #section_mentors { background: #f7f9fc; }
+  .mentors-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+  .mentor-card {
+    border-radius: var(--radius); overflow: visible; box-shadow: var(--shadow-card);
+    background: var(--white); transition: transform .3s, box-shadow .3s;
+  }
+  .mentor-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-heavy); }
+  .mentor-img-wrap {
+    height: 280px; border-radius: var(--radius) var(--radius) 0 0; overflow: hidden;
+    background: linear-gradient(145deg, var(--primary-pale), #dde4eb);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mentor-avatar {
+    width: 120px; height: 120px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 48px; color: white;
+    box-shadow: 0 8px 24px rgba(26,45,107,0.25);
+  }
+  .mentor-info { padding: 20px; text-align: center; }
+  .mentor-name-tag {
+    display: inline-block; background: var(--white);
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 6px 16px; font-size: 13px; font-weight: 600; color: var(--primary);
+    box-shadow: 0 2px 12px rgba(26,45,107,.1);
+    margin-top: -28px; position: relative; z-index: 2; margin-bottom: 10px;
+  }
+  .mentor-name { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 700; color: var(--text); }
+
+  /* ===================== TESTIMONIALS ===================== */
+  #section_testimonials { background: #f0f4f8; }
+  .testimonials-slider { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+  .testimonial-card {
+    background: var(--white); border-radius: var(--radius); padding: 32px 28px;
+    text-align: center; box-shadow: var(--shadow-card); transition: transform .3s, box-shadow .3s;
+  }
+  .testimonial-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-heavy); }
+  .t-avatar {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-pale), #dde4eb);
+    margin: 0 auto 12px; display: flex; align-items: center; justify-content: center;
+    font-size: 28px; color: var(--primary); font-weight: 700;
+  }
+  .t-role { font-size: 13px; color: var(--text-muted); margin-bottom: 4px; }
+  .t-name { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+  .t-stars { color: #f5a623; font-size: 16px; margin-bottom: 16px; letter-spacing: 2px; }
+  .t-text { font-size: 15px; line-height: 1.7; color: var(--text-muted); }
+
   /* STEPS */
   .steps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; margin-top: 48px; }
   .step-card {
@@ -149,6 +214,7 @@
     section { padding: 56px 0; }
     .section-head { flex-direction: column; align-items: flex-start; }
     .steps-grid { grid-template-columns: 1fr; }
+    .mentors-grid { grid-template-columns: 1fr; }
   }
 </style>
 @endpush
@@ -214,10 +280,22 @@
 {{-- KOLEKSI BUKU --}}
 <section id="section_2">
   <div class="container">
-    <div class="section-head fade-up"><h2>Koleksi Perpustakaan</h2></div>
-    <div class="courses-grid fade-up">
+    <div class="section-head fade-up">
+      <h2>Koleksi Perpustakaan</h2>
+      <a href="{{ route('home') }}" class="btn btn-outline">Lihat Semua Buku</a>
+    </div>
+
+    {{-- Category Tabs --}}
+    <div class="category-tabs fade-up" id="categoryTabs">
+      <button class="tab-btn active" onclick="filterKategori('semua', this)">Semua</button>
+      @foreach($kategoris as $kat)
+        <button class="tab-btn" onclick="filterKategori('{{ $kat->id_kategori }}', this)">{{ $kat->nama_kategori }}</button>
+      @endforeach
+    </div>
+
+    <div class="courses-grid fade-up" id="bukuGrid">
       @forelse($buku as $item)
-        <a href="{{ route('buku.detail', $item->id_buku) }}" class="course-card-link">
+        <a href="{{ route('buku.detail', $item->id_buku) }}" class="course-card-link buku-item" data-kategori="{{ $item->id_kategori }}">
           <div class="course-card">
             <div class="course-img">
               @if($item->foto)
@@ -247,6 +325,83 @@
           <p>Belum ada koleksi buku tersedia.</p>
         </div>
       @endforelse
+    </div>
+  </div>
+</section>
+
+{{-- PETUGAS / MENTORS --}}
+<section id="section_mentors">
+  <div class="container">
+    <div class="section-head fade-up">
+      <h2>Kenali Petugas Kami</h2>
+      <button class="btn btn-outline">Lihat Semua Petugas</button>
+    </div>
+    <div class="mentors-grid fade-up">
+      {{-- Ganti dengan data dinamis dari controller jika tersedia --}}
+      <div class="mentor-card">
+        <div class="mentor-img-wrap">
+          <div class="mentor-avatar">👩‍💼</div>
+        </div>
+        <div class="mentor-info">
+          <div class="mentor-name-tag">Kepala Perpustakaan</div>
+          <p class="mentor-name">Nama Petugas 1</p>
+        </div>
+      </div>
+      <div class="mentor-card">
+        <div class="mentor-img-wrap">
+          <div class="mentor-avatar">👨‍💼</div>
+        </div>
+        <div class="mentor-info">
+          <div class="mentor-name-tag">Staff Perpustakaan</div>
+          <p class="mentor-name">Nama Petugas 2</p>
+        </div>
+      </div>
+      <div class="mentor-card">
+        <div class="mentor-img-wrap">
+          <div class="mentor-avatar">👩‍🏫</div>
+        </div>
+        <div class="mentor-info">
+          <div class="mentor-name-tag">Staff Perpustakaan</div>
+          <p class="mentor-name">Nama Petugas 3</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{-- ULASAN / TESTIMONIALS --}}
+<section id="section_testimonials">
+  <div class="container">
+    <div class="section-head fade-up">
+      <h2>Apa Kata Siswa<br/>Tentang Kami</h2>
+      <button class="btn btn-outline">Beri Ulasan</button>
+    </div>
+    <p class="fade-up" style="color:var(--text-muted);font-size:16px;margin-bottom:36px;">
+      Pengalaman nyata dari siswa SMKN 1 Cirebon yang sudah menggunakan layanan perpustakaan kami.
+    </p>
+    <div class="testimonials-slider fade-up">
+      {{-- Ganti dengan data dinamis dari controller jika tersedia --}}
+      <div class="testimonial-card">
+        <div class="t-avatar">A</div>
+        <p class="t-role">Siswa Kelas XII TKJ</p>
+        <p class="t-name">Ahmad Fauzi</p>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">Perpustakaan SMKN 1 Cirebon sangat membantu proses belajar saya. Koleksi bukunya lengkap dan sistem peminjaman sangat mudah!</p>
+      </div>
+      <div class="testimonial-card">
+        <div class="t-avatar">S</div>
+        <p class="t-role">Siswa Kelas XI RPL</p>
+        <p class="t-name">Siti Nurhaliza</p>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">Sistem pencarian buku online sangat memudahkan saya. Tidak perlu lagi datang langsung hanya untuk tahu apakah buku tersedia atau tidak.</p>
+      </div>
+      <div class="testimonial-card">
+        <div class="t-avatar">R</div>
+        <p class="t-role">Siswa Kelas X AKL</p>
+        <p class="t-name">Rizky Pratama</p>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">Petugas perpustakaannya ramah dan sangat membantu. Tempatnya juga nyaman untuk membaca dan belajar bersama teman-teman.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -360,6 +515,22 @@
 
 @push('scripts')
 <script>
+  /* ---- FILTER KATEGORI ---- */
+  function filterKategori(id, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const items = document.querySelectorAll('.buku-item');
+    items.forEach(item => {
+      if (id === 'semua' || item.dataset.kategori == id) {
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+
+  /* ---- FAQ ---- */
   function toggleFaq(btn) {
     const item = btn.parentElement;
     const answer = item.querySelector('.faq-answer');

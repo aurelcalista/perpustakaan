@@ -12,7 +12,8 @@ class BukuController extends Controller
 public function home()
 {
     $buku = Buku::with('kategori')->latest()->get();
-    return view('home', compact('buku'));
+    $kategoris = Category::all();
+    return view('home', compact('buku', 'kategoris')); 
 }
 
 
