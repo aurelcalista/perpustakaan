@@ -1,44 +1,75 @@
-<footer class="site-footer bg-light text-black py-5">
-    <div class="container">
+{{-- resources/views/partials/footer.blade.php --}}
+<footer class="new-footer">
+  <div class="footer-inner">
 
-        <!-- JUDUL & DESKRIPSI (TENGAH) -->
-        <div class="row mb-4">
-            <div class="col-12 text-center">
-                <h5 class="mb-2">📚 Perpustakaan SMKN 1 Cirebon</h5>
-                <p class="mb-0">
-                    Sumber literasi dan informasi untuk mendukung
-                    kegiatan belajar siswa.
-                </p>
-            </div>
+    <div class="footer-brand">
+      <div class="logo" style="color:white;margin-bottom:16px;">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
+          </svg>
         </div>
-
-        <!-- MENU & INFORMASI (BAWAH) -->
-        <div class="row justify-content-center text-center text-md-start">
-
-            <div class="col-md-2 mb-4">
-                <h6>Menu</h6>
-                <ul class="site-footer-links list-unstyled">
-                    <li><a href="#section_1" class="site-footer-link">Beranda</a></li>
-                    <li><a href="#section_2" class="site-footer-link">Koleksi Buku</a></li>
-                    <li><a href="#" class="site-footer-link">Peminjaman</a></li>
-                    <li><a href="#" class="site-footer-link">Kontak</a></li>
-                </ul>
-            </div>
-
-            <div class="col-md-1 mb-4">
-                <h6>Informasi</h6>
-                <p class="site-footer-link mb-1">📍 SMKN 1 Cirebon</p>
-                <p class="site-footer-link mb-1">📞 (+62 85129935749)</p>
-                <p class="site-footer-link mb-0">✉️ info@smkn1-cirebon.sch.id</p>
-            </div>
-
-        </div>
-
-        <hr class="border-secondary">
-
-        <div class="text-center">
-            © 2026 Perpustakaan SMKN 1 Cirebon
-        </div>
-
+        Perpustakaan
+      </div>
+      <p class="footer-tagline">Pusat literasi dan sumber belajar siswa SMKN 1 Cirebon. Tingkatkan pengetahuanmu bersama kami.</p>
+      <div class="social-links">
+        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+        <a href="#" class="social-link"><i class="fas fa-envelope"></i></a>
+      </div>
     </div>
+
+    <div class="footer-col">
+      <h4>Menu</h4>
+      <ul class="footer-links">
+        <li><a href="{{ route('home') }}#section_1">Beranda</a></li>
+        <li><a href="{{ route('home') }}#section_2">Koleksi Buku</a></li>
+        <li><a href="{{ route('home') }}#section_3">Cara Penggunaan</a></li>
+        <li><a href="{{ route('home') }}#section_4">FAQs</a></li>
+        <li><a href="{{ route('home') }}#section_5">Kontak</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Halaman</h4>
+      <ul class="footer-links">
+        <li><a href="{{ route('informasi') }}">Informasi</a></li>
+        <li><a href="{{ route('panduan') }}">Panduan</a></li>
+        @guest
+          <li><a href="{{ route('login') }}">Login</a></li>
+          <li><a href="{{ route('register') }}">Daftar</a></li>
+        @else
+          <li><a href="{{ route('profile.show') }}">Profil Saya</a></li>
+        @endguest
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Kontak</h4>
+      <ul class="footer-links">
+        <li style="color:rgba(255,255,255,.7);font-size:14px;margin-bottom:10px;">
+          <i class="fas fa-map-marker-alt" style="margin-right:8px;"></i>
+          Jl. Perjuangan, Sunyaragi, Kota Cirebon
+        </li>
+        <li style="color:rgba(255,255,255,.7);font-size:14px;margin-bottom:10px;">
+          <i class="fas fa-phone" style="margin-right:8px;"></i>
+          +62 85129935749
+        </li>
+        <li style="color:rgba(255,255,255,.7);font-size:14px;">
+          <i class="fas fa-envelope" style="margin-right:8px;"></i>
+          info@smkn1-cirebon.sch.id
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>© {{ date('Y') }} Perpustakaan SMKN 1 Cirebon — All Rights Reserved</p>
+  </div>
 </footer>
+
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
+  <i class="fas fa-arrow-up"></i>
+</button>

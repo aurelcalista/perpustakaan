@@ -1,365 +1,380 @@
 @extends('layout.app')
+
+@push('styles')
+<style>
+  /* ===================== HOME PAGE CSS ===================== */
+  h1, h2, h3, h4, h5 { font-family: 'Fraunces', serif; line-height: 1.15; }
+  section { padding: 80px 0; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+  /* HERO */
+  #section_1 {
+    min-height: 100vh;
+    background: linear-gradient(145deg, #eef1fb 0%, #f7f9fc 60%, #e8f5e9 100%);
+    display: flex; align-items: center; padding-top: 100px;
+    position: relative; overflow: hidden;
+  }
+  #section_1::before {
+    content: ''; position: absolute; top: -100px; right: -100px;
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(26,45,107,.10) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  #section_1::after {
+    content: ''; position: absolute; bottom: -80px; left: -80px;
+    width: 400px; height: 400px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(61,86,192,.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-content { text-align: center; position: relative; z-index: 1; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--primary-pale); color: var(--primary);
+    font-size: 13px; font-weight: 600; padding: 6px 16px;
+    border-radius: 20px; margin-bottom: 24px; letter-spacing: .5px;
+  }
+  .hero-badge span { width: 6px; height: 6px; background: var(--primary); border-radius: 50%; display: block; }
+  h1.hero-title {
+    font-size: clamp(2.4rem, 5.5vw, 4.5rem); font-weight: 800;
+    color: var(--text); max-width: 800px; margin: 0 auto 20px; letter-spacing: -1px;
+  }
+  h1.hero-title em { font-style: italic; color: var(--primary); }
+  .hero-sub { font-size: 17px; color: var(--text-muted); max-width: 520px; margin: 0 auto 28px; line-height: 1.7; }
+  .hero-rating {
+    display: inline-flex; align-items: center; gap: 16px;
+    background: rgba(255,255,255,.85); backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,.6); border-radius: 50px;
+    padding: 10px 24px; margin-bottom: 40px;
+    box-shadow: 0 4px 24px rgba(26,45,107,.08);
+  }
+  .rating-score { font-weight: 700; font-size: 18px; }
+  .stars { color: #f5a623; font-size: 13px; }
+  .rating-label { color: var(--text-muted); font-size: 13px; }
+  .hero-search {
+    background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-heavy);
+    padding: 24px 28px; max-width: 740px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: end;
+  }
+  .search-field label {
+    display: block; font-size: 12px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .8px; color: var(--text-muted); margin-bottom: 8px;
+  }
+  .search-input-wrap { position: relative; }
+  .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 14px; }
+  .search-input {
+    width: 100%; padding: 13px 16px 13px 40px;
+    border: 2px solid var(--border); border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text);
+    background: var(--white); transition: border-color .2s;
+  }
+  .search-input:focus { outline: none; border-color: var(--primary); }
+
+  /* TICKER */
+  .companies-section {
+    padding: 40px 0; background: var(--white);
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  .companies-label {
+    text-align: center; font-size: 12px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 24px;
+  }
+  .ticker-wrap { overflow: hidden; }
+  .ticker-track { display: flex; gap: 56px; animation: ticker 20s linear infinite; width: max-content; align-items: center; }
+  .ticker-track:hover { animation-play-state: paused; }
+  @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .company-logo { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 600; color: var(--text-muted); white-space: nowrap; opacity: .65; transition: opacity .2s; }
+  .company-logo:hover { opacity: 1; color: var(--primary); }
+  .company-logo i { margin-right: 7px; }
+
+  /* BOOKS */
+  #section_2 { background: var(--white); }
+  .section-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 36px; gap: 20px; }
+  .section-head h2 { font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800; letter-spacing: -1px; }
+  .courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; }
+  .course-card-link { text-decoration: none; color: inherit; display: block; }
+  .course-card {
+    border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-card);
+    background: var(--white); transition: transform .3s, box-shadow .3s;
+    display: flex; flex-direction: column; height: 100%;
+  }
+  .course-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-heavy); }
+  .course-img { height: 180px; overflow: hidden; background: var(--primary-pale); display: flex; align-items: center; justify-content: center; }
+  .course-img-placeholder { font-size: 56px; }
+  .course-body { padding: 18px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+  .course-meta { display: flex; justify-content: space-between; align-items: center; }
+  .course-tag { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+  .course-price { font-size: 12px; font-weight: 700; color: var(--success); border: 2px solid var(--success); border-radius: 4px; padding: 2px 8px; }
+  .course-price.unavailable { color: #c0392b; border-color: #c0392b; }
+  .course-title { font-family: 'Fraunces', serif; font-size: 16px; font-weight: 700; color: var(--text); flex: 1; transition: color .2s; }
+  .course-card:hover .course-title { color: var(--primary); }
+  .course-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 10px; font-size: 12px; color: var(--text-muted); gap: 8px; }
+
+  /* STEPS */
+  .steps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; margin-top: 48px; }
+  .step-card {
+    background: rgba(255,255,255,.12); backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,.2); border-radius: var(--radius);
+    padding: 32px 24px; text-align: center; transition: background .3s, transform .3s; position: relative;
+  }
+  .step-card:hover { background: rgba(255,255,255,.18); transform: translateY(-4px); }
+  .step-icon { width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,.2); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 24px; color: white; }
+  .step-num { font-family: 'Fraunces', serif; font-size: 48px; font-weight: 800; color: rgba(255,255,255,.12); position: absolute; top: 12px; right: 20px; line-height: 1; }
+  .step-card h4 { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 700; color: white; margin-bottom: 10px; }
+  .step-card p { font-size: 14px; color: rgba(255,255,255,.75); line-height: 1.6; }
+
+  /* FAQ */
+  .faq-grid { max-width: 780px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+  .faq-item { background: var(--white); border-radius: var(--radius-sm); box-shadow: var(--shadow-card); overflow: hidden; }
+  .faq-question { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; background: none; border: none; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; color: var(--text); cursor: pointer; text-align: left; gap: 16px; }
+  .faq-question:hover { color: var(--primary); }
+  .faq-icon { transition: transform .3s; flex-shrink: 0; color: var(--text-muted); }
+  .faq-answer { max-height: 0; overflow: hidden; transition: max-height .3s ease; font-size: 14px; color: var(--text-muted); line-height: 1.7; padding: 0 24px; }
+  .faq-item.open .faq-answer { padding-bottom: 20px; }
+
+  /* CONTACT */
+  #section_5 { background: var(--white); }
+  .contact-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: start; margin-top: 48px; }
+  .contact-info h3 { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 800; margin-bottom: 28px; color: var(--text); }
+  .contact-item { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 24px; }
+  .contact-icon { width: 44px; height: 44px; background: var(--primary-pale); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 16px; flex-shrink: 0; }
+  .contact-item strong { display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: var(--text-muted); margin-bottom: 4px; }
+  .contact-item div { font-size: 14px; color: var(--text); line-height: 1.6; }
+
+  /* RESPONSIVE */
+  @media (max-width: 960px) {
+    .hero-search { grid-template-columns: 1fr; max-width: 480px; }
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    section { padding: 56px 0; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .steps-grid { grid-template-columns: 1fr; }
+  }
+</style>
+@endpush
+
 @section('content')
-    <section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-12 mx-auto">
-                    <h1 class="text-white text-center">Perpustakaan SMKN 1 Cirebon</h1>
 
-                    <h6 class="text-center">pusat informasi, literasi, dan sumber belajar siswa</h6>
-
-                    <form method="get" class="custom-form mt-4 pt-2 mb-lg-0 mb-5" role="search">
-                        <div class="input-group input-group-lg">
-                            <span class="input-group-text bi-search" id="basic-addon1">
-
-                            </span>
-
-                            <input name="keyword" type="search" class="form-control" id="keyword"
-                                placeholder="Cari buku atau kategori buku ..." aria-label="Search" >
-
-                            <button type="submit" class="form-control">Cari</button>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
+{{-- HERO --}}
+<section id="section_1">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge fade-up"><span></span> Perpustakaan Digital SMKN 1 Cirebon</div>
+      <h1 class="hero-title fade-up">Temukan buku <em>favoritmu</em><br/>di Perpustakaan Kami</h1>
+      <p class="hero-sub fade-up">Pusat informasi, literasi, dan sumber belajar siswa SMKN 1 Cirebon. Cari, pinjam, dan baca buku dengan mudah.</p>
+      <div class="hero-rating fade-up">
+        <div class="rating-info">
+          <div><span class="rating-score">📚</span> <span class="stars">★★★★★</span></div>
+          <div class="rating-label">Ribuan koleksi buku tersedia</div>
         </div>
-    </section>
-
-
-    <section class="featured-section">
-        <div class="container">
-            <div class="row justify-content-center">
-
-                <div class="col-lg-4 col-12 mb-4 mb-lg-0">
-                    <div class="custom-block bg-white shadow-lg">
-                        <a href="topics-detail.html">
-                            <div class="d-flex">
-                                <div>
-                                    <h5 class="mb-2">Buku Pelajaran</h5>
-
-                                    <p class="mb-0">Kumpulan buku pelajaran sesuai jurusan dan mata pelajaran sekolah.</p>
-                                </div>
-
-                                <span class="badge bg-design rounded-pill ms-auto">14</span>
-                            </div>
-
-                            <img src="images/topics/undraw_Remote_design_team_re_urdx.png"
-                                class="custom-block-image img-fluid" alt="">
-                        </a>
-                    </div>
-                </div>
-
-                <div class="col-lg-6 col-12">
-                    <div class="custom-block custom-block-overlay">
-                        <div class="d-flex flex-column h-100">
-                            <img src="images/businesswoman-using-tablet-analysis.jpg" class="custom-block-image img-fluid"
-                                alt="">
-
-                            <div class="custom-block-overlay-text d-flex">
-                                <div>
-                                    <h5 class="text-white mb-2">Buku Umum & Referensi</h5>
-
-                                    <p class="text-white">Berisi buku pengetahuan umum, ensiklopedia, dan bahan referensi
-                                        lainnya.</p>
-
-                                    <a href="topics-detail.html" class="btn custom-btn mt-2 mt-lg-3">Baca Selengkapnya</a>
-                                </div>
-
-                                <span class="badge bg-finance rounded-pill ms-auto">25</span>
-                            </div>
-
-                            <div class="social-share d-flex">
-                                <p class="text-white me-4">Bagikan:</p>
-
-                                <ul class="social-icon">
-                                    <li class="social-icon-item">
-                                        <a href="#" class="social-icon-link bi-instagram"></a>
-                                    </li>
-
-                                    <li class="social-icon-item">
-                                        <a href="#" class="social-icon-link bi-whatsapp"></a>
-                                    </li></a>
-                            </div>
-
-                            <div class="section-overlay"></div>
-                        </div>
-                    </div>
-                </div>
-
+      </div>
+      <div class="hero-search fade-up">
+        <form method="GET" action="{{ route('home') }}" style="display:contents;">
+          <div class="search-field">
+            <label>Cari Buku</label>
+            <div class="search-input-wrap">
+              <i class="fas fa-search search-icon"></i>
+              <input name="keyword" type="search" class="search-input" placeholder="Judul, pengarang, atau kategori..." value="{{ request('keyword') }}">
             </div>
-        </div>
-    </section>
-
-
-    <section class="explore-section section-padding" id="section_2">
-        <div class="container">
-            <div class="col-12 text-center">
-                <h2 class="mb-4">Koleksi Perpustakaan</h2>
-                <div class="container">
-                    
-    <div class="row mt-4">
-        @foreach($buku as $item)
-            <div class="col-lg-4 col-md-6 col-12 mb-4">
-                <a href="{{ route('buku.detail', $item->id_buku) }}"
-                   style="text-decoration:none; color:inherit;">
-
-                    <div class="card shadow text-center p-3">
-
-                        @if($item->foto)
-                            <img src="{{ asset('storage/'.$item->foto) }}"
-                                 class="img-fluid mb-3"
-                                 style="height:200px; object-fit:cover;">
-                        @endif
-
-                        <h5>{{ $item->judul_buku }}</h5>
-                        <p>{{ $item->pengarang }}</p>
-
-                    </div>
-                </a>
-            </div>
-        @endforeach
+          </div>
+          <button type="submit" class="btn btn-primary" style="padding:14px 32px;font-size:16px;">
+            <i class="fas fa-search"></i> Cari Buku
+          </button>
+        </form>
+      </div>
     </div>
+  </div>
+</section>
+
+{{-- TICKER --}}
+<div class="companies-section">
+  <div class="container">
+    <p class="companies-label">Kategori Koleksi Kami</p>
+    <div class="ticker-wrap">
+      <div class="ticker-track">
+        <span class="company-logo"><i class="fas fa-flask"></i> Sains & Teknologi</span>
+        <span class="company-logo"><i class="fas fa-landmark"></i> Sejarah</span>
+        <span class="company-logo"><i class="fas fa-calculator"></i> Matematika</span>
+        <span class="company-logo"><i class="fas fa-book-open"></i> Sastra</span>
+        <span class="company-logo"><i class="fas fa-briefcase"></i> Bisnis</span>
+        <span class="company-logo"><i class="fas fa-laptop-code"></i> Komputer & IT</span>
+        <span class="company-logo"><i class="fas fa-heartbeat"></i> Kesehatan</span>
+        <span class="company-logo"><i class="fas fa-flask"></i> Sains & Teknologi</span>
+        <span class="company-logo"><i class="fas fa-landmark"></i> Sejarah</span>
+        <span class="company-logo"><i class="fas fa-calculator"></i> Matematika</span>
+        <span class="company-logo"><i class="fas fa-book-open"></i> Sastra</span>
+        <span class="company-logo"><i class="fas fa-briefcase"></i> Bisnis</span>
+        <span class="company-logo"><i class="fas fa-laptop-code"></i> Komputer & IT</span>
+        <span class="company-logo"><i class="fas fa-heartbeat"></i> Kesehatan</span>
+      </div>
+    </div>
+  </div>
 </div>
 
+{{-- KOLEKSI BUKU --}}
+<section id="section_2">
+  <div class="container">
+    <div class="section-head fade-up"><h2>Koleksi Perpustakaan</h2></div>
+    <div class="courses-grid fade-up">
+      @forelse($buku as $item)
+        <a href="{{ route('buku.detail', $item->id_buku) }}" class="course-card-link">
+          <div class="course-card">
+            <div class="course-img">
+              @if($item->foto)
+                <img src="{{ asset('storage/'.$item->foto) }}" alt="{{ $item->judul_buku }}" style="width:100%;height:100%;object-fit:cover;">
+              @else
+                <div class="course-img-placeholder">📖</div>
+              @endif
             </div>
+            <div class="course-body">
+              <div class="course-meta">
+                <span class="course-tag">{{ $item->kategori->nama_kategori ?? 'Umum' }}</span>
+                @if(isset($item->stok))
+                  <span class="course-price {{ $item->stok > 0 ? '' : 'unavailable' }}">{{ $item->stok > 0 ? 'Tersedia' : 'Habis' }}</span>
+                @endif
+              </div>
+              <p class="course-title">{{ $item->judul_buku }}</p>
+              <div class="course-footer">
+                <span><i class="fas fa-user-edit"></i> {{ $item->pengarang }}</span>
+                <span><i class="fas fa-calendar"></i> {{ $item->th_terbit }}</span>
+              </div>
+            </div>
+          </div>
+        </a>
+      @empty
+        <div style="grid-column:1/-1;text-align:center;padding:60px 0;color:var(--text-muted);">
+          <i class="fas fa-book" style="font-size:48px;margin-bottom:16px;display:block;opacity:.4;"></i>
+          <p>Belum ada koleksi buku tersedia.</p>
         </div>
+      @endforelse
+    </div>
+  </div>
+</section>
 
-        <div class="container">
-            
-    </section>
+{{-- CARA PENGGUNAAN --}}
+<section id="section_3" style="background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%);position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;opacity:.05;background-image:radial-gradient(circle,white 1px,transparent 1px);background-size:30px 30px;"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="section-head fade-up" style="justify-content:center;">
+      <h2 style="color:white;text-align:center;">Bagaimana Cara Menggunakan Web Ini?</h2>
+    </div>
+    <div class="steps-grid fade-up">
+      <div class="step-card">
+        <div class="step-icon"><i class="fas fa-search"></i></div>
+        <div class="step-num">01</div>
+        <h4>Cari Buku</h4>
+        <p>Cari buku berdasarkan judul, kategori, atau nama pengarang melalui kolom pencarian.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-icon"><i class="fas fa-book-open"></i></div>
+        <div class="step-num">02</div>
+        <h4>Pilih Buku</h4>
+        <p>Lihat detail dan ketersediaan buku yang ingin kamu pinjam.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-icon"><i class="fas fa-hand-holding-heart"></i></div>
+        <div class="step-num">03</div>
+        <h4>Lakukan Peminjaman</h4>
+        <p>Ajukan peminjaman buku melalui sistem dengan mudah dan cepat.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-icon"><i class="fas fa-undo-alt"></i></div>
+        <div class="step-num">04</div>
+        <h4>Kembalikan Buku</h4>
+        <p>Kembalikan buku sebelum batas waktu sesuai ketentuan perpustakaan.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
+{{-- FAQ --}}
+<section id="section_4" style="background:#f7f9fc;">
+  <div class="container">
+    <div class="section-head fade-up"><h2>Pertanyaan yang Sering<br/>Diajukan</h2></div>
+    <div class="faq-grid fade-up">
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>📖 Bagaimana cara meminjam buku?</span>
+          <i class="fas fa-chevron-down faq-icon"></i>
+        </button>
+        <div class="faq-answer">Datang ke perpustakaan pada jam operasional, pilih buku yang ingin dipinjam, lalu bawa ke meja petugas dengan menunjukkan kartu anggota atau identitas diri.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>⏰ Berapa lama batas waktu peminjaman?</span>
+          <i class="fas fa-chevron-down faq-icon"></i>
+        </button>
+        <div class="faq-answer">Batas waktu peminjaman adalah <strong>3 hari</strong> sejak tanggal peminjaman. Perpanjangan dapat dilakukan satu kali jika belum ada siswa lain yang memesan.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>💰 Apakah ada denda keterlambatan?</span>
+          <i class="fas fa-chevron-down faq-icon"></i>
+        </button>
+        <div class="faq-answer">Ya, denda keterlambatan sebesar <strong>Rp 500</strong> per buku per hari.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>🕘 Jam berapa perpustakaan buka?</span>
+          <i class="fas fa-chevron-down faq-icon"></i>
+        </button>
+        <div class="faq-answer">Perpustakaan buka <strong>Senin–Jumat, pukul 08.00–15.00 WIB</strong>. Tutup pada hari Sabtu, Minggu, dan hari libur nasional.</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <section class="timeline-section section-padding" id="section_3">
-        <div class="section-overlay"></div>
-
-        <div class="container">
-            <div class="row">
-
-                <div class="col-12 text-center">
-                    <h2 class="text-white mb-4">Bagaimana Cara Menggunakan Web Ini?</h1>
-                </div>
-
-                <div class="col-lg-10 col-12 mx-auto">
-                    <div class="timeline-container">
-                        <ul class="vertical-scrollable-timeline" id="vertical-scrollable-timeline">
-                            <div class="list-progress">
-                                <div class="inner"></div>
-                            </div>
-
-                            <li>
-                                <h4 class="text-white mb-3">Cari Buku</h4>
-
-                                <p class="text-white">Pengguna dapat mencari buku berdasarkan judul, kategori, atau penulis
-                                    yang tersedia di web perpustakaan.</p>
-
-                                <div class="icon-holder">
-                                    <i class="bi-search"></i>
-                                </div>
-                            </li>
-
-                            <li>
-                                <h4 class="text-white mb-3">Pilih Buku</h4>
-
-                                <p class="text-white">Setelah menemukan buku yang diinginkan, pengguna dapat melihat detail
-                                    dan ketersediaan buku tersebut.</p>
-
-                                <div class="icon-holder">
-                                    <i class="bi-book-half"></i>
-                                </div>
-                            </li>
-
-                            <li>
-                                <h4 class="text-white mb-3">Lakukan Peminjaman</h4>
-
-                                <p class="text-white">Pengguna dapat melakukan peminjaman buku melalui sistem yang tersedia
-                                    dengan mudah dan cepat.</p>
-
-                                <div class="icon-holder">
-                                    <i class="bi-journal-arrow-down"></i>
-                                </div>
-                            </li>
-
-                            <li>
-                                <h4 class="text-white mb-3">Kembalikan Buku</h4>
-
-                                <p class="text-white">Setelah selesai membaca, pengguna dapat mengembalikan buku melalui
-                                    sistem perpustakaan sesuai dengan batas waktu peminjaman.</p>
-
-                                <div class="icon-holder">
-                                    <i class="bi-journal-arrow-up"></i>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-
-                <div class="col-12 text-center mt-5">
-                    <p class="text-white">
-                        Want to learn more?
-                        <a href="#" class="btn custom-btn custom-border-btn ms-3">Check out Youtube</a>
-                    </p>
-                </div>
-            </div>
+{{-- CONTACT --}}
+<section id="section_5">
+  <div class="container">
+    <div class="section-head fade-up" style="justify-content:center;"><h2 style="text-align:center;">Hubungi Kami</h2></div>
+    <div class="contact-grid fade-up">
+      <div class="contact-map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15849.335855052137!2d108.53468458413086!3d-6.729045740399089!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6f1df0e55b2ed3%3A0x51cf481547b4b319!2sSMK%20Negeri%201%20Cirebon!5e0!3m2!1sen!2sid!4v1770607084669!5m2!1sen!2sid"
+          width="100%" height="360" style="border:0;border-radius:12px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+      <div class="contact-info">
+        <h3>Perpustakaan SMKN 1 Cirebon</h3>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div><strong>Alamat</strong><br>Jl. Perjuangan, Sunyaragi,<br>Kota Cirebon, Jawa Barat</div>
         </div>
-    </section>
-
-
-    <section class="faq-section section-padding" id="section_4">
-        <div class="container">
-            <div class="row">
-
-                <div class="col-lg-6 col-12">
-                    <h2 class="mb-4">Pertanyaan yang Sering Diajukan</h2>
-                </div>
-
-                <div class="clearfix"></div>
-
-                <div class="col-lg-5 col-12">
-                    <img src="images/faq_graphic.jpg" class="img-fluid" alt="FAQs">
-                </div>
-
-                <div class="col-lg-6 col-12 m-auto">
-                    <div class="accordion" id="accordionExample">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    📖 Bagaimana cara meminjam buku?
-                                </button>
-                            </h2>
-
-                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                                data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    Untuk meminjam buku di perpustakaan, siswa harus datang langsung ke perpustakaan pada
-                                    jam operasional.
-                                    Pilih buku yang ingin dipinjam di rak koleksi, lalu bawa buku tersebut ke meja petugas.
-                                    Siswa wajib menunjukkan kartu anggota perpustakaan atau identitas diri agar data
-                                    peminjaman dapat dicatat oleh petugas.
-                                    Setelah proses pencatatan selesai, buku dapat dibawa pulang sesuai dengan ketentuan yang
-                                    berlaku.
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingTwo">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    ⏰ Berapa lama batas waktu peminjaman buku?
-                                </button>
-                            </h2>
-
-                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                                data-bs-parent="#accordionExample">Batas waktu peminjaman buku di perpustakaan adalah 3
-                                hari sejak tanggal peminjaman.
-                                Jika buku belum selesai dibaca dan belum ada siswa lain yang memesan buku tersebut,
-                                peminjaman dapat diperpanjang dengan melapor kembali ke petugas sebelum tanggal
-                                pengembalian.
-                                Perpanjangan hanya dapat dilakukan satu kali sesuai kebijakan perpustakaan.
-                            </div>
-                        </div>
-
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingThree">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                    💰 Apakah ada denda jika terlambat mengembalikan buku?
-                                </button>
-                            </h2>
-
-                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
-                                data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    Ya, perpustakaan menerapkan denda keterlambatan bagi siswa yang mengembalikan buku
-                                    melewati batas waktu yang ditentukan.
-                                    Besarnya denda adalah Rp.500 untuk setiap buku.
-                                    Denda ini bertujuan untuk melatih kedisiplinan siswa dan memastikan buku dapat digunakan
-                                    oleh siswa lainnya.
-                                    Jika keterlambatan terlalu lama, siswa dapat dikenakan sanksi tambahan sesuai peraturan
-                                    perpustakaan.
-                                </div>
-                            </div>
-
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingThree">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#collapseThree" aria-expanded="false"
-                                        aria-controls="collapseThree">
-                                        🕘 Jam berapa perpustakaan buka?
-                                    </button>
-                                </h2>
-
-                                <div id="collapseThree" class="accordion-collapse collapse"
-                                    aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                                    <div class="accordion-body">
-                                        Perpustakaan buka pada hari Senin sampai Jumat, mulai pukul 08.00 hingga 15.00 WIB.
-                                        Perpustakaan tutup pada hari Sabtu, Minggu, dan hari libur nasional.
-                                        Siswa diharapkan datang sesuai jam operasional agar dapat dilayani dengan baik oleh
-                                        petugas.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-    </section>
-
-
-    <section class="contact-section section-padding section-bg" id="section_5">
-        <div class="container">
-            <div class="row">
-
-                <div class="col-lg-12 col-12 text-center">
-                    <h2 class="mb-5">Hubungi Kami</h2>
-                </div>
-
-                <div class="col-lg-5 col-12 mb-4 mb-lg-0">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15849.335855052137!2d108.53468458413086!3d-6.729045740399089!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6f1df0e55b2ed3%3A0x51cf481547b4b319!2sSMK%20Negeri%201%20Cirebon!5e0!3m2!1sen!2sid!4v1770607084669!5m2!1sen!2sid"
-                        width="550" height="400" style="border:0;" allowfullscreen="" loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"></iframe>
-                </div>
-
-                <div class="col-lg-4.5 col-md-6 col-12 mb-3 mb-lg- mb-md-0 ms-auto">
-                    <h4 class="mb-3">Perpustakaan SMKN 1 Cirebon</h4>
-
-                    <p>Jl. Perjuangan, Sunyaragi
-                    <p>
-                        Kota Cirebon, Jawa Barat, Indonesia</p>
-
-                    <hr>
-
-                    <p class="d-flex align-items-center mb-1">
-                        <span class="me-2">Telepon</span>
-
-                        <a href="tel: 305-240-9671" class="site-footer-link">
-                            +62 85129935749
-                        </a>
-                    </p>
-
-                    <p class="d-flex align-items-center">
-                        <span class="me-2">Email</span>
-
-                        <a href="mailto:info@company.com" class="site-footer-link">
-                            info@smkn1-cirebon.sch.id
-                        </a>
-                    </p>
-                </div>
-
-            </div>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fas fa-phone"></i></div>
+          <div><strong>Telepon</strong><br>+62 85129935749</div>
         </div>
-    </section>
-    </main>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+          <div><strong>Email</strong><br>info@smkn1-cirebon.sch.id</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fas fa-clock"></i></div>
+          <div><strong>Jam Operasional</strong><br>Senin–Jumat, 08.00–15.00 WIB</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- JAVASCRIPT FILES -->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/jquery.sticky.js"></script>
-    <script src="js/click-scroll.js"></script>
-    <script src="js/custom.js"></script>
 @endsection
+
+@push('scripts')
+<script>
+  function toggleFaq(btn) {
+    const item = btn.parentElement;
+    const answer = item.querySelector('.faq-answer');
+    const icon = item.querySelector('.faq-icon');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(el => {
+      el.classList.remove('open');
+      el.querySelector('.faq-answer').style.maxHeight = null;
+      el.querySelector('.faq-icon').style.transform = '';
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      answer.style.maxHeight = answer.scrollHeight + 'px';
+      icon.style.transform = 'rotate(180deg)';
+    }
+  }
+</script>
+@endpush
