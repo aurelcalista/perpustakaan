@@ -125,36 +125,68 @@
     background: var(--primary); border-color: var(--primary); color: var(--white);
   }
 
-  /* ===================== MENTORS ===================== */
-  #section_mentors { background: #f7f9fc; }
-  .mentors-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
-  .mentor-card {
-    border-radius: var(--radius); overflow: visible; box-shadow: var(--shadow-card);
-    background: var(--white); transition: transform .3s, box-shadow .3s;
-  }
-  .mentor-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-heavy); }
-  .mentor-img-wrap {
-    height: 280px; border-radius: var(--radius) var(--radius) 0 0; overflow: hidden;
-    background: linear-gradient(145deg, var(--primary-pale), #dde4eb);
-    display: flex; align-items: center; justify-content: center;
-  }
-  .mentor-avatar {
-    width: 120px; height: 120px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary), var(--primary-light));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 48px; color: white;
-    box-shadow: 0 8px 24px rgba(26,45,107,0.25);
-  }
-  .mentor-info { padding: 20px; text-align: center; }
-  .mentor-name-tag {
-    display: inline-block; background: var(--white);
-    border: 1px solid var(--border); border-radius: 6px;
-    padding: 6px 16px; font-size: 13px; font-weight: 600; color: var(--primary);
-    box-shadow: 0 2px 12px rgba(26,45,107,.1);
-    margin-top: -28px; position: relative; z-index: 2; margin-bottom: 10px;
-  }
-  .mentor-name { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 700; color: var(--text); }
+  /* ===================== TIM PETUGAS ===================== */
 
+#section_mentors{
+background:#f7f9fc;
+padding:80px 0;
+}
+
+.mentors-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:30px;
+margin-top:40px;
+}
+
+.mentor-card{
+background:white;
+border-radius:12px;
+padding:30px 20px;
+text-align:center;
+box-shadow:0 10px 25px rgba(0,0,0,0.05);
+transition:all .3s ease;
+}
+
+.mentor-card:hover{
+transform:translateY(-8px);
+box-shadow:0 15px 35px rgba(0,0,0,0.08);
+}
+
+.mentor-img-wrap{
+display:flex;
+justify-content:center;
+align-items:center;
+margin-bottom:20px;
+}
+
+.mentor-photo{
+width:120px;
+height:120px;
+border-radius:50%;
+object-fit:cover;
+display:block;
+margin:auto;
+}
+
+.mentor-name-tag{
+display:inline-block;
+font-size:13px;
+color:#5b6b8c;
+margin-bottom:6px;
+}
+
+.mentor-name{
+font-size:18px;
+font-weight:700;
+color:#1a2d6b;
+margin-bottom:4px;
+}
+
+.mentor-email{
+font-size:13px;
+color:#8892a6;
+}
   /* ===================== TESTIMONIALS ===================== */
   #section_testimonials { background: #f0f4f8; }
   .testimonials-slider { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
@@ -187,14 +219,62 @@
   .step-card h4 { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 700; color: white; margin-bottom: 10px; }
   .step-card p { font-size: 14px; color: rgba(255,255,255,.75); line-height: 1.6; }
 
-  /* FAQ */
-  .faq-grid { max-width: 780px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
-  .faq-item { background: var(--white); border-radius: var(--radius-sm); box-shadow: var(--shadow-card); overflow: hidden; }
-  .faq-question { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; background: none; border: none; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; color: var(--text); cursor: pointer; text-align: left; gap: 16px; }
-  .faq-question:hover { color: var(--primary); }
-  .faq-icon { transition: transform .3s; flex-shrink: 0; color: var(--text-muted); }
-  .faq-answer { max-height: 0; overflow: hidden; transition: max-height .3s ease; font-size: 14px; color: var(--text-muted); line-height: 1.7; padding: 0 24px; }
-  .faq-item.open .faq-answer { padding-bottom: 20px; }
+ /* ================= FAQ ================= */
+
+.faq-grid{
+max-width:800px;
+margin:auto;
+display:flex;
+flex-direction:column;
+gap:16px;
+}
+
+.faq-item{
+background:white;
+border-radius:10px;
+box-shadow:0 5px 20px rgba(0,0,0,0.05);
+overflow:hidden;
+transition:all .3s ease;
+}
+
+.faq-question{
+width:100%;
+padding:18px 20px;
+border:none;
+background:white;
+font-size:16px;
+font-weight:600;
+display:flex;
+justify-content:space-between;
+align-items:center;
+cursor:pointer;
+}
+
+.faq-question:hover{
+background:#f5f7fb;
+}
+
+.faq-answer{
+max-height:0;
+overflow:hidden;
+padding:0 20px;
+transition:max-height .35s ease;
+font-size:14px;
+color:#555;
+}
+
+.faq-item.active .faq-answer{
+max-height:200px;
+padding:15px 20px;
+}
+
+.faq-icon{
+transition:transform .3s;
+}
+
+.faq-item.active .faq-icon{
+transform:rotate(180deg);
+}
 
   /* CONTACT */
   #section_5 { background: var(--white); }
@@ -332,42 +412,47 @@
 {{-- PETUGAS / MENTORS --}}
 <section id="section_mentors">
   <div class="container">
-    <div class="section-head fade-up">
-      <h2>Kenali Petugas Kami</h2>
-      <button class="btn btn-outline">Lihat Semua Petugas</button>
-    </div>
-    <div class="mentors-grid fade-up">
-      {{-- Ganti dengan data dinamis dari controller jika tersedia --}}
-      <div class="mentor-card">
-        <div class="mentor-img-wrap">
-          <div class="mentor-avatar">👩‍💼</div>
-        </div>
-        <div class="mentor-info">
-          <div class="mentor-name-tag">Kepala Perpustakaan</div>
-          <p class="mentor-name">Nama Petugas 1</p>
-        </div>
-      </div>
-      <div class="mentor-card">
-        <div class="mentor-img-wrap">
-          <div class="mentor-avatar">👨‍💼</div>
-        </div>
-        <div class="mentor-info">
-          <div class="mentor-name-tag">Staff Perpustakaan</div>
-          <p class="mentor-name">Nama Petugas 2</p>
-        </div>
-      </div>
-      <div class="mentor-card">
-        <div class="mentor-img-wrap">
-          <div class="mentor-avatar">👩‍🏫</div>
-        </div>
-        <div class="mentor-info">
-          <div class="mentor-name-tag">Staff Perpustakaan</div>
-          <p class="mentor-name">Nama Petugas 3</p>
-        </div>
-      </div>
-    </div>
+
+<div class="section-head">
+<h2>Tim Petugas Perpustakaan</h2>
+<p class="section-sub">
+Kenali tim yang membantu mengelola koleksi dan layanan perpustakaan digital kami.
+</p>
+</div>
+
+<div class="mentors-grid">
+
+<div class="mentor-card">
+<img src="/images/petugas1.jpg" class="mentor-photo">
+  <div class="mentor-info">
+      <span class="mentor-name-tag">Kepala Perpustakaan</span>
+      <h3 class="mentor-name">Weti Kurniawati</h3>
+      <p class="mentor-email">weti@perpus.sch.id</p>
   </div>
+</div>
+
+<div class="mentor-card">
+<img src="/images/petugas2.jpg" class="mentor-photo">
+  <div class="mentor-info">
+      <span class="mentor-name-tag">Staff Perpustakaan</span>
+      <h3 class="mentor-name">Yanto Susanto</h3>
+      <p class="mentor-email">yanto@perpus.sch.id</p>
+  </div>
+</div>
+
+<div class="mentor-card">
+<img src="/images/petugas2.jpg" class="mentor-photo">
+  <div class="mentor-info">
+      <span class="mentor-name-tag">Staff Perpustakaan</span>
+      <h3 class="mentor-name">Abdullah</h3>
+      <p class="mentor-email">abdul@perpus.sch.id</p>
+  </div>
+</div>
+</div>
+
+</div>
 </section>
+
 
 {{-- ULASAN / TESTIMONIALS --}}
 <section id="section_testimonials">
@@ -448,28 +533,28 @@
     <div class="section-head fade-up"><h2>Pertanyaan yang Sering<br/>Diajukan</h2></div>
     <div class="faq-grid fade-up">
       <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
+        <button class="faq-question">
           <span>📖 Bagaimana cara meminjam buku?</span>
           <i class="fas fa-chevron-down faq-icon"></i>
         </button>
         <div class="faq-answer">Datang ke perpustakaan pada jam operasional, pilih buku yang ingin dipinjam, lalu bawa ke meja petugas dengan menunjukkan kartu anggota atau identitas diri.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
+        <button class="faq-question">
           <span>⏰ Berapa lama batas waktu peminjaman?</span>
           <i class="fas fa-chevron-down faq-icon"></i>
         </button>
         <div class="faq-answer">Batas waktu peminjaman adalah <strong>3 hari</strong> sejak tanggal peminjaman. Perpanjangan dapat dilakukan satu kali jika belum ada siswa lain yang memesan.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
+        <button class="faq-question">
           <span>💰 Apakah ada denda keterlambatan?</span>
           <i class="fas fa-chevron-down faq-icon"></i>
         </button>
         <div class="faq-answer">Ya, denda keterlambatan sebesar <strong>Rp 500</strong> per buku per hari.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
+        <button class="faq-question">
           <span>🕘 Jam berapa perpustakaan buka?</span>
           <i class="fas fa-chevron-down faq-icon"></i>
         </button>
@@ -478,6 +563,29 @@
     </div>
   </div>
 </section>
+<script>
+
+const faqItems = document.querySelectorAll(".faq-item");
+
+faqItems.forEach(item => {
+
+const question = item.querySelector(".faq-question");
+
+question.addEventListener("click", () => {
+
+faqItems.forEach(el => {
+if(el !== item){
+el.classList.remove("active");
+}
+});
+
+item.classList.toggle("active");
+
+});
+
+});
+
+</script>
 
 {{-- CONTACT --}}
 <section id="section_5">
