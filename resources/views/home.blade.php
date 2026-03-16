@@ -468,25 +468,46 @@ Kenali tim yang membantu mengelola koleksi dan layanan perpustakaan digital kami
       {{-- Ganti dengan data dinamis dari controller jika tersedia --}}
       <div class="testimonial-card">
         <div class="t-avatar">A</div>
-        <p class="t-role">Siswa Kelas XII TKJ</p>
-        <p class="t-name">Ahmad Fauzi</p>
+        <p class="t-role">Siswa Kelas XI RPL</p>
+        <p class="t-name">Agnia putri</p>
         <div class="t-stars">★★★★★</div>
         <p class="t-text">Perpustakaan SMKN 1 Cirebon sangat membantu proses belajar saya. Koleksi bukunya lengkap dan sistem peminjaman sangat mudah!</p>
       </div>
       <div class="testimonial-card">
-        <div class="t-avatar">S</div>
+        <div class="t-avatar">K</div>
         <p class="t-role">Siswa Kelas XI RPL</p>
-        <p class="t-name">Siti Nurhaliza</p>
+        <p class="t-name">Kezhia Aurelia</p>
         <div class="t-stars">★★★★★</div>
         <p class="t-text">Sistem pencarian buku online sangat memudahkan saya. Tidak perlu lagi datang langsung hanya untuk tahu apakah buku tersedia atau tidak.</p>
       </div>
       <div class="testimonial-card">
-        <div class="t-avatar">R</div>
-        <p class="t-role">Siswa Kelas X AKL</p>
-        <p class="t-name">Rizky Pratama</p>
+        <div class="t-avatar">A</div>
+        <p class="t-role">Siswa Kelas XI RPL</p>
+        <p class="t-name">Adinda Amelia</p>
         <div class="t-stars">★★★★★</div>
         <p class="t-text">Petugas perpustakaannya ramah dan sangat membantu. Tempatnya juga nyaman untuk membaca dan belajar bersama teman-teman.</p>
       </div>
+      <div class="testimonial-card">
+        <div class="t-avatar">A</div>
+        <p class="t-role">Siswa Kelas XI RPL</p>
+        <p class="t-name">Aurelia Calista</p>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">Perpustakaan ini sangat membantu saya saat mencari referensi tugas sekolah. Koleksi bukunya banyak dan mudah ditemukan.</p>
+      </div>
+     <div class="testimonial-card">
+        <div class="t-avatar">C</div>
+        <p class="t-role">Siswa Kelas XI RPL</p>
+        <p class="t-name">Cyra Ghasanah</p>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">Tempatnya nyaman dan tenang untuk belajar. Sistem peminjaman online juga membuat semuanya lebih praktis.</p>
+      </div>
+     <div class="testimonial-card">
+        <div class="t-avatar">T</div>
+        <p class="t-role">Siswa Kelas XI RPL</p>
+        <p class="t-name">Tiara Maharani</p>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">Saya suka karena bisa mencari buku langsung lewat website perpustakaan. Jadi lebih cepat dan tidak membuang waktu.</p>
+    </div>
     </div>
   </div>
 </section>
