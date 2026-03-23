@@ -155,6 +155,9 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
+
+    Route::post('/favorit/toggle', [\App\Http\Controllers\FavoritController::class, 'toggle'])
+        ->name('favorit.toggle');
 });
 
 require __DIR__.'/auth.php';

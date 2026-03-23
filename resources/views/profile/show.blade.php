@@ -18,11 +18,9 @@
                         {{ strtoupper(substr(Auth::user()->nama, 0, 2)) }}
                     </div>
                 @endif
-                <div style="position:absolute; bottom:6px; right:6px;
-                            width:26px; height:26px; border-radius:50%;
-                            background:#1a2d6b; border:2px solid #fff;
-                            display:flex; align-items:center; justify-content:center;
-                            box-shadow:0 2px 6px rgba(0,0,0,0.25);">
+                <div style="position:absolute;bottom:6px;right:6px;width:26px;height:26px;border-radius:50%;
+                            background:#1a2d6b;border:2px solid #fff;display:flex;align-items:center;
+                            justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,0.25);">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="13" height="13">
                         <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
                     </svg>
@@ -65,7 +63,7 @@
                             <svg viewBox="0 0 24 24" fill="#1a2d6b"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM7 11h5v5H7z"/></svg>
                         </div>
                         <div>
-                            <div class="stat-pill-num" style="font-size:14px; font-weight:800; padding-top:3px;">{{ date('M Y', strtotime(Auth::user()->created_at ?? now())) }}</div>
+                            <div class="stat-pill-num" style="font-size:14px;font-weight:800;padding-top:3px;">{{ date('M Y', strtotime(Auth::user()->created_at ?? now())) }}</div>
                             <div class="stat-pill-label">Anggota Sejak</div>
                         </div>
                     </div>
@@ -133,17 +131,17 @@
                         <div class="biodata-grid">
                             <div class="biodata-field">
                                 <label>NIS / ID Anggota</label>
-                                <div style="position:relative; display:flex; align-items:center;">
+                                <div style="position:relative;display:flex;align-items:center;">
                                     <input type="password" id="nis-display" value="{{ Auth::user()->nis }}"
                                         readonly
-                                        style="width:100%; padding:10px 40px 10px 14px; background:#f7f9fc;
-                                                border:1px solid #e8edf2; border-radius:8px; font-size:14px;
-                                                font-weight:600; color:#1a2332; font-family:inherit;
-                                                cursor:default; outline:none;">
+                                        style="width:100%;padding:10px 40px 10px 14px;background:#f7f9fc;
+                                               border:1px solid #e8edf2;border-radius:8px;font-size:14px;
+                                               font-weight:600;color:#1a2332;font-family:inherit;
+                                               cursor:default;outline:none;">
                                     <button type="button"
-                                            onclick="const i=document.getElementById('nis-display'); i.type=i.type==='password'?'text':'password'"
-                                            style="position:absolute; right:10px; background:none; border:none;
-                                                cursor:pointer; color:#a0aec0; display:flex; align-items:center; padding:4px;">
+                                            onclick="const i=document.getElementById('nis-display');i.type=i.type==='password'?'text':'password'"
+                                            style="position:absolute;right:10px;background:none;border:none;
+                                                   cursor:pointer;color:#a0aec0;display:flex;align-items:center;padding:4px;">
                                         <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
                                             <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
                                         </svg>
@@ -174,9 +172,7 @@
                     </div>
                 </div>
 
-                <!-- ═══════════════════════════════════════ -->
-                <!-- BUKU DIPINJAM (data real dari database) -->
-                <!-- ═══════════════════════════════════════ -->
+                <!-- BUKU DIPINJAM -->
                 <div class="profile-panel" id="panel-dipinjam">
                     <div class="panel-card">
                         <div class="panel-card-header">
@@ -184,7 +180,6 @@
                             <span class="badge badge-info">{{ $pinjaman->count() }} buku</span>
                         </div>
 
-                        {{-- Legenda status --}}
                         @if($pinjaman->count() > 0)
                         <div class="dipinjam-legend">
                             <span class="legend-item"><span class="legend-dot pending"></span>Pending</span>
@@ -196,39 +191,25 @@
                         @forelse($pinjaman as $item)
                             @php
                                 $cardClass = 'status-dipinjam';
-                                if ($item->status === 'pending') {
-                                    $cardClass = 'status-pending';
-                                } elseif ($item->terlambat) {
-                                    $cardClass = 'status-terlambat';
-                                }
+                                if ($item->status === 'pending') $cardClass = 'status-pending';
+                                elseif ($item->terlambat) $cardClass = 'status-terlambat';
                             @endphp
-
                             <div class="book-borrow-card {{ $cardClass }}">
-
-                                {{-- Cover --}}
                                 <div class="book-borrow-cover">
                                     @if($item->foto)
-                                        <img src="{{ asset('storage/' . $item->foto) }}"
-                                             alt="{{ $item->judul_buku }}">
+                                        <img src="{{ asset('storage/' . $item->foto) }}" alt="{{ $item->judul_buku }}">
                                     @else
                                         <div class="book-borrow-cover-placeholder">📚</div>
                                     @endif
                                 </div>
-
-                                {{-- Info --}}
                                 <div class="book-borrow-body">
-                                    <p class="book-borrow-title" title="{{ $item->judul_buku }}">
-                                        {{ $item->judul_buku }}
-                                    </p>
+                                    <p class="book-borrow-title" title="{{ $item->judul_buku }}">{{ $item->judul_buku }}</p>
                                     <p class="book-borrow-author">{{ $item->pengarang }}</p>
-
                                     <div class="book-borrow-dates">
                                         <div class="borrow-date-item">
                                             <span class="borrow-date-icon">📅</span>
                                             <span class="borrow-date-label">Dipinjam</span>
-                                            <span class="borrow-date-val">
-                                                {{ \Carbon\Carbon::parse($item->tgl_pinjam)->translatedFormat('d M Y') }}
-                                            </span>
+                                            <span class="borrow-date-val">{{ \Carbon\Carbon::parse($item->tgl_pinjam)->translatedFormat('d M Y') }}</span>
                                         </div>
                                         <div class="borrow-date-item">
                                             <span class="borrow-date-icon">🔔</span>
@@ -238,76 +219,52 @@
                                             </span>
                                         </div>
                                     </div>
-
                                     <div class="book-borrow-badges">
-
-                                        {{-- Status Badge --}}
                                         @if($item->status === 'pending')
-                                            <span class="borrow-badge borrow-badge-pending">
-                                                🟡 Menunggu Persetujuan
-                                            </span>
+                                            <span class="borrow-badge borrow-badge-pending">🟡 Menunggu Persetujuan</span>
                                         @elseif($item->terlambat)
-                                            <span class="borrow-badge borrow-badge-overdue">
-                                                🔴 Terlambat
-                                            </span>
+                                            <span class="borrow-badge borrow-badge-overdue">🔴 Terlambat</span>
                                         @else
-                                            <span class="borrow-badge borrow-badge-active">
-                                                🟢 Dipinjam
-                                            </span>
+                                            <span class="borrow-badge borrow-badge-active">🟢 Dipinjam</span>
                                         @endif
 
-                                        {{-- Sisa / Keterlambatan --}}
                                         @if($item->status !== 'pending')
                                             @if($item->terlambat)
-                                                <span class="borrow-badge borrow-badge-time overdue">
-                                                    ⏰ Terlambat {{ abs($item->sisa_hari) }} hari
-                                                </span>
+                                                <span class="borrow-badge borrow-badge-time overdue">⏰ Terlambat {{ abs($item->sisa_hari) }} hari</span>
                                             @elseif($item->sisa_hari == 0)
-                                                <span class="borrow-badge borrow-badge-time warn">
-                                                    ⚠️ Jatuh tempo hari ini
-                                                </span>
+                                                <span class="borrow-badge borrow-badge-time warn">⚠️ Jatuh tempo hari ini</span>
                                             @else
-                                                <span class="borrow-badge borrow-badge-time">
-                                                    ⏳ {{ $item->sisa_hari }} hari lagi
-                                                </span>
+                                                <span class="borrow-badge borrow-badge-time">⏳ {{ $item->sisa_hari }} hari lagi</span>
                                             @endif
                                         @endif
 
-                                        {{-- Denda --}}
                                         @if($item->denda > 0)
-                                            <span class="borrow-badge borrow-badge-denda">
-                                                💸 Denda: Rp {{ number_format($item->denda, 0, ',', '.') }}
-                                            </span>
+                                            <span class="borrow-badge borrow-badge-denda">💸 Denda: Rp {{ number_format($item->denda, 0, ',', '.') }}</span>
                                         @endif
 
-                                        {{-- Tombol Batalkan (hanya untuk status pending) --}}
                                         @if($item->status === 'pending')
                                             <form id="cancel-form-{{ $item->id_sk }}"
                                                   action="{{ route('siswa.pinjam.cancel', $item->id_sk) }}"
-                                                  method="POST"
-                                                  style="display:inline;">
+                                                  method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button"
                                                         onclick="confirmCancel('cancel-form-{{ $item->id_sk }}')"
                                                         class="borrow-badge borrow-badge-overdue"
-                                                        style="border:none; cursor:pointer;">
+                                                        style="border:none;cursor:pointer;">
                                                     ✕ Batalkan
                                                 </button>
                                             </form>
                                         @endif
-
                                     </div>
                                 </div>
                             </div>
-
                         @empty
                             <div class="section-empty">
                                 <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
                                 <p>Tidak ada buku yang sedang dipinjam</p>
                             </div>
                         @endforelse
-
                     </div>
                 </div>
 
@@ -356,11 +313,73 @@
                     <div class="panel-card">
                         <div class="panel-card-header">
                             <h2 class="panel-card-title">Riwayat Pelanggaran</h2>
+                            <span class="badge {{ $pelanggaran->count() > 0 ? 'badge-overdue' : 'badge-info' }}">
+                                {{ $pelanggaran->count() }} pelanggaran
+                            </span>
                         </div>
-                        <div class="section-empty">
-                            <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-1 14H9V9h2v6zm4 0h-2V9h2v6z"/></svg>
-                            <p>Tidak ada riwayat pelanggaran</p>
-                        </div>
+
+                        @forelse($pelanggaran as $item)
+                            <div class="book-borrow-card status-terlambat">
+
+                                <div class="book-borrow-cover">
+                                    @if($item->foto)
+                                        <img src="{{ asset('storage/' . $item->foto) }}" alt="{{ $item->judul_buku }}">
+                                    @else
+                                        <div class="book-borrow-cover-placeholder">📚</div>
+                                    @endif
+                                </div>
+
+                                <div class="book-borrow-body">
+                                    <p class="book-borrow-title">{{ $item->judul_buku }}</p>
+                                    <p class="book-borrow-author">{{ $item->pengarang }}</p>
+
+                                    <div class="book-borrow-dates">
+                                        <div class="borrow-date-item">
+                                            <span class="borrow-date-icon">📅</span>
+                                            <span class="borrow-date-label">Tgl Pinjam</span>
+                                            <span class="borrow-date-val">
+                                                {{ \Carbon\Carbon::parse($item->tgl_pinjam)->translatedFormat('d M Y') }}
+                                            </span>
+                                        </div>
+                                        <div class="borrow-date-item">
+                                            <span class="borrow-date-icon">🔔</span>
+                                            <span class="borrow-date-label">Batas Kembali</span>
+                                            <span class="borrow-date-val text-red">
+                                                {{ \Carbon\Carbon::parse($item->tgl_kembali)->translatedFormat('d M Y') }}
+                                            </span>
+                                        </div>
+
+                                        {{-- Gunakan tgl_dikembalikan (alias dari updated_at di controller) --}}
+                                        @if($item->status === 'dikembalikan' && $item->tgl_dikembalikan)
+                                        <div class="borrow-date-item">
+                                            <span class="borrow-date-icon">✅</span>
+                                            <span class="borrow-date-label">Dikembalikan</span>
+                                            <span class="borrow-date-val">
+                                                {{ \Carbon\Carbon::parse($item->tgl_dikembalikan)->translatedFormat('d M Y') }}
+                                            </span>
+                                        </div>
+                                        @endif
+                                    </div>
+
+                                    <div class="book-borrow-badges">
+                                        <span class="borrow-badge borrow-badge-overdue">
+                                            🔴 Terlambat {{ $item->hari_terlambat }} hari
+                                        </span>
+                                        <span class="borrow-badge borrow-badge-denda">
+                                            💸 Denda: Rp {{ number_format($item->denda, 0, ',', '.') }}
+                                        </span>
+                                        <span class="borrow-badge {{ $item->status === 'dikembalikan' ? 'borrow-badge-active' : 'borrow-badge-time overdue' }}">
+                                            {{ $item->status === 'dikembalikan' ? '✅ Sudah Dikembalikan' : '⏰ Belum Dikembalikan' }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="section-empty">
+                                <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-1 14H9V9h2v6zm4 0h-2V9h2v6z"/></svg>
+                                <p>Tidak ada riwayat pelanggaran 🎉</p>
+                            </div>
+                        @endforelse
                     </div>
                 </div>
 
@@ -369,20 +388,50 @@
                     <div class="panel-card">
                         <div class="panel-card-header">
                             <h2 class="panel-card-title">Buku Favorit</h2>
+                            <span class="badge badge-info">{{ $favorit->count() }} buku</span>
                         </div>
-                        <div class="section-empty">
-                            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                            <p>Belum ada buku favorit</p>
-                        </div>
+
+                        @forelse($favorit as $fav)
+                            <div class="book-borrow-card status-dipinjam" style="align-items:center;">
+                                <div class="book-borrow-cover">
+                                    @if($fav->buku->foto)
+                                        <img src="{{ asset('storage/' . $fav->buku->foto) }}" alt="{{ $fav->buku->judul_buku }}">
+                                    @else
+                                        <div class="book-borrow-cover-placeholder">📚</div>
+                                    @endif
+                                </div>
+                                <div class="book-borrow-body">
+                                    <p class="book-borrow-title">{{ $fav->buku->judul_buku }}</p>
+                                    <p class="book-borrow-author">{{ $fav->buku->pengarang }}</p>
+                                    <span class="course-tag" style="display:inline-block;margin-top:4px;">
+                                        {{ $fav->buku->kategori->nama_kategori ?? 'Umum' }}
+                                    </span>
+                                </div>
+                                <button
+                                    onclick="hapusFavorit('{{ $fav->buku->id_buku }}', this)"
+                                    style="margin-left:auto;background:#fff0f0;border:1px solid #fed7d7;
+                                           color:#e53e3e;border-radius:8px;padding:8px 14px;
+                                           cursor:pointer;font-size:13px;font-weight:600;
+                                           display:flex;align-items:center;gap:6px;white-space:nowrap;">
+                                    <i class="fas fa-heart-broken"></i> Hapus
+                                </button>
+                            </div>
+                        @empty
+                            <div class="section-empty">
+                                <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                <p>Belum ada buku favorit</p>
+                            </div>
+                        @endforelse
                     </div>
                 </div>
 
                 <!-- PENGATURAN AKUN -->
+                {{-- ↓ Tombol "Ganti Password" diarahkan ke profile.edit dengan anchor #password ↓ --}}
                 <div class="profile-panel" id="panel-akun">
                     <div class="panel-card">
                         <div class="panel-card-header">
                             <h2 class="panel-card-title">Pengaturan Akun</h2>
-                            <a href="{{ route('profile.edit') }}" class="btn-edit-data">
+                            <a href="{{ route('profile.edit') }}#password" class="btn-edit-data">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="13" height="13">
                                     <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
                                 </svg>
@@ -396,11 +445,27 @@
                             </div>
                             <div class="biodata-field">
                                 <label>Status Akun</label>
-                                <p>Anggota Reguler</p>
+                                <p>Anggota Perpustakaan</p>
                             </div>
+                            {{-- ↓ Fix: tutup div yang hilang sebelumnya ↓ --}}
                             <div class="biodata-field">
-                                <label>ID Anggota</label>
-                                <p>{{ Auth::user()->nis }}</p>
+                                <label>NIS / ID Anggota</label>
+                                <div style="position:relative;display:flex;align-items:center;">
+                                    <input type="password" id="nis-display-akun" value="{{ Auth::user()->nis }}"
+                                        readonly
+                                        style="width:100%;padding:10px 40px 10px 14px;background:#f7f9fc;
+                                               border:1px solid #e8edf2;border-radius:8px;font-size:14px;
+                                               font-weight:600;color:#1a2332;font-family:inherit;
+                                               cursor:default;outline:none;">
+                                    <button type="button"
+                                            onclick="const i=document.getElementById('nis-display-akun');i.type=i.type==='password'?'text':'password'"
+                                            style="position:absolute;right:10px;background:none;border:none;
+                                                   cursor:pointer;color:#a0aec0;display:flex;align-items:center;padding:4px;">
+                                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                             <div class="biodata-field">
                                 <label>Bergabung</label>
@@ -415,7 +480,6 @@
 
     </div><!-- end container -->
 </div><!-- end page wrap -->
-
 
 <!-- MODAL FOTO -->
 <div id="photoModal" class="photo-modal-overlay" style="display:none;">
@@ -448,11 +512,7 @@
                 </svg>
                 Galeri
             </button>
-            {{-- Tombol hapus: selalu ada di DOM, visibility dikontrol JS --}}
-            <button id="btn-delete-photo"
-                    class="photo-btn photo-btn-delete"
-                    onclick="confirmDeletePhoto()"
-                    style="display:none;">
+            <button id="btn-delete-photo" class="photo-btn photo-btn-delete" onclick="confirmDeletePhoto()" style="display:none;">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="15" height="15">
                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
                 </svg>
@@ -476,8 +536,6 @@
                 <button type="submit" class="photo-btn photo-btn-save">💾 Simpan Foto</button>
             </form>
         </div>
-
-        {{-- Form hapus foto (hidden, disubmit lewat JS) --}}
         <form id="delete-photo-form" action="{{ route('profile.deletePhoto') }}" method="POST" style="display:none;">
             @csrf
             @method('DELETE')
@@ -486,8 +544,8 @@
 </div>
 
 <!-- MODAL BARCODE -->
-<div id="barcodeModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
-    background: rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:3000;">
+<div id="barcodeModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+    background:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:3000;">
     <div class="barcode-modal-box">
         <button class="barcode-modal-close" onclick="closeBarcodeModal()">&#10006;</button>
         <h3>Kode Anggota</h3>
@@ -498,4 +556,43 @@
 
 <form id="logout-form" method="POST" action="{{ route('logout') }}">@csrf</form>
 
+@endsection
+
+@section('scripts')
+<script>
+function hapusFavorit(idBuku, btn) {
+  Swal.fire({
+    title: 'Hapus dari Favorit?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#e53e3e',
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: 'Ya, Hapus',
+    cancelButtonText: 'Batal'
+  }).then(function (result) {
+    if (!result.isConfirmed) return;
+    fetch('{{ route("favorit.toggle") }}', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({ id_buku: idBuku })
+    })
+    .then(function (r) { return r.json(); })
+    .then(function () {
+      var card = btn.closest('.book-borrow-card');
+      if (card) card.remove();
+
+      // Update jumlah badge
+      var badge = document.querySelector('#panel-favorit .badge-info');
+      if (badge) {
+        var count = document.querySelectorAll('#panel-favorit .book-borrow-card').length;
+        badge.textContent = count + ' buku';
+      }
+    });
+  });
+}
+</script>
 @endsection

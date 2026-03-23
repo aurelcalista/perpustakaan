@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Milon\Barcode\DNS1D;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Favorit;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,62 +21,114 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function show(Request $request): View
-    {
-        $user = $request->user();
+public function show(Request $request): View
+{
+    $user = $request->user();
 
-        // Barcode dari NIS
-        $d = new DNS1D();
-        $barcode = $user->nis ? $d->getBarcodePNG($user->nis, 'C128', 2, 50) : null;
+    // Barcode dari NIS
+    $d = new DNS1D();
+    $barcode = $user->nis ? $d->getBarcodePNG($user->nis, 'C128', 2, 50) : null;
 
-        // ── Ambil data buku yang sedang dipinjam / pending ──────────────────
-        $pinjaman = DB::table('tb_sirkulasi as sk')
-            ->join('tb_buku as b', 'sk.id_buku', '=', 'b.id_buku')
-            ->where('sk.id_anggota', $user->nis)
-            ->whereIn('sk.status', ['pending', 'dipinjam'])
-            ->select(
-                'sk.id_sk',
-                'sk.tgl_pinjam',
-                'sk.tgl_kembali',
-                'sk.status',
-                'b.judul_buku',
-                'b.pengarang',
-                'b.foto'
-            )
-            ->orderByRaw("FIELD(sk.status, 'dipinjam', 'pending')")
-            ->orderBy('sk.tgl_kembali', 'asc')
-            ->get()
-            ->map(function ($item) {
-                $today      = Carbon::today();
-                $tglKembali = Carbon::parse($item->tgl_kembali);
-                $diff       = $today->diffInDays($tglKembali, false); // negatif = terlambat
+    // Buku yang sedang dipinjam / pending
+    $pinjaman = DB::table('tb_sirkulasi as sk')
+        ->join('tb_buku as b', 'sk.id_buku', '=', 'b.id_buku')
+        ->where('sk.id_anggota', $user->nis)
+        ->whereIn('sk.status', ['pending', 'dipinjam'])
+        ->select(
+            'sk.id_sk',
+            'sk.tgl_pinjam',
+            'sk.tgl_kembali',
+            'sk.status',
+            'b.judul_buku',
+            'b.pengarang',
+            'b.foto'
+        )
+        ->orderByRaw("FIELD(sk.status, 'dipinjam', 'pending')")
+        ->orderBy('sk.tgl_kembali', 'asc')
+        ->get()
+        ->map(function ($item) {
+            $today      = Carbon::today();
+            $tglKembali = Carbon::parse($item->tgl_kembali);
+            $diff       = $today->diffInDays($tglKembali, false);
 
-                $item->sisa_hari = (int) $diff;
-                $item->terlambat = $diff < 0;
-                $item->denda     = $diff < 0 ? abs((int) $diff) * 1000 : 0; // Rp 1.000/hari
-                return $item;
-            });
+            $item->sisa_hari = (int) $diff;
+            $item->terlambat = $diff < 0;
+            $item->denda     = $diff < 0 ? abs((int) $diff) * 1000 : 0;
+            return $item;
+        });
 
-        // ── Total untuk stat pill di header ────────────────────────────────
-        $totalBukuDipinjam = $pinjaman->count();
+    $totalBukuDipinjam = $pinjaman->count();
 
-        // ── Riwayat peminjaman (sudah dikembalikan) ─────────────────────────
-        $riwayat = DB::table('tb_sirkulasi as sk')
-            ->join('tb_buku as b', 'sk.id_buku', '=', 'b.id_buku')
-            ->where('sk.id_anggota', $user->nis)
-            ->where('sk.status', 'dikembalikan')
-            ->select('sk.*', 'b.judul_buku', 'b.pengarang')
-            ->orderBy('sk.tgl_kembali', 'desc')
-            ->get();
+    // Riwayat peminjaman (sudah dikembalikan)
+    $riwayat = DB::table('tb_sirkulasi as sk')
+        ->join('tb_buku as b', 'sk.id_buku', '=', 'b.id_buku')
+        ->where('sk.id_anggota', $user->nis)
+        ->where('sk.status', 'dikembalikan')
+        ->select('sk.*', 'b.judul_buku', 'b.pengarang')
+        ->orderBy('sk.tgl_kembali', 'desc')
+        ->get();
 
-        return view('profile.show', compact(
-            'user',
-            'barcode',
-            'pinjaman',
-            'totalBukuDipinjam',
-            'riwayat'
-        ));
-    }
+    // ── Favorit ──────────────────────────────────────────────────────────
+    $favorit = Favorit::where('user_id', $user->id)
+                      ->with('buku.kategori')
+                      ->latest()
+                      ->get();
+
+
+    // ── Pelanggaran (terlambat kembalikan buku) ───────────────────────────
+$pelanggaran = DB::table('tb_sirkulasi as sk')
+    ->join('tb_buku as b', 'sk.id_buku', '=', 'b.id_buku')
+    ->where('sk.id_anggota', $user->nis)
+    ->where(function ($q) {
+        // Sudah dikembalikan tapi melewati batas tgl_kembali
+        $q->where(function ($q2) {
+            $q2->where('sk.status', 'dikembalikan')
+               ->where('sk.updated_at', '>', DB::raw('sk.tgl_kembali'));
+        })
+        // Atau masih dipinjam dan sudah melewati batas
+        ->orWhere(function ($q2) {
+            $q2->where('sk.status', 'dipinjam')
+               ->where('sk.tgl_kembali', '<', Carbon::today());
+        });
+    })
+    ->select(
+        'sk.id_sk',
+        'sk.tgl_pinjam',
+        'sk.tgl_kembali',
+        'sk.updated_at as tgl_dikembalikan',
+        'sk.status',
+        'b.judul_buku',
+        'b.pengarang',
+        'b.foto'
+    )
+    ->orderBy('sk.tgl_kembali', 'desc')
+    ->get()
+    ->map(function ($item) {
+        $tglBatas = Carbon::parse($item->tgl_kembali);
+
+        // Jika sudah dikembalikan, hitung keterlambatan dari updated_at
+        // Jika masih dipinjam, hitung dari hari ini
+        if ($item->status === 'dikembalikan') {
+            $tglAktual = Carbon::parse($item->tgl_dikembalikan);
+        } else {
+            $tglAktual = Carbon::today();
+        }
+
+        $hariTerlambat        = (int) $tglBatas->diffInDays($tglAktual);
+        $item->hari_terlambat = $hariTerlambat;
+        $item->denda          = $hariTerlambat * 500; // Rp 500/hari
+        return $item;
+    });                  
+    return view('profile.show', compact(
+        'user',
+        'barcode',
+        'pinjaman',
+        'totalBukuDipinjam',
+        'riwayat',
+        'favorit',
+        'pelanggaran'
+    ));
+}
 
     public function edit(Request $request): View
     {

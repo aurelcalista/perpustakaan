@@ -97,6 +97,11 @@ class User extends Authenticatable
         return ! empty($this->avatar);
     }
 
+    public function favorit()
+{
+    return $this->hasMany(\App\Models\Favorit::class, 'user_id');
+}
+
 }
 
      
