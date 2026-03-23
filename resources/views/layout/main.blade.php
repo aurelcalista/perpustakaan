@@ -162,15 +162,6 @@
 							</ul>
 						</li>
 
-						<li class="header">SETTING</li>
-
-						<li class="treeview">
-							<a href="{{ url('/data_pengguna') }}">
-								<i class="fa fa-user"></i>
-								<span>Pengguna Sistem</span>
-							</a>
-						</li>
-
 					@elseif(Auth::check() && Auth::user()->role == 'petugas')
 						<li class="treeview">
 							<a href="{{ route('petugas.dashboard') }}">
@@ -247,7 +238,6 @@
 							</ul>
 						</li>
 
-						<li class="header">SETTING</li>
 					@endif
 
 					<li>

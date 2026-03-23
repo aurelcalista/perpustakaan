@@ -9,11 +9,25 @@ use App\Models\Category;
 class BukuController extends Controller
 {
 
-public function home()
+public function home(Request $request)
 {
-    $buku = Buku::with('kategori')->latest()->get();
+    $keyword = $request->keyword;
+
+    $buku = Buku::with('kategori')
+        ->when($keyword, function ($query) use ($keyword) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('judul_buku', 'like', "%{$keyword}%")
+                  ->orWhere('pengarang', 'like', "%{$keyword}%")
+                  ->orWhereHas('kategori', function ($q2) use ($keyword) {
+                      $q2->where('nama_kategori', 'like', "%{$keyword}%");
+                  });
+            });
+        })
+        ->get();
+
+   
     $kategoris = Category::all();
-    return view('home', compact('buku', 'kategoris')); 
+    return view('home', compact('buku', 'kategoris', 'keyword'));
 }
 
 

@@ -360,6 +360,21 @@ transform:rotate(180deg);
 {{-- KOLEKSI BUKU --}}
 <section id="section_2">
   <div class="container">
+
+    {{-- Notif hasil pencarian --}}
+    @if(request('keyword'))
+    <div style="margin-bottom:20px; padding:14px 20px; background:#eef1fb; border-radius:10px; display:flex; justify-content:space-between; align-items:center;">
+        <span style="color:var(--primary); font-weight:600;">
+            <i class="fas fa-search"></i>
+            Hasil pencarian: <strong>"{{ request('keyword') }}"</strong>
+            — <strong>{{ $buku->count() }}</strong> buku ditemukan
+        </span>
+        <a href="{{ route('home') }}" style="font-size:13px; color:var(--text-muted); text-decoration:none; display:flex; align-items:center; gap:4px;">
+            <i class="fas fa-times"></i> Reset
+        </a>
+    </div>
+    @endif
+
     <div class="section-head fade-up">
       <h2>Koleksi Perpustakaan</h2>
       <a href="{{ route('home') }}" class="btn btn-outline">Lihat Semua Buku</a>
@@ -644,13 +659,21 @@ item.classList.toggle("active");
 
 @push('scripts')
 <script>
+  /* ---- AUTO SCROLL ---- */
+  var hasKeyword = "{{ request('keyword') }}";
+  if (hasKeyword) {
+    document.addEventListener('DOMContentLoaded', function() {
+      var el = document.getElementById('section_2');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
   /* ---- FILTER KATEGORI ---- */
   function filterKategori(id, btn) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
     btn.classList.add('active');
 
-    const items = document.querySelectorAll('.buku-item');
-    items.forEach(item => {
+    document.querySelectorAll('.buku-item').forEach(function(item) {
       if (id === 'semua' || item.dataset.kategori == id) {
         item.style.display = 'block';
       } else {
@@ -661,11 +684,11 @@ item.classList.toggle("active");
 
   /* ---- FAQ ---- */
   function toggleFaq(btn) {
-    const item = btn.parentElement;
-    const answer = item.querySelector('.faq-answer');
-    const icon = item.querySelector('.faq-icon');
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item.open').forEach(el => {
+    var item = btn.parentElement;
+    var answer = item.querySelector('.faq-answer');
+    var icon = item.querySelector('.faq-icon');
+    var isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(function(el) {
       el.classList.remove('open');
       el.querySelector('.faq-answer').style.maxHeight = null;
       el.querySelector('.faq-icon').style.transform = '';
