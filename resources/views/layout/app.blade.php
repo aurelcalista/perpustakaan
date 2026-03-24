@@ -93,18 +93,31 @@
     .nav-link-item:hover { color: var(--primary); }
     .nav-link-item:hover::after { width: 100%; }
 
-    /* Nav Dropdown */
+    /* Nav Dropdown — CLICK BASED (hover dinonaktifkan) */
     .nav-dropdown { position: relative; }
     .nav-dropdown-menu {
-      position: absolute; top: calc(100% + 12px); left: 0;
+      position: fixed; /* pakai fixed agar tidak terpotong section manapun */
       background: var(--white); border-radius: var(--radius-sm);
       box-shadow: var(--shadow-heavy); border: 1px solid var(--border);
       min-width: 160px; padding: 8px 0;
       opacity: 0; pointer-events: none; transform: translateY(8px);
-      transition: opacity .2s, transform .2s; z-index: 100;
+      transition: opacity .2s, transform .2s; z-index: 9999;
     }
-    .nav-dropdown-menu-end { left: auto; right: 0; min-width: 190px; }
-    .nav-dropdown:hover .nav-dropdown-menu { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .nav-dropdown-menu-end { min-width: 190px; }
+
+    /* NONAKTIFKAN hover — sepenuhnya pakai JS click */
+    .nav-dropdown:hover .nav-dropdown-menu {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+    }
+    /* Kelas .open yang dikontrol JS */
+    .nav-dropdown-menu.open {
+      opacity: 1 !important;
+      pointer-events: all !important;
+      transform: translateY(0) !important;
+    }
+
     .nav-dropdown-menu a {
       display: flex; align-items: center; gap: 8px;
       padding: 10px 16px; font-size: 14px; color: var(--text);
@@ -277,6 +290,55 @@
     });
   }, { threshold: 0.08 });
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  /* ---- DROPDOWN CLICK (menggantikan hover agar tidak cepat hilang) ---- */
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.nav-dropdown').forEach(function (dropdown) {
+      const menu = dropdown.querySelector('.nav-dropdown-menu');
+      if (!menu) return;
+
+      dropdown.addEventListener('click', function (e) {
+        e.stopPropagation();
+        const isOpen = menu.classList.contains('open');
+
+        // Tutup semua dropdown lain
+        document.querySelectorAll('.nav-dropdown-menu').forEach(function (m) {
+          m.classList.remove('open');
+        });
+
+        // Posisikan dropdown tepat di bawah trigger
+        if (!isOpen) {
+          const rect = dropdown.getBoundingClientRect();
+          menu.style.top  = (rect.bottom + 8) + 'px';
+
+          // Kalau menu-end, ratakan ke kanan; kalau tidak, ratakan ke kiri
+          if (menu.classList.contains('nav-dropdown-menu-end')) {
+            menu.style.left = 'auto';
+            menu.style.right = (window.innerWidth - rect.right) + 'px';
+          } else {
+            menu.style.left  = rect.left + 'px';
+            menu.style.right = 'auto';
+          }
+
+          menu.classList.add('open');
+        }
+      });
+    });
+
+    // Klik di luar = tutup semua dropdown
+    document.addEventListener('click', function () {
+      document.querySelectorAll('.nav-dropdown-menu').forEach(function (m) {
+        m.classList.remove('open');
+      });
+    });
+
+    // Klik di dalam menu tidak menutup dropdown
+    document.querySelectorAll('.nav-dropdown-menu').forEach(function (menu) {
+      menu.addEventListener('click', function (e) {
+        e.stopPropagation();
+      });
+    });
+  });
 
   /* ---- PROFILE FUNCTIONS ---- */
   function confirmLogout() {

@@ -417,6 +417,8 @@
       alert('Gagal memperbarui favorit.');
     });
   }
+
+ 
 </script>
 
 @endsection
