@@ -1,126 +1,98 @@
 @extends('layout.app')
 
 @section('content')
-    <div class="container my-5">
-        {{-- Alert Success --}}
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="fa fa-check-circle"></i> {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
+
+<div class="detail-wrapper">
+<div class="container" style="max-width:820px;">
+
+<div class="detail-breadcrumb">
+    <a href="{{ route('home') }}">Beranda</a> › Detail Buku
+</div>
+
+<div class="detail-card">
+
+    <div class="cover-panel">
+        @if($buku->foto)
+            <img src="{{ asset('storage/'.$buku->foto) }}" class="cover-img">
+        @else
+            <div class="cover-no-img">No Cover</div>
         @endif
 
-        {{-- Alert Error --}}
-        @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="fa fa-exclamation-circle"></i> {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
-
-        <div class="card shadow-sm border-0 rounded-3">
-            <div class="row g-0">
-
-                {{-- Cover Buku --}}
-                <div class="col-md-4 text-center p-4">
-                    @if ($buku->foto)
-                        <img src="{{ asset('storage/' . $buku->foto) }}" class="img-fluid shadow-sm"
-                            style="max-height:420px; object-fit:cover; border-radius:10px;" alt="{{ $buku->judul_buku }}">
-                    @else
-                        <img src="https://via.placeholder.com/300x420?text=No+Image" class="img-fluid">
-                    @endif
-                </div>
-
-                {{-- Detail Buku --}}
-                <div class="col-md-8 p-4">
-
-                    <h3 class="fw-bold">{{ $buku->judul_buku }}</h3>
-                    <p class="text-muted mb-2">
-                        {{ $buku->pengarang }}
-                    </p>
-
-                    <span class="badge bg-primary">
-                        {{ $buku->nama_kategori ?? '-' }}
-                    </span>
-
-                    <hr>
-
-                    <table class="table table-borderless">
-                        <tr>
-                            <th width="30%">Edisi</th>
-                            <td>{{ $buku->edisi ?? '-' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Penerbit</th>
-                            <td>{{ $buku->penerbit }}</td>
-                        </tr>
-                        <tr>
-                            <th>Tahun Terbit</th>
-                            <td>{{ $buku->th_terbit }}</td>
-                        </tr>
-                        <tr>
-                            <th>Deskripsi Fisik</th>
-                            <td>{{ $buku->deskripsi_fisik ?? '-' }}</td>
-                        </tr>
-                        <tr>
-                            <th>ISBN</th>
-                            <td>{{ $buku->isbn ?? '-' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Bahasa</th>
-                            <td>{{ $buku->bahasa ?? '-' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Call Number</th>
-                            <td>{{ $buku->call_number ?? '-' }}</td>
-                        </tr>
-                    </table>
-
-                    {{-- Tombol Pinjam (YANG DITAMBAHKAN) --}}
-                    @auth
-                        @if (Auth::user()->role == 'siswa')
-                            @if ($sudahPinjam)
-                                <button class="btn btn-secondary" disabled>
-                                    <i class="fa fa-check"></i> Sudah Dipinjam
-                                </button>
-                            @else
-                        <form action="{{ route('siswa.pinjam.store') }}" method="POST" style="display:inline;">
-                            @csrf
-                            <input type="hidden" name="id_buku" value="{{ $buku->id_buku }}">
-                            <button type="submit" class="btn btn-primary">
-                                Pinjam Buku
-                            </button>
-                        </form>
-                                
-                                
-                            @endif
-                        @else
-                            {{-- Kalau admin/petugas login, ga ada tombol pinjam --}}
-                        @endif
-                    @else
-                        <button type="button" class="btn btn-primary" onclick="alertLogin()">
-                            + Pinjam Buku
-                        </button>
-
-                        <script>
-                            function alertLogin() {
-                                Swal.fire({
-                                    icon: 'warning',
-                                    title: 'Eits 😆',
-                                    text: 'Login dulu dong biar bisa pinjam buku 📚',
-                                    confirmButtonText: 'Login Sekarang',
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href = "{{ route('login') }}";
-                                    }
-                                });
-                            }
-                        </script>
-                    @endauth
-
-                </div>
-
-            </div>
+        <div class="cover-badge">
+            {{ $buku->nama_kategori ?? 'Tanpa kategori' }}
         </div>
     </div>
+
+    <div class="info-panel">
+        <h1 class="book-title">{{ $buku->judul_buku }}</h1>
+        <div class="book-author">oleh {{ $buku->pengarang }}</div>
+
+        <div class="divider"></div>
+
+        <div class="info-grid">
+            <div>
+                <div class="info-label">Penerbit</div>
+                <div class="info-value">{{ $buku->penerbit ?? '-' }}</div>
+            </div>
+            <div>
+                <div class="info-label">Tahun</div>
+                <div class="info-value">{{ $buku->th_terbit ?? '-' }}</div>
+            </div>
+            <div>
+                <div class="info-label">ISBN</div>
+                <div class="info-value {{ !$buku->isbn ? 'empty':'' }}">
+                    {{ $buku->isbn ?? 'Tidak ada' }}
+                </div>
+            </div>
+            <div>
+                <div class="info-label">Bahasa</div>
+                <div class="info-value {{ !$buku->bahasa ? 'empty':'' }}">
+                    {{ $buku->bahasa ?? 'Tidak ada' }}
+                </div>
+            </div>
+        </div>
+
+        @if($buku->sinopsis)
+        <div class="sinopsis-box">
+            <div class="info-label">Sinopsis</div>
+            <div class="sinopsis-text">{{ $buku->sinopsis }}</div>
+        </div>
+        @endif
+
+        <div class="action-area">
+            @if($sudahPinjam)
+                <span class="btn-disabled">Sudah dipinjam</span>
+            @else
+                <form action="{{ route('siswa.pinjam.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="id_buku" value="{{ $buku->id_buku }}">
+                    <button class="btn-pinjam">Pinjam Buku</button>
+                </form>
+            @endif
+        </div>
+
+    </div>
+
+</div>
+</div>
+</div>
+
+@auth @else
+<script>
+    function alertLogin() {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Eits 😆',
+            text: 'Login dulu dong biar bisa pinjam buku 📚',
+            confirmButtonText: 'Login Sekarang',
+            confirmButtonColor: '#16213e',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "{{ route('login') }}";
+            }
+        });
+    }
+</script>
+@endauth
+
 @endsection

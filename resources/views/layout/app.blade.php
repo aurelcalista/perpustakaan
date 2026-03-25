@@ -19,6 +19,7 @@
   <link href="{{ asset('css/bootstrap-icons.css') }}" rel="stylesheet">
   <link href="{{ asset('css/templatemo-topic-listing.css') }}" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/detail.css') }}">
 
   {{-- SweetAlert --}}
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
