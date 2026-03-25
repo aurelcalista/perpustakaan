@@ -100,7 +100,6 @@
 									@csrf
 									@method('DELETE')
 									<button type="submit" 
-											onclick="return confirm('Yakin Hapus Data Ini?')" 
 											class="btn btn-danger btn-sm">
 										<i class="glyphicon glyphicon-trash"></i>
 									</button>
@@ -126,19 +125,23 @@
 
 @push('scripts')
 <script>
-    $(function () {
-        $("#example1").DataTable({
-            "responsive": true,
-            "autoWidth": false,
-            "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Indonesian.json"
-            },
-            "pageLength": 10,
-            "order": [[0, 'asc']],
-            "columnDefs": [
-                { "defaultContent": "", "targets": "_all" }
-            ]
-        });
+$(function () {
+    if ($.fn.DataTable.isDataTable('#example1')) {
+        $('#example1').DataTable().destroy();
+    }
+    
+    $("#example1").DataTable({
+        "responsive": true,
+        "autoWidth": false,
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Indonesian.json"
+        },
+        "pageLength": 10,
+        "order": [[0, 'asc']],
+        "columnDefs": [
+            { "defaultContent": "", "targets": "_all" }
+        ]
     });
+});
 </script>
 @endpush

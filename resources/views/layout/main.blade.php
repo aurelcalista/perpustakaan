@@ -113,6 +113,19 @@
 										<i class="fa fa-users"></i>Kategori
 									</a>
 								</li>
+								    <li>
+					<a href="{{ route('admin.buku.trash') }}">
+						<i class="fa fa-trash"></i>
+            Trash Buku
+            {{-- Badge jumlah item di trash --}}
+            @php $trashCount = \App\Models\Buku::onlyTrashed()->count(); @endphp
+            @if($trashCount > 0)
+                <span class="pull-right-container">
+                    <span class="label label-danger pull-right">{{ $trashCount }}</span>
+                </span>
+            @endif
+        </a>
+    </li>
 							</ul>
 						</li>
 

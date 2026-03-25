@@ -159,23 +159,69 @@ class BukuController extends Controller
     }
 
     // Hapus buku
+
     public function destroy($id)
     {
         try {
             $buku = Buku::where('id_buku', $id)->firstOrFail();
-
-            // Hapus foto dari storage jika ada
-            if ($buku->foto) {
-                Storage::disk('public')->delete($buku->foto);
-            }
-
-            $buku->delete();
+            $buku->delete(); // soft delete, foto tetap ada
 
             return redirect()->route('admin.buku.index')
-                ->with('success', 'Data buku berhasil dihapus!');
+                ->with('success', 'Data buku dipindahkan ke trash!');
         } catch (\Exception $e) {
             return redirect()->back()
                 ->with('error', 'Gagal menghapus data: ' . $e->getMessage());
         }
     }
+
+    // ✅ BARU: Tampilkan halaman trash
+    public function trash()
+    {
+        $buku = Buku::onlyTrashed()->with('kategori')->get();
+        return view('dashboard_admin.buku.trash_buku', compact('buku'));
+    }
+
+    // ✅ BARU: Restore buku dari trash
+    public function restore($id)
+    {
+        $buku = Buku::onlyTrashed()->where('id_buku', $id)->firstOrFail();
+        $buku->restore();
+
+        return redirect()->route('admin.buku.trash')
+            ->with('success', 'Data buku berhasil dipulihkan!');
+    }
+
+    // ✅ BARU: Hapus permanen dari trash (baru hapus foto)
+    public function forceDelete($id)
+    {
+        try {
+            $buku = Buku::onlyTrashed()->where('id_buku', $id)->firstOrFail();
+
+            if ($buku->foto) {
+                Storage::disk('public')->delete($buku->foto);
+            }
+
+            $buku->forceDelete();
+
+            return redirect()->route('admin.buku.trash')
+                ->with('success', 'Data buku berhasil dihapus permanen!');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Gagal menghapus: ' . $e->getMessage());
+        }
+    }
+    public function forceDeleteAll()
+{
+    $bukuTrashed = Buku::onlyTrashed()->get();
+
+    foreach ($bukuTrashed as $buku) {
+        if ($buku->foto) {
+            Storage::disk('public')->delete($buku->foto);
+        }
+        $buku->forceDelete();
+    }
+
+    return redirect()->route('admin.buku.trash')
+        ->with('success', 'Semua data di trash berhasil dihapus permanen!');
+}
 }

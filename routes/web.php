@@ -53,13 +53,21 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
     Route::get('/kategori/create', [CategoryController::class, 'create'])->name('admin.kategori.create');
     Route::post('/kategori/store', [CategoryController::class, 'store'])->name('admin.kategori.store');
 
-    // Buku
+    // ✅ Buku - route CUSTOM harus SEBELUM route dengan parameter {id}
+    Route::get('/buku/trash', [BukuController::class, 'trash'])->name('admin.buku.trash');
+    Route::delete('/buku/force-delete-all', [BukuController::class, 'forceDeleteAll'])->name('admin.buku.force-delete-all');
+
+    // Buku CRUD biasa
     Route::get('/buku', [BukuController::class, 'index'])->name('admin.buku.index');  
     Route::get('/buku/create', [BukuController::class, 'create'])->name('admin.buku.create'); 
     Route::post('/buku/store', [BukuController::class, 'store'])->name('admin.buku.store'); 
     Route::get('/buku/{id}/edit', [BukuController::class, 'edit'])->name('admin.buku.edit');
     Route::put('/buku/{id}', [BukuController::class, 'update'])->name('admin.buku.update');
     Route::delete('/buku/{id}', [BukuController::class, 'destroy'])->name('admin.buku.destroy');
+
+    // ✅ Route dengan parameter {id} — setelah route static
+    Route::patch('/buku/{id}/restore', [BukuController::class, 'restore'])->name('admin.buku.restore');
+    Route::delete('/buku/{id}/force-delete', [BukuController::class, 'forceDelete'])->name('admin.buku.force-delete');
 
     // Anggota (AGT)
     Route::get('/agt', [AnggotaController::class, 'index'])->name('admin.agt.index');
@@ -79,10 +87,11 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
     // Log Pengembalian
     Route::get('/log-kembali', [SirkulasiController::class, 'riwayat'])->name('log.kembali');
 
-    //laporan
+    // Laporan
     Route::get('/laporan', [LaporanController::class, 'index'])->name('admin.laporan.index');
     Route::get('/laporan/print', [LaporanController::class, 'print'])->name('admin.laporan.print');
-        // Sirkulasi
+
+    // Sirkulasi
     Route::get('/sirkul', [SirkulasiController::class, 'index'])
         ->name('admin.sirkul.index');
     
