@@ -18,9 +18,8 @@
             <label>Nama Lengkap <span class="req">*</span></label>
             <input type="text" name="nama"
                    class="form-input {{ $errors->has('nama') ? 'is-error' : '' }}"
-                   value="{{ old('nama', Auth::user()->nama) }}"
-                   placeholder="Masukkan nama lengkap" required>
-            @error('nama') <span class="input-error">{{ $message }}</span> @enderror
+                   value="{{ old('nama', Auth::user()->nama) }}" disabled>
+            <span class="field-note">Nama tidak dapat diubah</span>
         </div>
        <div class="form-field">
     <label>Kelas</label>
