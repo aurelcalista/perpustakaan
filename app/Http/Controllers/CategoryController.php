@@ -31,5 +31,34 @@ class CategoryController extends Controller
         return redirect()->route('admin.kategori.index')
             ->with('success', 'Kategori berhasil ditambahkan!');
     }
+    public function edit($id)
+{
+    $kategori = Category::findOrFail($id);
+    return view('dashboard_admin.kategori.edit_kategori', compact('kategori'));
+}
+
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'nama_kategori' => 'required'
+    ]);
+
+    $kategori = Category::findOrFail($id);
+    $kategori->update([
+        'nama_kategori' => $request->nama_kategori
+    ]);
+
+    return redirect()->route('admin.kategori.index')
+        ->with('success', 'Data berhasil diupdate');
+}
+
+public function destroy($id)
+{
+    $kategori = Category::findOrFail($id);
+    $kategori->delete();
+
+    return redirect()->route('admin.kategori.index')
+        ->with('success', 'Data berhasil dihapus');
+}
 
 }

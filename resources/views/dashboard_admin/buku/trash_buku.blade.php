@@ -4,14 +4,14 @@
 
 <section class="content-header" style="padding: 15px 15px 0;">
     <h1>
-        <i class="fa fa-trash" style="color: #e74c3c;"></i>
-        Trash Buku
+        <i class="fa fa-recycle" style="color: #e74c3c;"></i>
+        Recycle Bin
         <small>Data buku yang telah dihapus sementara</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
         <li><a href="{{ route('admin.buku.index') }}">Data Buku</a></li>
-        <li class="active">Trash</li>
+        <li class="active">Recycle Bin</li>
     </ol>
 </section>
 
@@ -34,8 +34,8 @@
     <div class="box box-danger">
         <div class="box-header with-border" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
             <h3 class="box-title" style="margin: 0;">
-                <i class="fa fa-trash-o"></i>
-                Data di Trash
+                <i class="fa fa-recycle"></i>
+                Recycle Bin
                 @if($buku->count() > 0)
                     <span class="badge" style="background-color: #e74c3c; margin-left: 6px;">{{ $buku->count() }}</span>
                 @endif
@@ -61,8 +61,8 @@
             @if($buku->isEmpty())
                 {{-- Empty State --}}
                 <div style="text-align: center; padding: 60px 20px; color: #999;">
-                    <i class="fa fa-trash-o" style="font-size: 64px; color: #ddd; display: block; margin-bottom: 16px;"></i>
-                    <h4 style="color: #bbb; font-weight: 400; margin: 0 0 8px;">Trash kosong</h4>
+                    <i class="fa fa-recycle" style="font-size: 64px; color: #ddd; display: block; margin-bottom: 16px;"></i>
+                    <h4 style="color: #bbb; font-weight: 400; margin: 0 0 8px;">Tidak ada data di Recycle Bin</h4>
                     <p style="margin: 0; font-size: 13px;">Tidak ada data buku yang dihapus sementara.</p>
                     <a href="{{ route('admin.buku.index') }}" class="btn btn-default btn-sm" style="margin-top: 16px;">
                         <i class="fa fa-arrow-left"></i> Kembali ke Data Buku

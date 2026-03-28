@@ -1,10 +1,12 @@
 @extends('layout.main')
 
 @section('content')
+
 <link rel="stylesheet" href="{{ asset('css/admin-custom.css') }}">
+
 <section class="content-header">
 	<h1 style="text-align:center;">
-		Data Anggota Perpustakaan
+		Data Anggota
 	</h1>
 	<ol class="breadcrumb">
 		<li>
@@ -13,6 +15,7 @@
 				<b>Si Perpustakaan</b>
 			</a>
 		</li>
+		<li class="active">Data Anggota</li>
 	</ol>
 </section>
 

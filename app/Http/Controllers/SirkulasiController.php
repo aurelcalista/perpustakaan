@@ -8,37 +8,31 @@ use Carbon\Carbon;
 
 class SirkulasiController extends Controller
 {
-    // Tampilkan semua buku yang sedang dipinjam
     public function index()
     {
-    $sirkulasi = DB::table('tb_sirkulasi as s')
-        ->join('tb_buku as b', 's.id_buku', '=', 'b.id_buku')
-        ->join('users as u', 's.id_anggota', '=', 'u.nis')
-        ->whereIn('s.status', ['dipinjam', 'pending'])
-        ->select(
-            's.*',
-            'b.judul_buku',
-            'u.nis',
-            'u.nama'
-        )
-        ->orderBy('s.created_at', 'desc')
-        ->get();
+        $sirkulasi = DB::table('tb_sirkulasi as s')
+            ->join('tb_buku as b', 's.id_buku', '=', 'b.id_buku')
+            ->join('users as u', 's.id_anggota', '=', 'u.nis')
+            ->whereIn('s.status', ['dipinjam', 'pending'])
+            ->select('s.*', 'b.judul_buku', 'u.nis', 'u.nama')
+            ->orderBy('s.created_at', 'desc')
+            ->get();
 
-        // Hitung denda untuk setiap peminjaman
-        $u_denda = 1000; // Denda per hari
+        // ✅ UPDATE: denda 500/hari
+        $u_denda = 500;
         $today = Carbon::now();
 
         foreach ($sirkulasi as $item) {
             $tgl_kembali = Carbon::parse($item->tgl_kembali);
-            $selisih = $today->diffInDays($tgl_kembali, false); // false = bisa negatif
-            
+            $selisih = $today->diffInDays($tgl_kembali, false);
+
             if ($selisih < 0) {
                 // Terlambat
                 $item->terlambat = abs($selisih);
-                $item->denda = abs($selisih) * $u_denda;
+                $item->denda = $item->terlambat * $u_denda;
                 $item->status_label = 'Terlambat';
             } else {
-                // Masih masa peminjaman
+                // Masih masa pinjam
                 $item->terlambat = 0;
                 $item->denda = 0;
                 $item->status_label = 'Masa Peminjaman';
@@ -48,46 +42,37 @@ class SirkulasiController extends Controller
         return view('dashboard_admin.sirkul.data_sirkul', compact('sirkulasi', 'u_denda'));
     }
 
-    // Tampilkan list request yang pending (butuh approval)
     public function pending()
     {
         $pending = DB::table('tb_sirkulasi as s')
             ->join('tb_buku as b', 's.id_buku', '=', 'b.id_buku')
             ->join('users as u', 's.id_anggota', '=', 'u.nis')
             ->where('s.status', 'pending')
-            ->select(
-                's.*',
-                'b.judul_buku',
-                'u.nis',
-                'u.nama'
-            )
+            ->select('s.*', 'b.judul_buku', 'u.nis', 'u.nama')
             ->orderBy('s.created_at', 'desc')
             ->get();
 
         return view('dashboard_admin.sirkul.pending_sirkul', compact('pending'));
     }
 
-    // Approve peminjaman
-        public function approve($id_sk)
-        {
-            $sirkulasi = DB::table('tb_sirkulasi')->where('id_sk', $id_sk)->first();
+    public function approve($id_sk)
+    {
+        $sirkulasi = DB::table('tb_sirkulasi')->where('id_sk', $id_sk)->first();
 
-            if (!$sirkulasi) {
-                return redirect()->back()->with('error', 'Data tidak ditemukan!');
-            }
-
-            // Update status jadi dipinjam
-            DB::table('tb_sirkulasi')
-                ->where('id_sk', $id_sk)
-                ->update([
-                    'status' => 'dipinjam',
-                    'updated_at' => Carbon::now()
-                ]);
-
-            return redirect()->back()->with('success', 'Peminjaman berhasil disetujui!');
+        if (!$sirkulasi) {
+            return redirect()->back()->with('error', 'Data tidak ditemukan!');
         }
 
-    // Reject peminjaman
+        DB::table('tb_sirkulasi')
+            ->where('id_sk', $id_sk)
+            ->update([
+                'status' => 'dipinjam',
+                'updated_at' => Carbon::now()
+            ]);
+
+        return redirect()->back()->with('success', 'Peminjaman berhasil disetujui!');
+    }
+
     public function reject($id_sk)
     {
         DB::table('tb_sirkulasi')
@@ -97,16 +82,14 @@ class SirkulasiController extends Controller
         return redirect()->back()->with('success', 'Peminjaman ditolak dan dihapus!');
     }
 
-    // Form tambah sirkulasi manual (opsional, kalau admin mau input manual)
     public function create()
     {
         $buku = DB::table('tb_buku')->get();
         $anggota = DB::table('users')->where('role', 'siswa')->get();
-        
+
         return view('dashboard_admin.sirkul.add_sirkul', compact('buku', 'anggota'));
     }
 
-    // Simpan sirkulasi manual
     public function store(Request $request)
     {
         $request->validate([
@@ -116,7 +99,9 @@ class SirkulasiController extends Controller
         ]);
 
         $tglPinjam = Carbon::parse($request->tgl_pinjam);
-        $tglKembali = $tglPinjam->copy()->addDays(7); // 7 hari masa peminjaman
+
+        // ✅ UPDATE: max 3 hari
+        $tglKembali = $tglPinjam->copy()->addDays(3);
 
         DB::table('tb_sirkulasi')->insert([
             'id_buku' => $request->id_buku,
@@ -132,59 +117,51 @@ class SirkulasiController extends Controller
             ->with('success', 'Data sirkulasi berhasil ditambahkan!');
     }
 
-    // Perpanjang peminjaman
-public function perpanjang($id_sk)
-{
-    $sirkulasi = DB::table('tb_sirkulasi')
-        ->where('id_sk', $id_sk)
-        ->first();
+    public function perpanjang($id_sk)
+    {
+        $sirkulasi = DB::table('tb_sirkulasi')->where('id_sk', $id_sk)->first();
 
-    if (!$sirkulasi) {
-        return redirect()->back()
-            ->with('error', 'Data tidak ditemukan!');
-    }
-
-    // Tambah 3 hari dari tanggal kembali sekarang
-    $tglKembaliBaru = Carbon::parse($sirkulasi->tgl_kembali)
-        ->addDays(3);
-
-    DB::table('tb_sirkulasi')
-        ->where('id_sk', $id_sk)
-        ->update([
-            'tgl_kembali' => $tglKembaliBaru,
-            'updated_at'  => Carbon::now()
-        ]);
-
-    return redirect()->route('admin.sirkul.index')
-        ->with('success', 'Peminjaman diperpanjang 3 hari!');
-}
-
-    // Kembalikan buku
-        public function kembali($id_sk)
-        {
-            DB::table('tb_sirkulasi')
-                ->where('id_sk', $id_sk)
-                ->update([
-                    'status' => 'dikembalikan',
-                    'updated_at' => Carbon::now()
-                ]);
-
-            return redirect()->route('log.kembali')  // ✅ langsung ke log setelah kembali
-                ->with('success', 'Buku berhasil dikembalikan!');
+        if (!$sirkulasi) {
+            return redirect()->back()->with('error', 'Data tidak ditemukan!');
         }
 
-    // Riwayat (semua yang sudah dikembalikan)
-public function riwayat()
-{
-    $riwayat = DB::table('tb_sirkulasi as s')
-        ->join('tb_buku as b', 's.id_buku', '=', 'b.id_buku')
-        ->join('users as u', 's.id_anggota', '=', 'u.nis')
-        ->where('s.status', 'dikembalikan')
-        ->select('s.*', 'b.judul_buku', 'u.nis', 'u.nama')
-        ->orderBy('s.updated_at', 'desc')
-        ->get();
+        // tetap 3 hari perpanjang (udah sesuai)
+        $tglKembaliBaru = Carbon::parse($sirkulasi->tgl_kembali)->addDays(3);
 
-    // ✅ Pastikan view-nya mengarah ke log_kembali
-    return view('dashboard_admin.log.log_kembali', compact('riwayat'));
-}
+        DB::table('tb_sirkulasi')
+            ->where('id_sk', $id_sk)
+            ->update([
+                'tgl_kembali' => $tglKembaliBaru,
+                'updated_at'  => Carbon::now()
+            ]);
+
+        return redirect()->route('admin.sirkul.index')
+            ->with('success', 'Peminjaman diperpanjang 3 hari!');
+    }
+
+    public function kembali($id_sk)
+    {
+        DB::table('tb_sirkulasi')
+            ->where('id_sk', $id_sk)
+            ->update([
+                'status' => 'dikembalikan',
+                'updated_at' => Carbon::now()
+            ]);
+
+        return redirect()->route('log.kembali')
+            ->with('success', 'Buku berhasil dikembalikan!');
+    }
+
+    public function riwayat()
+    {
+        $riwayat = DB::table('tb_sirkulasi as s')
+            ->join('tb_buku as b', 's.id_buku', '=', 'b.id_buku')
+            ->join('users as u', 's.id_anggota', '=', 'u.nis')
+            ->where('s.status', 'dikembalikan')
+            ->select('s.*', 'b.judul_buku', 'u.nis', 'u.nama')
+            ->orderBy('s.updated_at', 'desc')
+            ->get();
+
+        return view('dashboard_admin.log.log_kembali', compact('riwayat'));
+    }
 }

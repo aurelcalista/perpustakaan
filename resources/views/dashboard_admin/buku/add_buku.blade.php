@@ -2,164 +2,157 @@
 
 @section('content')
 
-<div class="container mt-4">
-    <div class="card form-card">
-    <div class="card-header">
-        Form Data Buku
-    </div>
-    <div class="card-body">
+<link rel="stylesheet" href="{{ asset('css/admin-custom.css') }}">
 
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul class="mb-0">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+<section class="content-header">
+	<h1 style="text-align:center;">
+		Tambah Buku
+	</h1>
+	<ol class="breadcrumb">
+		<li>
+			<a href="{{ route('admin.dashboard') }}">
+				<i class="fa fa-home"></i>
+				<b>Si Perpustakaan</b>
+			</a>
+		</li>
+		<li class="active">Tambah Buku</li>
+	</ol>
+</section>
 
-<div class="card">
-    <div class="card-body">
+<section class="content">
 
-        <form action="{{ route('admin.buku.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf
+<div class="row">
+	<div class="col-md-10 col-md-offset-1"> 
 
-            {{-- ID Buku --}}
-            <div class="mb-3">
-                <label>ID Buku</label>
-                <input type="text" name="id_buku" class="form-control" value="{{ $format }}" readonly>
-            </div>
-
-            <div class="mb-3">
-                <label>Judul Buku</label>
-                <input type="text" name="judul_buku" class="form-control" value="{{ old('judul_buku') }}">
-            </div>
-
-            <div class="mb-3">
-                <label>Pengarang</label>
-                <input type="text" name="pengarang" class="form-control" value="{{ old('pengarang') }}">
-            </div>
-
-            <div class="mb-3">
-                <label>Penerbit</label>
-                <input type="text" name="penerbit" class="form-control" value="{{ old('penerbit') }}">
-            </div>
-
-            <div class="mb-3">
-                <label>Tahun Terbit</label>
-                <input type="number" name="th_terbit" class="form-control" value="{{ old('th_terbit') }}">
-            </div>
-
-        <div class="mb-4">
-            <label class="modern-label">Kategori Buku</label>
-
-            <div class="select-wrapper">
-                <select name="id_kategori" class="modern-select">
-                    <option value="">Pilih kategori buku...</option>
-                    @foreach ($kategori as $k)
-                        <option value="{{ $k->id_kategori }}">
-                            {{ $k->nama_kategori }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-
-
-
-            <div class="mb-3">
-                <label>Penyunting</label>
-                <input type="text" name="penyunting" class="form-control" value="{{ old('penyunting') }}">
-            </div>
-
-            <div class="mb-3">
-                <label>Edisi</label>
-                <input type="text" name="edisi" class="form-control" value="{{ old('edisi') }}">
-            </div>
-
-            <div class="mb-3">
-                <label>Deskripsi Fisik</label>
-                <input type="text" name="deskripsi_fisik" class="form-control" value="{{ old('deskripsi_fisik') }}">
-            </div>
-
-            <div class="mb-3">
-                <label>ISBN</label>
-                <input type="text" name="isbn" class="form-control" value="{{ old('isbn') }}">
-            </div>
-
-            <div class="mb-3">
-                <label>Bahasa</label>
-                <input type="text" name="bahasa" class="form-control" value="{{ old('bahasa') }}">
-            </div>
-
-            <div class="mb-3">
-                <label>Call Number</label>
-                <input type="text" name="call_number" class="form-control" value="{{ old('call_number') }}">
-            </div>
-
-            <div class="mb-3">
-                <label>Sinopsis</label>
-                <textarea name="sinopsis" class="form-control">{{ old('sinopsis') }}</textarea>
-            </div>
-
-            <div class="mb-4">
-                <label class="modern-label">Foto Cover</label>
-
-                <div class="upload-box text-center p-4 rounded-4">
-                    <img id="preview-cover" 
-                        src="https://via.placeholder.com/150x200?text=Preview" 
-                        class="img-preview mb-3">
-
-                    <div>
-                        <label for="foto" class="btn btn-upload px-4 py-2">
-                            Pilih Gambar
-                        </label>
-                        <input type="file" name="foto" id="foto" 
-                            class="d-none" 
-                            accept="image/*"
-                            onchange="previewImage(event)">
-                    </div>
-
-                    <small class="text-muted d-block mt-2">
-                        Format: JPG, PNG (Max 2MB)
-                    </small>
-                </div>
-            </div>
-
-						<div class="mt-4 d-flex gap-2">
-				<button type="submit" class="btn btn-gradient-primary">
-					Simpan
-				</button>
-
-				<a href="{{ route('admin.buku.index') }}" class="btn btn-secondary btn-gradient-secondary">
-					Batal
-				</a>
+		<div class="box box-primary">
+			<div class="box-header with-border text-center">
+				<h4 class="box-title">Form Data Buku</h4>
 			</div>
 
-        </form>
+			<div class="box-body">
 
-    </div>
+				@if ($errors->any())
+					<div class="alert alert-danger">
+						<ul>
+							@foreach ($errors->all() as $error)
+								<li>{{ $error }}</li>
+							@endforeach
+						</ul>
+					</div>
+				@endif
+
+				<form action="{{ route('admin.buku.store') }}" method="POST" enctype="multipart/form-data">
+					@csrf
+
+					{{-- ID --}}
+					<div class="form-group">
+						<label>ID Buku</label>
+						<input type="text" class="form-control" value="{{ $format }}" readonly>
+					</div>
+
+					{{-- 2 KOLOM MINI --}}
+					<div class="row">
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Judul</label>
+								<input type="text" name="judul_buku" class="form-control">
+							</div>
+
+							<div class="form-group">
+								<label>Pengarang</label>
+								<input type="text" name="pengarang" class="form-control">
+							</div>
+
+							<div class="form-group">
+								<label>Penerbit</label>
+								<input type="text" name="penerbit" class="form-control">
+							</div>
+
+							<div class="form-group">
+								<label>Tahun</label>
+								<input type="number" name="th_terbit" class="form-control">
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Kategori</label>
+								<select name="id_kategori" class="form-control">
+									<option value="">Pilih...</option>
+									@foreach ($kategori as $k)
+										<option value="{{ $k->id_kategori }}">
+											{{ $k->nama_kategori }}
+										</option>
+									@endforeach
+								</select>
+							</div>
+
+							<div class="form-group">
+								<label>ISBN</label>
+								<input type="text" name="isbn" class="form-control">
+							</div>
+
+							<div class="form-group">
+								<label>Bahasa</label>
+								<input type="text" name="bahasa" class="form-control">
+							</div>
+
+							<div class="form-group">
+								<label>Call Number</label>
+								<input type="text" name="call_number" class="form-control">
+							</div>
+						</div>
+
+					</div>
+
+					<div class="form-group">
+						<label>Deskripsi</label>
+						<input type="text" name="deskripsi_fisik" class="form-control">
+					</div>
+
+					<div class="form-group">
+						<label>Sinopsis</label>
+						<textarea name="sinopsis" class="form-control"></textarea>
+					</div>
+
+					<div class="form-group text-center">
+						<img id="preview-cover"
+							src="https://via.placeholder.com/120x160"
+							class="mb-2">
+						<br>
+
+						<input type="file" name="foto" onchange="previewImage(event)">
+					</div>
+
+					<div class="text-right">
+						<a href="{{ route('admin.buku.index') }}" class="btn btn-default">
+							Batal
+						</a>
+
+						<button type="submit" class="btn btn-primary">
+							Simpan
+						</button>
+					</div>
+
+				</form>
+
+			</div>
+		</div>
+
+	</div>
 </div>
 
-</div>
-@push('styles')
-<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-@endpush
-
-...
-
-</div> {{-- penutup container/card --}}
+</section>
 
 @push('scripts')
 <script>
 function previewImage(event) {
-    const reader = new FileReader();
-    reader.onload = function(){
-        const output = document.getElementById('preview-cover');
-        output.src = reader.result;
-    };
-    reader.readAsDataURL(event.target.files[0]);
+	const reader = new FileReader();
+	reader.onload = function(){
+		document.getElementById('preview-cover').src = reader.result;
+	};
+	reader.readAsDataURL(event.target.files[0]);
 }
 </script>
 @endpush

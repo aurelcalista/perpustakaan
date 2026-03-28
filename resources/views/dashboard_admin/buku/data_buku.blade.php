@@ -1,7 +1,9 @@
 @extends('layout.main')
 
 @section('content')
+
 <link rel="stylesheet" href="{{ asset('css/admin-custom.css') }}">
+
 <section class="content-header">
 	<h1 style="text-align:center;">
 		Data Buku
@@ -13,6 +15,7 @@
 				<b>Si Perpustakaan</b>
 			</a>
 		</li>
+		<li class="active">Data Buku</li>
 	</ol>
 </section>
 

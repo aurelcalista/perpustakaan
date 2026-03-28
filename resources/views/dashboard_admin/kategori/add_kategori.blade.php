@@ -2,60 +2,80 @@
 
 @section('content')
 
-<div class="container mt-4">
-    <div class="card form-card">
-        <div class="card-header">
-            Form Data Kategori
-        </div>
+<link rel="stylesheet" href="{{ asset('css/admin-custom.css') }}">
 
+<section class="content-header">
+	<h1 style="text-align:center;">
+		Tambah Kategori
+	</h1>
+	<ol class="breadcrumb">
+		<li>
+			<a href="{{ route('admin.dashboard') }}">
+				<i class="fa fa-home"></i>
+				<b>Si Perpustakaan</b>
+			</a>
+		</li>
+		<li class="active">Tambah Kategori</li>
+	</ol>
+</section>
 
-    <div class="card-body">
+<section class="content">
+	<div class="row">
+    <div class="col-md-6 col-md-offset-3">
 
-        {{-- Error --}}
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul class="mb-0">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+			<div class="box box-primary">
+				<div class="box-header with-border text-center">
+					<h4 class="box-title">Form Data Kategori</h4>
+				</div>
 
-        <form action="{{ route('admin.kategori.store') }}" method="POST">
-            @csrf
+				<div class="box-body">
 
-            <div class="mb-3">
-                <label>Nama Kategori</label>
-                <input type="text" 
-                       name="nama_kategori" 
-                       class="form-control" 
-                       value="{{ old('nama_kategori') }}" 
-                       required>
-            </div>
+					{{-- ERROR --}}
+					@if ($errors->any())
+						<div class="alert alert-danger">
+							<ul class="mb-0">
+								@foreach ($errors->all() as $error)
+									<li>{{ $error }}</li>
+								@endforeach
+							</ul>
+						</div>
+					@endif
 
-            <div class="mt-4 d-flex gap-2">
-                <button type="submit" class="btn btn-gradient-primary">
-                    Simpan
-                </button>
+					<form action="{{ route('admin.kategori.store') }}" method="POST">
+						@csrf
 
-                <a href="{{ route('admin.kategori.index') }}" 
-                   class="btn btn-secondary btn-gradient-secondary">
-                    Batal
-                </a>
-            </div>
+						{{-- NAMA KATEGORI --}}
+						<div class="form-group">
+							<label>
+								<i class="fa fa-tag"></i> Nama Kategori
+							</label>
+							<input type="text" 
+								   name="nama_kategori" 
+								   class="form-control" 
+								   value="{{ old('nama_kategori') }}"
+								   placeholder="Contoh: Novel, Komik, Pelajaran..."
+								   required>
+						</div>
 
-        </form>
+						{{-- BUTTON --}}
+						<div class="text-right mt-4">
+							<a href="{{ route('admin.kategori.index') }}" 
+							   class="btn btn-default">
+								Batal
+							</a>
 
-    </div>
-</div>
+							<button type="submit" class="btn btn-primary">
+								<i class="fa fa-save"></i> Simpan
+							</button>
+						</div>
 
+					</form>
 
-</div>
+				</div>
+			</div>
 
-@push('styles')
-
-<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-@endpush
+		</div>
+	</div>
+</section>
 
 @endsection

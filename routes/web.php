@@ -52,6 +52,9 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
     Route::get('/kategori', [CategoryController::class, 'index'])->name('admin.kategori.index');
     Route::get('/kategori/create', [CategoryController::class, 'create'])->name('admin.kategori.create');
     Route::post('/kategori/store', [CategoryController::class, 'store'])->name('admin.kategori.store');
+    Route::get('/kategori/{id}/edit', [CategoryController::class, 'edit'])->name('admin.kategori.edit');
+Route::put('/kategori/{id}', [CategoryController::class, 'update'])->name('admin.kategori.update');
+Route::delete('/kategori/{id}', [CategoryController::class, 'destroy'])->name('admin.kategori.destroy');
 
     // ✅ Buku - route CUSTOM harus SEBELUM route dengan parameter {id}
     Route::get('/buku/trash', [BukuController::class, 'trash'])->name('admin.buku.trash');

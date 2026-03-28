@@ -1,28 +1,27 @@
 @extends('layout.main')
 
 @section('content')
+
 <section class="content-header">
-    <h1>
-        Sirkulasi
-        <small>Buku</small>
-    </h1>
-    <ol class="breadcrumb">
-        <li>
-            <a href="{{ route('admin.dashboard') }}">
-                <i class="fa fa-home"></i>
-                <b>Si Perpustakaan</b>
-            </a>
-        </li>
-    </ol>
+	<h1 style="text-align:center;">
+		Sirkulasi
+        <small>buku</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li>
+			<a href="{{ route('admin.dashboard') }}">
+				<i class="fa fa-home"></i>
+				<b>Si Perpustakaan</b>
+			</a>
+		</li>
+		<li class="active">Sirkulasi Buku</li>
+	</ol>
 </section>
 
 <section class="content">
 
     <div class="box box-primary">
         <div class="box-header with-border">
-            <a href="{{ route('admin.sirkul.create') }}" class="btn btn-primary">
-                <i class="glyphicon glyphicon-plus"></i> Tambah Data
-            </a>
         </div>
 
         <div class="box-body">
@@ -36,11 +35,12 @@
                             <th>Peminjam</th>
                             <th>Tgl Pinjam</th>
                             <th>Jatuh Tempo</th>
-                            <th data-orderable="false">Status</th>
-                            <th data-orderable="false">Denda</th>
-                            <th data-orderable="false">Kelola</th>
+                            <th>Status</th>
+                            <th>Denda</th>
+                            <th>Kelola</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         @forelse($sirkulasi as $index => $item)
                         <tr>
@@ -55,8 +55,14 @@
                             <td>
                                 @if($item->status == 'pending')
                                     <span class="label label-warning">Pending</span>
+
                                 @elseif($item->status == 'dipinjam')
-                                    <span class="label label-success">Dipinjam</span>
+                                    @if($item->status_label == 'Terlambat')
+                                        <span class="label label-danger">Terlambat</span>
+                                    @else
+                                        <span class="label label-success">Dipinjam</span>
+                                    @endif
+
                                 @elseif($item->status == 'dikembalikan')
                                     <span class="label label-default">Dikembalikan</span>
                                 @endif
@@ -80,6 +86,8 @@
 
                             {{-- KELOLA --}}
                             <td>
+
+                                {{-- PENDING --}}
                                 @if($item->status == 'pending')
 
                                     <form action="{{ route('admin.sirkul.approve', $item->id_sk) }}" 
@@ -109,21 +117,31 @@
                                         </button>
                                     </form>
 
+                                {{-- DIPINJAM --}}
                                 @elseif($item->status == 'dipinjam')
 
-                                    <form action="{{ route('admin.sirkul.perpanjang', $item->id_sk) }}" 
-                                          method="POST" style="display:inline;" class="form-konfirmasi"
-                                          data-title="Perpanjang Peminjaman?"
-                                          data-text="Peminjaman akan diperpanjang 3 hari"
-                                          data-icon="info"
-                                          data-confirm="Perpanjang"
-                                          data-color="#3085d6">
-                                        @csrf
-                                        <button type="submit" class="btn btn-success btn-sm">
+                                    {{-- PERPANJANG --}}
+                                    @if($item->status_label == 'Terlambat')
+                                        <button class="btn btn-default btn-sm" disabled 
+                                            title="Tidak bisa diperpanjang karena sudah terlambat">
                                             <i class="glyphicon glyphicon-upload"></i>
                                         </button>
-                                    </form>
+                                    @else
+                                        <form action="{{ route('admin.sirkul.perpanjang', $item->id_sk) }}" 
+                                              method="POST" style="display:inline;" class="form-konfirmasi"
+                                              data-title="Perpanjang Peminjaman?"
+                                              data-text="Peminjaman akan diperpanjang 3 hari"
+                                              data-icon="info"
+                                              data-confirm="Perpanjang"
+                                              data-color="#3085d6">
+                                            @csrf
+                                            <button type="submit" class="btn btn-success btn-sm">
+                                                <i class="glyphicon glyphicon-upload"></i>
+                                            </button>
+                                        </form>
+                                    @endif
 
+                                    {{-- KEMBALIKAN --}}
                                     <form action="{{ route('admin.sirkul.kembali', $item->id_sk) }}" 
                                           method="POST" style="display:inline;" class="form-konfirmasi"
                                           data-title="Kembalikan Buku?"
@@ -138,6 +156,7 @@
                                     </form>
 
                                 @endif
+
                             </td>
                         </tr>
 
@@ -154,9 +173,9 @@
 
     <h4> *Note
         <br> Masa peminjaman buku adalah 
-        <span style="color:red; font-weight:bold;">7 hari</span>.
+        <span style="color:red; font-weight:bold;">3 hari</span>.
         <br> Jika terlambat, denda 
-        <span style="color:red; font-weight:bold;">Rp 1.000/hari</span>.
+        <span style="color:red; font-weight:bold;">Rp 500/hari</span>.
     </h4>
 
 </section>
@@ -167,11 +186,11 @@
 <script>
     $(function () {
         $("#example1").DataTable({
-            "responsive": true,
-            "lengthChange": true,
-            "autoWidth": false,
-            "columnDefs": [
-                { "defaultContent": "", "targets": "_all" }
+            responsive: true,
+            lengthChange: true,
+            autoWidth: false,
+            columnDefs: [
+                { defaultContent: "", targets: "_all" }
             ]
         });
 
@@ -199,10 +218,10 @@
         var errorMsg = "{{ session('error') }}";
 
         if (successMsg) {
-            Swal.fire({ title: 'Berhasil!', text: successMsg, icon: 'success', confirmButtonText: 'OK' });
+            Swal.fire({ title: 'Berhasil!', text: successMsg, icon: 'success' });
         }
         if (errorMsg) {
-            Swal.fire({ title: 'Gagal!', text: errorMsg, icon: 'error', confirmButtonText: 'OK' });
+            Swal.fire({ title: 'Gagal!', text: errorMsg, icon: 'error' });
         }
     });
 </script>

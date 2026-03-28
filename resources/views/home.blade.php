@@ -23,7 +23,7 @@
             <div class="search-input-wrap">
               <i class="fas fa-search search-icon"></i>
               <input name="keyword" type="search" class="search-input"
-                     placeholder="Judul, pengarang, atau kategori..."
+                     placeholder="Judul buku ..."
                      value="{{ request('keyword') }}">
             </div>
           </div>

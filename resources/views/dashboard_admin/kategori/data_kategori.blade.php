@@ -15,6 +15,7 @@
 				<b>Si Perpustakaan</b>
 			</a>
 		</li>
+		<li class="active">Data Kategori</li>
 	</ol>
 </section>
 
@@ -42,6 +43,7 @@
 						<th>No</th>
 						<th>ID Kategori</th>
 						<th>Nama Kategori</th>
+						<th style="text-align:center;">Aksi</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -50,10 +52,32 @@
 						<td>{{ $loop->iteration }}</td>
 						<td>{{ $k->id_kategori }}</td>
 						<td>{{ $k->nama_kategori }}</td>
+						<td style="text-align:center;">
+
+							<!-- EDIT -->
+							<a href="{{ route('admin.kategori.edit', $k->id_kategori) }}" 
+							   class="btn btn-warning btn-sm">
+								<i class="fa fa-edit"></i>
+							</a>
+
+							<!-- HAPUS -->
+							<form action="{{ route('admin.kategori.destroy', $k->id_kategori) }}" 
+								  method="POST" 
+								  style="display:inline;">
+								@csrf
+								@method('DELETE')
+								<button type="submit" 
+										class="btn btn-danger btn-sm"
+										onclick="return confirm('Yakin mau hapus data ini?')">
+									<i class="fa fa-trash"></i>
+								</button>
+							</form>
+
+						</td>
 					</tr>
 					@empty
 					<tr>
-						<td colspan="3" class="text-center">
+						<td colspan="4" class="text-center">
 							<i class="fa fa-info-circle"></i> Tidak ada data kategori
 						</td>
 					</tr>
@@ -64,7 +88,6 @@
 
 	</div>
 </div>
-
 
 </section>
 @endsection

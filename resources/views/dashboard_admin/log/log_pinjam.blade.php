@@ -2,17 +2,18 @@
 
 @section('content')
 <section class="content-header">
-    <h1 style="text-align:center;">
-        Riwayat Peminjaman Buku
-    </h1>
-    <ol class="breadcrumb">
-        <li>
-            <a href="{{ url('/') }}">
-                <i class="fa fa-home"></i>
-                <b>Si Perpustakaan</b>
-            </a>
-        </li>
-    </ol>
+	<h1 style="text-align:center;">
+		Riwayat Peminjaman Buku
+	</h1>
+	<ol class="breadcrumb">
+		<li>
+			<a href="{{ route('admin.dashboard') }}">
+				<i class="fa fa-home"></i>
+				<b>Si Perpustakaan</b>
+			</a>
+		</li>
+		<li class="active">Riwayat Peminjaman Buku</li>
+	</ol>
 </section>
 
 <!-- Main content -->

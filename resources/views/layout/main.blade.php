@@ -115,8 +115,8 @@
 								</li>
 								    <li>
 					<a href="{{ route('admin.buku.trash') }}">
-						<i class="fa fa-trash"></i>
-            Trash Buku
+						<i class="fa fa-recycle"></i>
+            Recycle Bin
             {{-- Badge jumlah item di trash --}}
             @php $trashCount = \App\Models\Buku::onlyTrashed()->count(); @endphp
             @if($trashCount > 0)
