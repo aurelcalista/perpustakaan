@@ -218,9 +218,9 @@
         $testimonis = [
           ['inisial'=>'A','nama'=>'Agnia Putri',    'kelas'=>'Siswa Kelas XI RPL','teks'=>'Perpustakaan SMKN 1 Cirebon sangat membantu proses belajar saya. Koleksi bukunya lengkap dan sistem peminjaman sangat mudah!'],
           ['inisial'=>'K','nama'=>'Kezhia Aurelia', 'kelas'=>'Siswa Kelas XI RPL','teks'=>'Sistem pencarian buku online sangat memudahkan saya. Tidak perlu lagi datang langsung hanya untuk tahu apakah buku tersedia atau tidak.'],
-          ['inisial'=>'A','nama'=>'Adinda Amelia',  'kelas'=>'Siswa Kelas XI RPL','teks'=>'Petugas perpustakaannya ramah dan sangat membantu. Tempatnya juga nyaman untuk membaca dan belajar bersama teman-teman.'],
+          ['inisial'=>'A','nama'=>'Adinda Meilia',  'kelas'=>'Siswa Kelas XI RPL','teks'=>'Petugas perpustakaannya ramah dan sangat membantu. Tempatnya juga nyaman untuk membaca dan belajar bersama teman-teman.'],
           ['inisial'=>'A','nama'=>'Aurel Calista',  'kelas'=>'Siswa Kelas XI RPL','teks'=>'Perpustakaan ini sangat membantu saya saat mencari referensi tugas sekolah. Koleksi bukunya banyak dan mudah ditemukan.'],
-          ['inisial'=>'C','nama'=>'Cyra Ghasanah',  'kelas'=>'Siswa Kelas XI RPL','teks'=>'Tempatnya nyaman dan tenang untuk belajar. Sistem peminjaman online juga membuat semuanya lebih praktis.'],
+          ['inisial'=>'C','nama'=>'Cyra Ghasanna',  'kelas'=>'Siswa Kelas XI RPL','teks'=>'Tempatnya nyaman dan tenang untuk belajar. Sistem peminjaman online juga membuat semuanya lebih praktis.'],
           ['inisial'=>'T','nama'=>'Tiara Maharani', 'kelas'=>'Siswa Kelas XI RPL','teks'=>'Saya suka karena bisa mencari buku langsung lewat website perpustakaan. Jadi lebih cepat dan tidak membuang waktu.'],
         ]
       @endphp
