@@ -13,6 +13,10 @@ use App\Http\Controllers\UserPinjamController;
 use App\Http\Controllers\SirkulasiController;
 use App\Http\Controllers\LaporanController;
 use App\Models\User;
+use App\Http\Controllers\UlasanController;
+
+Route::get('/ulasan/create', [UlasanController::class, 'create'])->name('ulasan.create');
+Route::post('/ulasan/store', [UlasanController::class, 'store'])->name('ulasan.store');
 
 
 

@@ -202,37 +202,63 @@
     </div>
   </div>
 </section>
-
 {{-- TESTIMONIALS --}}
 <section id="section_testimonials">
   <div class="container">
     <div class="section-head fade-up">
       <h2>Apa Kata Siswa<br/>Tentang Kami</h2>
-      <button class="btn btn-outline">Beri Ulasan</button>
+
+      <a href="{{ route('ulasan.create') }}" class="btn btn-outline">
+        Beri Ulasan
+      </a>
     </div>
+
     <p class="fade-up" style="color:var(--text-muted);font-size:16px;margin-bottom:36px;">
       Pengalaman nyata dari siswa SMKN 1 Cirebon yang sudah menggunakan layanan perpustakaan kami.
     </p>
+
     <div class="testimonials-slider fade-up">
+
+      {{-- ULASAN DARI DATABASE --}}
+      @foreach($ulasan as $u)
+      <div class="testimonial-card">
+        <div class="t-avatar">
+          {{ strtoupper(substr($u->nama,0,1)) }}
+        </div>
+
+        <p class="t-role">{{ $u->kelas ?? 'Pengguna' }}</p>
+        <p class="t-name">{{ $u->nama }}</p>
+
+        <div class="t-stars">
+          @for($i = 0; $i < $u->rating; $i++)
+            ★
+          @endfor
+        </div>
+
+        <p class="t-text">"{{ $u->isi }}"</p>
+      </div>
+      @endforeach
+
+
+      {{-- TESTIMONI DEFAULT --}}
       @php
         $testimonis = [
-          ['inisial'=>'A','nama'=>'Agnia Putri',    'kelas'=>'Siswa Kelas XI RPL','teks'=>'Perpustakaan SMKN 1 Cirebon sangat membantu proses belajar saya. Koleksi bukunya lengkap dan sistem peminjaman sangat mudah!'],
-          ['inisial'=>'K','nama'=>'Kezhia Aurelia', 'kelas'=>'Siswa Kelas XI RPL','teks'=>'Sistem pencarian buku online sangat memudahkan saya. Tidak perlu lagi datang langsung hanya untuk tahu apakah buku tersedia atau tidak.'],
-          ['inisial'=>'A','nama'=>'Adinda Meilia',  'kelas'=>'Siswa Kelas XI RPL','teks'=>'Petugas perpustakaannya ramah dan sangat membantu. Tempatnya juga nyaman untuk membaca dan belajar bersama teman-teman.'],
-          ['inisial'=>'A','nama'=>'Aurel Calista',  'kelas'=>'Siswa Kelas XI RPL','teks'=>'Perpustakaan ini sangat membantu saya saat mencari referensi tugas sekolah. Koleksi bukunya banyak dan mudah ditemukan.'],
-          ['inisial'=>'C','nama'=>'Cyra Ghasanna',  'kelas'=>'Siswa Kelas XI RPL','teks'=>'Tempatnya nyaman dan tenang untuk belajar. Sistem peminjaman online juga membuat semuanya lebih praktis.'],
-          ['inisial'=>'T','nama'=>'Tiara Maharani', 'kelas'=>'Siswa Kelas XI RPL','teks'=>'Saya suka karena bisa mencari buku langsung lewat website perpustakaan. Jadi lebih cepat dan tidak membuang waktu.'],
-        ]
+          ['inisial'=>'A','nama'=>'Agnia Putri','kelas'=>'Siswa Kelas XI RPL','teks'=>'Perpustakaan SMKN 1 Cirebon sangat membantu proses belajar saya. Koleksi bukunya lengkap dan sistem peminjaman sangat mudah!'],
+          ['inisial'=>'K','nama'=>'Kezhia Aurelia','kelas'=>'Siswa Kelas XI RPL','teks'=>'Sistem pencarian buku online sangat memudahkan saya.'],
+          ['inisial'=>'A','nama'=>'Adinda Meilia','kelas'=>'Siswa Kelas XI RPL','teks'=>'Petugas perpustakaannya ramah dan sangat membantu.'],
+        ];
       @endphp
+
       @foreach($testimonis as $t)
-        <div class="testimonial-card">
-          <div class="t-avatar">{{ $t['inisial'] }}</div>
-          <p class="t-role">{{ $t['kelas'] }}</p>
-          <p class="t-name">{{ $t['nama'] }}</p>
-          <div class="t-stars">★★★★★</div>
-          <p class="t-text">{{ $t['teks'] }}</p>
-        </div>
+      <div class="testimonial-card">
+        <div class="t-avatar">{{ $t['inisial'] }}</div>
+        <p class="t-role">{{ $t['kelas'] }}</p>
+        <p class="t-name">{{ $t['nama'] }}</p>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">{{ $t['teks'] }}</p>
+      </div>
       @endforeach
+
     </div>
   </div>
 </section>
