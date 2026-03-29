@@ -96,7 +96,7 @@
     <div class="ulasan-card">
 
         <div class="ulasan-title">
-            ✨ Beri Ulasan
+             Beri Ulasan
         </div>
 
         <form action="{{ route('ulasan.store') }}" method="POST">
@@ -129,7 +129,7 @@
             </div>
 
             <button type="submit" class="btn-submit">
-                Kirim Ulasan 🚀
+                Kirim Ulasan 
             </button>
 
         </form>
