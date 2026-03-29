@@ -11,8 +11,8 @@
             <div class="detail-card">
 
                 <div class="cover-panel">
-                    @if ($buku->foto)
-                        <img src="{{ asset('storage/' . $buku->foto) }}" class="cover-img">
+                    @if($buku->foto)
+                        <img src="{{ asset('storage/'.s$buku->foto) }}" class="cover-img">
                     @else
                         <div class="cover-no-img">No Cover</div>
                     @endif
