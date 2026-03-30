@@ -2,7 +2,6 @@
 
 @section('content')
 
-
 {{-- HERO --}}
 <section id="section_1">
   <div class="container">
@@ -80,15 +79,12 @@
 
     <div class="section-head fade-up">
       <h2>Koleksi Perpustakaan</h2>
-      <a href="{{ route('home') }}" class="btn btn-outline">Lihat Semua Buku</a>
     </div>
 
     {{-- Category Tabs --}}
     <div class="category-tabs fade-up" id="categoryTabs">
       <button class="tab-btn {{ $aktif === 'semua' ? 'active' : '' }}"
-              onclick="filterKategori('semua', this)">
-        Semua
-      </button>
+              onclick="filterKategori('semua', this)">Semua</button>
       @foreach($kategoris as $kat)
         <button class="tab-btn {{ $aktif == $kat->id_kategori ? 'active' : '' }}"
                 onclick="filterKategori('{{ $kat->id_kategori }}', this)">
@@ -106,10 +102,8 @@
             : false;
         @endphp
 
-        {{-- .buku-item dan data-kategori di div wrapper, bukan di <a> --}}
         <div class="buku-item" data-kategori="{{ $item->id_kategori }}">
 
-          {{-- Tombol favorit --}}
           @auth
           <button
             onclick="toggleFavorit('{{ $item->id_buku }}', this); event.preventDefault();"
@@ -151,14 +145,13 @@
 
         </div>
       @empty
-        <div id="emptyState" style="grid-column:1/-1;text-align:center;padding:60px 0;color:var(--text-muted);">
+        <div style="grid-column:1/-1;text-align:center;padding:60px 0;color:var(--text-muted);">
           <i class="fas fa-book" style="font-size:48px;margin-bottom:16px;display:block;opacity:.4;"></i>
           <p>Belum ada koleksi buku tersedia.</p>
         </div>
       @endforelse
     </div>
 
-    {{-- Empty state untuk filter JS --}}
     <div id="emptyStateFilter" style="display:none;text-align:center;padding:60px 0;color:var(--text-muted);">
       <i class="fas fa-book" style="font-size:48px;margin-bottom:16px;display:block;opacity:.4;"></i>
       <p>Tidak ada buku di kategori ini.</p>
@@ -202,15 +195,13 @@
     </div>
   </div>
 </section>
+
 {{-- TESTIMONIALS --}}
 <section id="section_testimonials">
   <div class="container">
     <div class="section-head fade-up">
       <h2>Apa Kata Siswa<br/>Tentang Kami</h2>
-
-      <a href="{{ route('ulasan.create') }}" class="btn btn-outline">
-        Beri Ulasan
-      </a>
+      <button class="btn btn-outline" onclick="openUlasanModal()">Beri Ulasan</button>
     </div>
 
     <p class="fade-up" style="color:var(--text-muted);font-size:16px;margin-bottom:36px;">
@@ -219,28 +210,19 @@
 
     <div class="testimonials-slider fade-up">
 
-      {{-- ULASAN DARI DATABASE --}}
       @foreach($ulasan as $u)
       <div class="testimonial-card">
-        <div class="t-avatar">
-          {{ strtoupper(substr($u->nama,0,1)) }}
-        </div>
-
+        <div class="t-avatar">{{ strtoupper(substr($u->nama,0,1)) }}</div>
         <p class="t-role">{{ $u->kelas ?? 'Pengguna' }}</p>
         <p class="t-name">{{ $u->nama }}</p>
-
         <div class="t-stars">
-          @for($i = 0; $i < $u->rating; $i++)
-            ★
-          @endfor
+          @for($i = 0; $i < $u->rating; $i++) ★ @endfor
+          @for($i = $u->rating; $i < 5; $i++) ☆ @endfor
         </div>
-
         <p class="t-text">"{{ $u->isi }}"</p>
       </div>
       @endforeach
 
-
-      {{-- TESTIMONI DEFAULT --}}
       @php
         $testimonis = [
           ['inisial'=>'A','nama'=>'Agnia Putri','kelas'=>'Siswa Kelas XI RPL','teks'=>'Perpustakaan SMKN 1 Cirebon sangat membantu proses belajar saya. Koleksi bukunya lengkap dan sistem peminjaman sangat mudah!'],
@@ -262,6 +244,157 @@
     </div>
   </div>
 </section>
+
+
+{{-- ========== MODAL BERI ULASAN ========== --}}
+@auth
+<div id="modal-ulasan" class="modal-overlay" onclick="closeUlasanModal(event)">
+  <div class="modal-box" style="max-width:640px;padding:0;">
+
+    {{-- Header gradient --}}
+    <div style="background:linear-gradient(135deg,#1a2d6b 0%,#3d56c0 100%);
+                padding:24px 28px 20px;position:relative;">
+      <button class="modal-close"
+              onclick="closeUlasanModal()"
+              style="color:rgba(255,255,255,.8);top:14px;right:16px;">
+        &times;
+      </button>
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="width:46px;height:46px;border-radius:50%;
+                    background:rgba(255,255,255,.18);
+                    display:flex;align-items:center;justify-content:center;font-size:22px;">
+          ⭐
+        </div>
+        <div>
+          <h3 style="color:white;font-family:'Fraunces',serif;font-size:20px;
+                     font-weight:800;margin:0 0 4px;">
+            Beri Ulasan
+          </h3>
+          <p style="color:rgba(255,255,255,.75);font-size:13px;margin:0;">
+            Bagikan pengalamanmu menggunakan perpustakaan kami
+          </p>
+        </div>
+      </div>
+    </div>
+
+    {{-- Body --}}
+    <div style="padding:22px 28px;">
+
+      @if(session('success'))
+        <div style="background:#d1fae5;color:#065f46;border-radius:8px;
+                    padding:10px 16px;font-size:14px;margin-bottom:18px;
+                    display:flex;align-items:center;gap:8px;">
+          ✅ {{ session('success') }}
+        </div>
+      @endif
+
+      <form action="{{ route('ulasan.store') }}" method="POST" id="form-ulasan">
+        @csrf
+
+        {{-- Nama & Kelas --}}
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <div class="form-group">
+            <label class="form-label">Nama</label>
+            <input type="text" name="nama" class="form-input"
+                   value="{{ auth()->user()->name }}" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Kelas</label>
+            <input type="text" name="kelas" class="form-input"
+                   placeholder="Contoh: XI RPL 1" required>
+          </div>
+        </div>
+
+        {{-- Ulasan --}}
+        <div class="form-group">
+          <label class="form-label">Ulasan</label>
+          <textarea name="isi" class="form-input" rows="2" id="ulasanTeks"
+                    placeholder="Ceritakan pengalamanmu..." required></textarea>
+        </div>
+
+        {{-- Star Rating --}}
+        <div class="form-group">
+          <label class="form-label">Rating</label>
+          <div style="background:#f7f9fc;border:1.5px solid #e0e6ef;border-radius:10px;
+                      padding:14px 18px;display:flex;align-items:center;gap:14px;">
+            <div id="starRating" style="display:flex;gap:4px;">
+              @for($i = 1; $i <= 5; $i++)
+                <span class="star" data-value="{{ $i }}"
+                      onclick="setRating({{ $i }})"
+                      onmouseover="hoverRating({{ $i }})"
+                      onmouseout="resetHover()">★</span>
+              @endfor
+            </div>
+            <span id="starLabel"
+                  style="font-size:14px;font-weight:700;color:#1a2d6b;min-width:100px;">
+              Sangat Bagus
+            </span>
+          </div>
+          <input type="hidden" name="rating" id="ratingValue" value="5">
+        </div>
+
+        {{-- Live Preview --}}
+        <div style="background:#f7f9fc;border:1.5px solid #e0e6ef;border-radius:10px;
+                    padding:14px 16px;margin-bottom:20px;">
+          <p style="font-size:10px;font-weight:700;text-transform:uppercase;
+                    letter-spacing:1px;color:#8a9bac;margin:0 0 10px;">
+            Preview
+          </p>
+          <div style="display:flex;align-items:flex-start;gap:12px;">
+            <div style="width:38px;height:38px;border-radius:50%;flex-shrink:0;
+                        background:linear-gradient(135deg,#eef1fb,#dde4eb);
+                        display:flex;align-items:center;justify-content:center;
+                        font-size:17px;font-weight:800;color:#1a2d6b;">
+              {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+            </div>
+            <div style="flex:1;">
+              <div style="font-weight:700;font-size:13px;color:#1a2332;margin-bottom:2px;">
+                {{ auth()->user()->name }}
+              </div>
+              <div id="previewStars"
+                   style="color:#f5a623;font-size:14px;letter-spacing:2px;margin-bottom:4px;">
+                ★★★★★
+              </div>
+              <div id="previewTeks"
+                   style="font-size:13px;color:#5a6b7b;font-style:italic;">
+                Preview ulasan kamu...
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {{-- Submit --}}
+        <button type="submit" class="btn-submit"
+                style="background:linear-gradient(135deg,#1a2d6b,#3d56c0);
+                       border-radius:10px;font-size:15px;letter-spacing:.3px;
+                       display:flex;align-items:center;justify-content:center;gap:8px;">
+          <i class="fas fa-paper-plane"></i> Kirim Ulasan
+        </button>
+
+      </form>
+    </div>
+
+  </div>
+</div>
+@endauth
+
+{{-- ========== MODAL LOGIN DULU ========== --}}
+@guest
+<div id="modal-login-alert" class="modal-overlay" onclick="closeLoginAlert(event)">
+  <div class="modal-box modal-box--sm">
+    <button class="modal-close" onclick="closeLoginAlert()">&times;</button>
+    <div class="login-alert-icon">🔒</div>
+    <h3 class="modal-title">Login Dulu, Ya!</h3>
+    <p class="modal-sub">Kamu harus login untuk bisa memberikan ulasan.</p>
+    <a href="{{ route('login') }}" class="btn-submit"
+       style="display:block;text-align:center;text-decoration:none;margin-top:8px;">
+      Login Sekarang
+    </a>
+    <button onclick="closeLoginAlert()" class="btn-outline-cancel">Nanti Dulu</button>
+  </div>
+</div>
+@endguest
+
 
 {{-- CARA PENGGUNAAN --}}
 <section id="section_3" style="background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%);position:relative;overflow:hidden;">
@@ -361,90 +494,194 @@
   </div>
 </section>
 
+
+{{-- Variabel Blade → JS --}}
 <script>
-  /* ---- AUTO SCROLL ---- */
-  document.addEventListener('DOMContentLoaded', function () {
-    var hasKeyword  = "{{ request('keyword') }}";
-    var hasKategori = "{{ request('kategori') }}";
-    if (hasKeyword || (hasKategori && hasKategori !== 'semua')) {
-      var el = document.getElementById('section_2');
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  });
+  var IS_LOGGED_IN = {{ auth()->check() ? 'true' : 'false' }};
+  var HAS_SUCCESS  = {{ session('success') ? 'true' : 'false' }};
+  var FAVORIT_URL  = "{{ route('favorit.toggle') }}";
+</script>
 
-  /* ---- FILTER KATEGORI ---- */
-  function filterKategori(id, btn) {
-    document.querySelectorAll('.tab-btn').forEach(function (b) {
-      b.classList.remove('active');
-    });
-    btn.classList.add('active');
-
-    var idStr         = String(id);
-    var items         = document.querySelectorAll('.buku-item');
-    var adaYangTampil = false;
-
-    items.forEach(function (item) {
-      var cocok = idStr === 'semua' || String(item.dataset.kategori) === idStr;
-      item.style.display = cocok ? '' : 'none';
-      if (cocok) adaYangTampil = true;
-    });
-
-    var emptyFilter = document.getElementById('emptyStateFilter');
-    if (emptyFilter) emptyFilter.style.display = adaYangTampil ? 'none' : 'block';
-
+<script>
+/* ================================================================
+   AUTO SCROLL
+================================================================ */
+document.addEventListener('DOMContentLoaded', function () {
+  var hasKeyword  = "{{ request('keyword') }}";
+  var hasKategori = "{{ request('kategori') }}";
+  if (hasKeyword || (hasKategori && hasKategori !== 'semua')) {
     var el = document.getElementById('section_2');
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
+});
 
-  /* ---- FAQ ACCORDION ---- */
-  document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.faq-question').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var item   = btn.closest('.faq-item');
-        var answer = item.querySelector('.faq-answer');
-        var icon   = item.querySelector('.faq-icon');
-        var isOpen = item.classList.contains('open');
+/* ================================================================
+   FILTER KATEGORI
+================================================================ */
+function filterKategori(id, btn) {
+  document.querySelectorAll('.tab-btn').forEach(function (b) {
+    b.classList.remove('active');
+  });
+  btn.classList.add('active');
 
-        document.querySelectorAll('.faq-item.open').forEach(function (el) {
-          el.classList.remove('open');
-          el.querySelector('.faq-answer').style.maxHeight = null;
-          el.querySelector('.faq-icon').style.transform   = '';
-        });
+  var idStr         = String(id);
+  var items         = document.querySelectorAll('.buku-item');
+  var adaYangTampil = false;
 
-        if (!isOpen) {
-          item.classList.add('open');
-          answer.style.maxHeight = answer.scrollHeight + 'px';
-          icon.style.transform   = 'rotate(180deg)';
-        }
-      });
-    });
+  items.forEach(function (item) {
+    var cocok = idStr === 'semua' || String(item.dataset.kategori) === idStr;
+    item.style.display = cocok ? '' : 'none';
+    if (cocok) adaYangTampil = true;
   });
 
-  /* ---- TOGGLE FAVORIT ---- */
-  function toggleFavorit(idBuku, btn) {
-    fetch('{{ route("favorit.toggle") }}', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-        'Accept': 'application/json',
-      },
-      body: JSON.stringify({ id_buku: idBuku })
-    })
-    .then(function (r) { return r.json(); })
-    .then(function (data) {
-      var added = data.status === 'added';
-      btn.style.background = added ? '#e53e3e' : 'rgba(255,255,255,0.9)';
-      btn.style.color      = added ? 'white'   : '#e53e3e';
-      btn.classList.toggle('active', added);
-      btn.title = added ? 'Hapus dari favorit' : 'Tambah ke favorit';
-    })
-    .catch(function () {
-      alert('Gagal memperbarui favorit.');
+  var emptyFilter = document.getElementById('emptyStateFilter');
+  if (emptyFilter) emptyFilter.style.display = adaYangTampil ? 'none' : 'block';
+
+  var el = document.getElementById('section_2');
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ================================================================
+   FAQ ACCORDION
+================================================================ */
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.faq-question').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var item   = btn.closest('.faq-item');
+      var answer = item.querySelector('.faq-answer');
+      var icon   = item.querySelector('.faq-icon');
+      var isOpen = item.classList.contains('open');
+
+      document.querySelectorAll('.faq-item.open').forEach(function (el) {
+        el.classList.remove('open');
+        el.querySelector('.faq-answer').style.maxHeight = null;
+        el.querySelector('.faq-icon').style.transform   = '';
+      });
+
+      if (!isOpen) {
+        item.classList.add('open');
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+        icon.style.transform   = 'rotate(180deg)';
+      }
+    });
+  });
+});
+
+/* ================================================================
+   TOGGLE FAVORIT
+================================================================ */
+function toggleFavorit(idBuku, btn) {
+  fetch(FAVORIT_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+      'Accept': 'application/json',
+    },
+    body: JSON.stringify({ id_buku: idBuku })
+  })
+  .then(function (r) { return r.json(); })
+  .then(function (data) {
+    var added = data.status === 'added';
+    btn.style.background = added ? '#e53e3e' : 'rgba(255,255,255,0.9)';
+    btn.style.color      = added ? 'white'   : '#e53e3e';
+    btn.classList.toggle('active', added);
+    btn.title = added ? 'Hapus dari favorit' : 'Tambah ke favorit';
+  })
+  .catch(function () {
+    alert('Gagal memperbarui favorit.');
+  });
+}
+
+/* ================================================================
+   MODAL ULASAN
+================================================================ */
+function openUlasanModal() {
+  if (!IS_LOGGED_IN) { alertLoginDulu(); return; }
+  var m = document.getElementById('modal-ulasan');
+  if (m) { m.classList.add('open'); document.body.style.overflow = 'hidden'; }
+}
+
+function closeUlasanModal(e) {
+  var m = document.getElementById('modal-ulasan');
+  if (m && (!e || e.target === m)) {
+    m.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+
+function alertLoginDulu() {
+  var m = document.getElementById('modal-login-alert');
+  if (m) { m.classList.add('open'); document.body.style.overflow = 'hidden'; }
+}
+
+function closeLoginAlert(e) {
+  var m = document.getElementById('modal-login-alert');
+  if (m && (!e || e.target === m)) {
+    m.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+
+/* ================================================================
+   STAR RATING
+================================================================ */
+var currentRating = 5;
+var ratingLabels  = ['', 'Jelek Banget', 'Kurang Baik', 'Cukup', 'Bagus', 'Sangat Bagus'];
+
+function setRating(val) {
+  currentRating = val;
+  var rv = document.getElementById('ratingValue');
+  var sl = document.getElementById('starLabel');
+  if (rv) rv.value = val;
+  if (sl) sl.textContent = ratingLabels[val];
+  updateStars(val, false);
+
+  var s = '';
+  for (var i = 0; i < val; i++) s += '★';
+  for (var j = val; j < 5; j++) s += '☆';
+  var ps = document.getElementById('previewStars');
+  if (ps) ps.textContent = s;
+}
+
+function hoverRating(val) { updateStars(val, true); }
+function resetHover()     { updateStars(currentRating, false); }
+
+function updateStars(val, isHover) {
+  document.querySelectorAll('#starRating .star').forEach(function (s, i) {
+    s.classList.remove('active', 'hover');
+    if (i < val) s.classList.add(isHover ? 'hover' : 'active');
+  });
+}
+
+/* ================================================================
+   LIVE PREVIEW ULASAN
+================================================================ */
+document.addEventListener('DOMContentLoaded', function () {
+  var textarea = document.getElementById('ulasanTeks');
+  if (textarea) {
+    textarea.addEventListener('input', function () {
+      var txt = this.value.trim();
+      var pt  = document.getElementById('previewTeks');
+      if (pt) pt.textContent = txt ? '"' + txt + '"' : 'Preview ulasan kamu...';
     });
   }
+});
 
- 
+/* ================================================================
+   INIT
+================================================================ */
+document.addEventListener('DOMContentLoaded', function () {
+  setRating(5);
+  if (HAS_SUCCESS && IS_LOGGED_IN) { openUlasanModal(); }
+});
+
+/* ================================================================
+   TUTUP MODAL DENGAN ESC
+================================================================ */
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') { closeUlasanModal(); closeLoginAlert(); }
+});
 </script>
 
 @endsection

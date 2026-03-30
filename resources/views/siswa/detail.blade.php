@@ -12,7 +12,7 @@
 
                 <div class="cover-panel">
                     @if($buku->foto)
-                        <img src="{{ asset('storage/'.s$buku->foto) }}" class="cover-img">
+                        <img src="{{ asset('storage/'.$buku->foto) }}" class="cover-img">
                     @else
                         <div class="cover-no-img">No Cover</div>
                     @endif
