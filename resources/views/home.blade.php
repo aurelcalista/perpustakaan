@@ -14,7 +14,7 @@
           <div><span class="rating-score">📚</span> <span class="stars">★★★★★</span></div>
           <div class="rating-label">Ribuan koleksi buku tersedia</div>
         </div>
-      </div>
+      </div>1
       <div class="hero-search fade-up">
         <form method="GET" action="{{ route('home') }}" style="display:contents;">
           <div class="search-field">

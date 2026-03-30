@@ -47,7 +47,7 @@
 					{{-- ID --}}
 					<div class="form-group">
 						<label>ID Buku</label>
-						<input type="text" class="form-control" value="{{ $format }}" readonly>
+						<input type="text" name="id_buku" class="form-control" value="{{ $format }}" readonly>
 					</div>
 
 					{{-- 2 KOLOM MINI --}}
