@@ -14,7 +14,7 @@
           <div><span class="rating-score">📚</span> <span class="stars">★★★★★</span></div>
           <div class="rating-label">Ribuan koleksi buku tersedia</div>
         </div>
-      </div>1
+      </div>
       <div class="hero-search fade-up">
         <form method="GET" action="{{ route('home') }}" style="display:contents;">
           <div class="search-field">
@@ -152,9 +152,21 @@
       @endforelse
     </div>
 
+    {{-- Empty state filter --}}
     <div id="emptyStateFilter" style="display:none;text-align:center;padding:60px 0;color:var(--text-muted);">
       <i class="fas fa-book" style="font-size:48px;margin-bottom:16px;display:block;opacity:.4;"></i>
       <p>Tidak ada buku di kategori ini.</p>
+    </div>
+
+    {{-- Pagination --}}
+    <div id="paginationWrap" style="display:none;justify-content:center;align-items:center;gap:12px;margin-top:40px;flex-wrap:wrap;">
+      <button id="btnPrev" onclick="changePage(-1)" class="pagination-btn">
+        <i class="fas fa-chevron-left"></i> Sebelumnya
+      </button>
+      <div id="pageNumbers" style="display:flex;gap:6px;"></div>
+      <button id="btnNext" onclick="changePage(1)" class="pagination-btn">
+        Selanjutnya <i class="fas fa-chevron-right"></i>
+      </button>
     </div>
 
   </div>
@@ -251,7 +263,6 @@
 <div id="modal-ulasan" class="modal-overlay" onclick="closeUlasanModal(event)">
   <div class="modal-box" style="max-width:640px;padding:0;">
 
-    {{-- Header gradient --}}
     <div style="background:linear-gradient(135deg,#1a2d6b 0%,#3d56c0 100%);
                 padding:24px 28px 20px;position:relative;">
       <button class="modal-close"
@@ -277,7 +288,6 @@
       </div>
     </div>
 
-    {{-- Body --}}
     <div style="padding:22px 28px;">
 
       @if(session('success'))
@@ -291,7 +301,6 @@
       <form action="{{ route('ulasan.store') }}" method="POST" id="form-ulasan">
         @csrf
 
-        {{-- Nama & Kelas --}}
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
           <div class="form-group">
             <label class="form-label">Nama</label>
@@ -305,14 +314,12 @@
           </div>
         </div>
 
-        {{-- Ulasan --}}
         <div class="form-group">
           <label class="form-label">Ulasan</label>
           <textarea name="isi" class="form-input" rows="2" id="ulasanTeks"
                     placeholder="Ceritakan pengalamanmu..." required></textarea>
         </div>
 
-        {{-- Star Rating --}}
         <div class="form-group">
           <label class="form-label">Rating</label>
           <div style="background:#f7f9fc;border:1.5px solid #e0e6ef;border-radius:10px;
@@ -333,7 +340,6 @@
           <input type="hidden" name="rating" id="ratingValue" value="5">
         </div>
 
-        {{-- Live Preview --}}
         <div style="background:#f7f9fc;border:1.5px solid #e0e6ef;border-radius:10px;
                     padding:14px 16px;margin-bottom:20px;">
           <p style="font-size:10px;font-weight:700;text-transform:uppercase;
@@ -363,7 +369,6 @@
           </div>
         </div>
 
-        {{-- Submit --}}
         <button type="submit" class="btn-submit"
                 style="background:linear-gradient(135deg,#1a2d6b,#3d56c0);
                        border-radius:10px;font-size:15px;letter-spacing:.3px;
@@ -516,34 +521,84 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 /* ================================================================
-   FILTER KATEGORI
+   PAGINATION
 ================================================================ */
-function filterKategori(id, btn) {
-  document.querySelectorAll('.tab-btn').forEach(function (b) {
-    b.classList.remove('active');
+var ITEMS_PER_PAGE = 12;
+var currentPage    = 1;
+var activeKategori = 'semua';
+
+function getVisibleItems() {
+  return Array.from(document.querySelectorAll('.buku-item')).filter(function(item) {
+    if (activeKategori === 'semua') return true;
+    return String(item.dataset.kategori) === String(activeKategori);
   });
-  btn.classList.add('active');
-
-  var idStr         = String(id);
-  var items         = document.querySelectorAll('.buku-item');
-  var adaYangTampil = false;
-
-  items.forEach(function (item) {
-    var cocok = idStr === 'semua' || String(item.dataset.kategori) === idStr;
-    item.style.display = cocok ? '' : 'none';
-    if (cocok) adaYangTampil = true;
-  });
-
-  var emptyFilter = document.getElementById('emptyStateFilter');
-  if (emptyFilter) emptyFilter.style.display = adaYangTampil ? 'none' : 'block';
-
-  var el = document.getElementById('section_2');
-  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-/* ================================================================
-   FAQ ACCORDION
-================================================================ */
+function renderPage(page) {
+  var items = getVisibleItems();
+  var total = Math.ceil(items.length / ITEMS_PER_PAGE);
+  if (total === 0) total = 1;
+  currentPage = Math.max(1, Math.min(page, total));
+
+  var start = (currentPage - 1) * ITEMS_PER_PAGE;
+  var end   = start + ITEMS_PER_PAGE;
+
+  // Sembunyikan semua item dulu
+  Array.from(document.querySelectorAll('.buku-item')).forEach(function(item) {
+    item.style.display = 'none';
+  });
+
+  // Tampilkan sesuai halaman & kategori
+  items.forEach(function(item, i) {
+    item.style.display = (i >= start && i < end) ? '' : 'none';
+  });
+
+  // Update page numbers
+  var pageNumbers = document.getElementById('pageNumbers');
+  if (pageNumbers) {
+    pageNumbers.innerHTML = '';
+    for (var p = 1; p <= total; p++) {
+      var btn = document.createElement('button');
+      btn.textContent = p;
+      btn.className = 'pagination-btn pagination-num' + (p === currentPage ? ' active' : '');
+      btn.setAttribute('data-page', p);
+      btn.onclick = (function(pg) {
+        return function() { renderPage(pg); document.getElementById('section_2').scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+      })(p);
+      pageNumbers.appendChild(btn);
+    }
+  }
+
+  // Update tombol prev/next
+  var btnPrev = document.getElementById('btnPrev');
+  var btnNext = document.getElementById('btnNext');
+  if (btnPrev) { btnPrev.disabled = currentPage <= 1; btnPrev.style.opacity = currentPage <= 1 ? '0.4' : '1'; }
+  if (btnNext) { btnNext.disabled = currentPage >= total; btnNext.style.opacity = currentPage >= total ? '0.4' : '1'; }
+
+  // Tampilkan/sembunyikan pagination
+  var wrap = document.getElementById('paginationWrap');
+  if (wrap) wrap.style.display = total <= 1 ? 'none' : 'flex';
+
+  // Empty state
+  var emptyFilter = document.getElementById('emptyStateFilter');
+  if (emptyFilter) emptyFilter.style.display = items.length === 0 ? 'block' : 'none';
+}
+
+function changePage(dir) {
+  renderPage(currentPage + dir);
+  document.getElementById('section_2').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+
+function filterKategori(id, btn) {
+  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  activeKategori = String(id);
+  currentPage = 1;
+  renderPage(1);
+  document.getElementById('section_2').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('.faq-question').forEach(function (btn) {
     btn.addEventListener('click', function () {
@@ -567,9 +622,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-/* ================================================================
-   TOGGLE FAVORIT
-================================================================ */
+
 function toggleFavorit(idBuku, btn) {
   fetch(FAVORIT_URL, {
     method: 'POST',
@@ -593,9 +646,6 @@ function toggleFavorit(idBuku, btn) {
   });
 }
 
-/* ================================================================
-   MODAL ULASAN
-================================================================ */
 function openUlasanModal() {
   if (!IS_LOGGED_IN) { alertLoginDulu(); return; }
   var m = document.getElementById('modal-ulasan');
@@ -623,9 +673,6 @@ function closeLoginAlert(e) {
   }
 }
 
-/* ================================================================
-   STAR RATING
-================================================================ */
 var currentRating = 5;
 var ratingLabels  = ['', 'Jelek Banget', 'Kurang Baik', 'Cukup', 'Bagus', 'Sangat Bagus'];
 
@@ -654,9 +701,7 @@ function updateStars(val, isHover) {
   });
 }
 
-/* ================================================================
-   LIVE PREVIEW ULASAN
-================================================================ */
+
 document.addEventListener('DOMContentLoaded', function () {
   var textarea = document.getElementById('ulasanTeks');
   if (textarea) {
@@ -668,17 +713,14 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
-/* ================================================================
-   INIT
-================================================================ */
+
 document.addEventListener('DOMContentLoaded', function () {
   setRating(5);
+  renderPage(1);
   if (HAS_SUCCESS && IS_LOGGED_IN) { openUlasanModal(); }
 });
 
-/* ================================================================
-   TUTUP MODAL DENGAN ESC
-================================================================ */
+
 document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape') { closeUlasanModal(); closeLoginAlert(); }
 });
