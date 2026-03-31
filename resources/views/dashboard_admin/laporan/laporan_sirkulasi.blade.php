@@ -13,28 +13,11 @@
     <div class="box box-primary">
         <div class="box-header with-border">
 
-            {{-- ✅ FILTER --}}
-<form method="GET" action="{{ route('admin.laporan.index') }}" class="form-inline">
-
-    <input type="date" name="tgl_awal" class="form-control"
-        value="{{ request('tgl_awal') }}">
-
-    <input type="date" name="tgl_akhir" class="form-control"
-        value="{{ request('tgl_akhir') }}">
-
-    <button class="btn btn-primary">Filter</button>
-
-    <a href="{{ route('admin.laporan.index') }}" class="btn btn-default">
-        Reset
-    </a>
-
-    {{-- PRINT IKUT FILTER --}}
-    <a href="{{ route('admin.laporan.print', request()->only('tgl_awal','tgl_akhir')) }}"
-       class="btn btn-success" target="_blank">
-        <i class="glyphicon glyphicon-print"></i> Print
-    </a>
-
-</form>
+            {{-- ✅ PRINT TANPA FILTER --}}
+            <a href="{{ route('admin.laporan.print') }}"
+               class="btn btn-success" target="_blank">
+                <i class="glyphicon glyphicon-print"></i> Print
+            </a>
 
         </div>
 

@@ -7,24 +7,15 @@ use Illuminate\Support\Facades\DB;
 
 class LaporanController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $tarif_denda = 500;
 
-        $query = DB::table('tb_sirkulasi as s')
+        $laporan = DB::table('tb_sirkulasi as s')
             ->join('tb_buku as b', 's.id_buku', '=', 'b.id_buku')
             ->join('users as u', 's.id_anggota', '=', 'u.nis')
-            ->where('s.status', 'dikembalikan');
-
-        // ✅ FILTER TANGGAL
-        if ($request->filled('tgl_awal') && $request->filled('tgl_akhir')) {
-            $query->whereBetween('s.updated_at', [
-                $request->tgl_awal . ' 00:00:00',
-                $request->tgl_akhir . ' 23:59:59'
-            ]);
-        }
-
-        $laporan = $query->select(
+            ->where('s.status', 'dikembalikan')
+            ->select(
                 's.id_sk',
                 's.tgl_pinjam',
                 's.tgl_kembali',
@@ -37,7 +28,7 @@ class LaporanController extends Controller
             ->orderBy('s.updated_at', 'desc')
             ->get();
 
-        // ✅ HITUNG DENDA
+        // Hitung denda
         foreach ($laporan as $item) {
             $item->denda = $item->telat_pengembalian * $tarif_denda;
         }
@@ -50,24 +41,15 @@ class LaporanController extends Controller
         ));
     }
 
-    public function print(Request $request)
+    public function print()
     {
         $tarif_denda = 500;
 
-        $query = DB::table('tb_sirkulasi as s')
+        $laporan = DB::table('tb_sirkulasi as s')
             ->join('tb_buku as b', 's.id_buku', '=', 'b.id_buku')
             ->join('users as u', 's.id_anggota', '=', 'u.nis')
-            ->where('s.status', 'dikembalikan');
-
-        // ✅ FILTER IKUT PRINT
-        if ($request->filled('tgl_awal') && $request->filled('tgl_akhir')) {
-            $query->whereBetween('s.updated_at', [
-                $request->tgl_awal . ' 00:00:00',
-                $request->tgl_akhir . ' 23:59:59'
-            ]);
-        }
-
-        $laporan = $query->select(
+            ->where('s.status', 'dikembalikan')
+            ->select(
                 's.id_sk',
                 's.tgl_pinjam',
                 's.tgl_kembali',

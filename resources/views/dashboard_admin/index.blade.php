@@ -69,7 +69,7 @@
           <div class="dh-stat-icon si-green">✅</div>
           <div>
             <div class="dh-stat-num sn-green" id="n-avail">0</div>
-            <div class="dh-stat-lbl">Buku Tersedia</div>
+            <div class="dh-stat-lbl">Stok Tersedia</div>
           </div>
         </div>
         <div class="dh-stat-footer">
@@ -88,7 +88,7 @@
       {{-- Chart Card --}}
       <div class="dh-card" style="margin-bottom:16px">
         <div class="dh-card-header">
-          <span>📊 Statistik Peminjaman</span>
+          <span>📊 Statistik Peminjaman {{ date('Y') }}</span>
         </div>
         <div class="dh-card-body">
           <div class="dh-chart-tabs">
@@ -108,38 +108,40 @@
           <span>📋 Aktivitas Terbaru</span>
         </div>
         <div class="dh-card-body" style="padding:8px 20px 16px">
-          <div class="dh-recent">
-            <div class="dh-book-cover" style="background:linear-gradient(135deg,#1a2d6b,#3d56c0)">📖</div>
-            <div class="dh-ri-info">
-              <div class="dh-ri-title">Laskar Pelangi</div>
-              <div class="dh-ri-sub">Budi Santoso · 2 jam lalu</div>
+
+          @forelse($aktivitas as $i => $item)
+            @php
+              $colors = [
+                'linear-gradient(135deg,#1a2d6b,#3d56c0)',
+                'linear-gradient(135deg,#059669,#10b981)',
+                'linear-gradient(135deg,#d97706,#f59e0b)',
+                'linear-gradient(135deg,#0891b2,#06b6d4)',
+                'linear-gradient(135deg,#7c3aed,#a78bfa)',
+              ];
+              $icons  = ['📖','📗','📙','📘','📕'];
+              $color  = $colors[$i % count($colors)];
+              $icon   = $icons[$i % count($icons)];
+              $isDipinjam = in_array($item->status, ['dipinjam','pending']);
+            @endphp
+            <div class="dh-recent" style="{{ $loop->last ? 'border-bottom:none' : '' }}">
+              <div class="dh-book-cover" style="background:{{ $color }}">{{ $icon }}</div>
+              <div class="dh-ri-info">
+                <div class="dh-ri-title">{{ $item->judul_buku }}</div>
+                <div class="dh-ri-sub">
+                  {{ $item->nama_anggota ?? 'Tidak diketahui' }}
+                  · {{ $item->waktu_relatif }}
+                </div>
+              </div>
+              <span class="dh-badge {{ $isDipinjam ? 'badge-out' : 'badge-in' }}">
+                {{ $isDipinjam ? 'Dipinjam' : 'Dikembalikan' }}
+              </span>
             </div>
-            <span class="dh-badge badge-out">Dipinjam</span>
-          </div>
-          <div class="dh-recent">
-            <div class="dh-book-cover" style="background:linear-gradient(135deg,#059669,#10b981)">📗</div>
-            <div class="dh-ri-info">
-              <div class="dh-ri-title">Algoritma &amp; Pemrograman</div>
-              <div class="dh-ri-sub">Siti Rahayu · 4 jam lalu</div>
+          @empty
+            <div style="padding:20px;text-align:center;color:#8a9bac">
+              Belum ada aktivitas peminjaman.
             </div>
-            <span class="dh-badge badge-in">Dikembalikan</span>
-          </div>
-          <div class="dh-recent">
-            <div class="dh-book-cover" style="background:linear-gradient(135deg,#d97706,#f59e0b)">📙</div>
-            <div class="dh-ri-info">
-              <div class="dh-ri-title">Bumi Manusia</div>
-              <div class="dh-ri-sub">Ahmad Fauzi · kemarin</div>
-            </div>
-            <span class="dh-badge badge-out">Dipinjam</span>
-          </div>
-          <div class="dh-recent" style="border-bottom:none">
-            <div class="dh-book-cover" style="background:linear-gradient(135deg,#0891b2,#06b6d4)">📘</div>
-            <div class="dh-ri-info">
-              <div class="dh-ri-title">Fisika Dasar Vol. 2</div>
-              <div class="dh-ri-sub">Dewi Lestari · kemarin</div>
-            </div>
-            <span class="dh-badge badge-in">Dikembalikan</span>
-          </div>
+          @endforelse
+
         </div>
       </div>
 
@@ -160,7 +162,7 @@
             <div style="flex:1">
               <div class="dh-mini-row">
                 <span class="dh-mini-lbl">Total Buku</span>
-                <span class="dh-mini-val" id="ms-buku">127</span>
+                <span class="dh-mini-val" id="ms-buku">{{ $totalBuku }}</span>
               </div>
               <div class="dh-bar-wrap"><div class="dh-bar" id="bar-buku" style="background:#1a2d6b;width:0%"></div></div>
             </div>
@@ -171,7 +173,7 @@
             <div style="flex:1">
               <div class="dh-mini-row">
                 <span class="dh-mini-lbl">Anggota Aktif</span>
-                <span class="dh-mini-val" id="ms-agt">58</span>
+                <span class="dh-mini-val" id="ms-agt">{{ $totalAnggota }}</span>
               </div>
               <div class="dh-bar-wrap"><div class="dh-bar" id="bar-agt" style="background:#0891b2;width:0%"></div></div>
             </div>
@@ -182,7 +184,7 @@
             <div style="flex:1">
               <div class="dh-mini-row">
                 <span class="dh-mini-lbl">Sedang Dipinjam</span>
-                <span class="dh-mini-val" id="ms-pin">34</span>
+                <span class="dh-mini-val" id="ms-pin">{{ $bukuDipinjam }}</span>
               </div>
               <div class="dh-bar-wrap"><div class="dh-bar" id="bar-pin" style="background:#d97706;width:0%"></div></div>
             </div>
@@ -192,8 +194,8 @@
             <div class="dh-mini-dot" style="background:#059669"></div>
             <div style="flex:1">
               <div class="dh-mini-row">
-                <span class="dh-mini-lbl">Buku Tersedia</span>
-                <span class="dh-mini-val" id="ms-avail">93</span>
+                <span class="dh-mini-lbl">Stok Tersedia</span>
+                <span class="dh-mini-val" id="ms-avail">{{ $bukuTersedia }}</span>
               </div>
               <div class="dh-bar-wrap"><div class="dh-bar" id="bar-avail" style="background:#059669;width:0%"></div></div>
             </div>
@@ -203,22 +205,27 @@
       </div>
 
       {{-- Aksi Cepat --}}
-      <div class="dh-card">
-        <div class="dh-card-header">
-          <span>⚡ Aksi Cepat</span>
-        </div>
-        <div class="dh-card-body">
-          <button class="dh-qa" onclick="sendPrompt('Bagaimana cara menambahkan buku baru ke sistem perpustakaan?')">
-            <span class="dh-qa-icon">➕</span> Tambah Buku Baru
-          </button>
-          <button class="dh-qa dh-qa-teal" onclick="sendPrompt('Bagaimana cara mendaftarkan anggota baru perpustakaan?')">
-            <span class="dh-qa-icon">👤</span> Daftarkan Anggota
-          </button>
-          <button class="dh-qa dh-qa-purple" onclick="sendPrompt('Tampilkan laporan peminjaman bulan ini')">
-            <span class="dh-qa-icon">📊</span> Laporan Bulanan
-          </button>
-        </div>
-      </div>
+<div class="dh-card">
+  <div class="dh-card-header">
+    <span>⚡ Aksi Cepat</span>
+  </div>
+
+  <div class="dh-card-body">
+    
+    <a href="{{ route('admin.buku.create') }}" class="dh-qa">
+      <span class="dh-qa-icon">➕</span> Tambah Buku Baru
+    </a>
+
+    <a href="{{ route('admin.agt.index') }}" class="dh-qa dh-qa-teal">
+      <span class="dh-qa-icon">👤</span> Lihat Anggota
+    </a>
+
+    <a href="{{ route('admin.laporan.index') }}" class="dh-qa dh-qa-purple">
+      <span class="dh-qa-icon">📊</span> Laporan Bulanan
+    </a>
+
+  </div>
+</div>
 
     </div>{{-- /col-md-4 --}}
 
@@ -228,62 +235,84 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-const DATA = { buku:127, agt:58, pin:34 };
-DATA.avail = DATA.buku - DATA.pin;
+// ── DATA DARI CONTROLLER (PHP → JS) ─────────────────────────────
+const DATA = {
+  buku  : {{ $totalBuku }},
+  agt   : {{ $totalAnggota }},
+  pin   : {{ $bukuDipinjam }},
+  avail : {{ $bukuTersedia }},
+};
 
-// ── CLOCK ──
+const pinjamBulanan  = @json($dataPinjam);
+const kembaliБулanan = @json($dataKembali);
+const labelKategori  = @json($labelKategori);
+const jumlahKategori = @json($jumlahKategori);
+
+// ── CLOCK ────────────────────────────────────────────────────────
 function tick(){
   const n=new Date(), h=n.getHours(), m=n.getMinutes(), s=n.getSeconds();
   document.getElementById('clock').textContent = [h,m,s].map(x=>String(x).padStart(2,'0')).join(':');
   const g = h<5?'🌙 Selamat Malam': h<12?'🌅 Selamat Pagi': h<15?'☀️ Selamat Siang': h<18?'🌤️ Selamat Sore':'🌙 Selamat Malam';
   document.getElementById('greeting').textContent = g;
-  const days    = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-  const months  = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  const days   = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
   document.getElementById('hdate').textContent = `${days[n.getDay()]}, ${n.getDate()} ${months[n.getMonth()]} ${n.getFullYear()}`;
 }
 tick(); setInterval(tick, 1000);
 
-// ── COUNT UP ──
+// ── COUNT UP ─────────────────────────────────────────────────────
 function countTo(id, target, dur=1200){
   const el = document.getElementById(id); let s=0;
-  const step = Math.ceil(target / (dur/16));
+  const step = Math.max(1, Math.ceil(target / (dur/16)));
   const t = setInterval(()=>{ s=Math.min(s+step,target); el.textContent=s; if(s>=target) clearInterval(t); }, 16);
 }
 setTimeout(()=>{
-  countTo('n-buku', DATA.buku); countTo('n-agt', DATA.agt);
-  countTo('n-pin', DATA.pin);   countTo('n-avail', DATA.avail);
+  countTo('n-buku',  DATA.buku);
+  countTo('n-agt',   DATA.agt);
+  countTo('n-pin',   DATA.pin);
+  countTo('n-avail', DATA.avail);
 }, 300);
 
-// ── PROGRESS BARS ──
+// ── PROGRESS BARS ────────────────────────────────────────────────
 setTimeout(()=>{
+  const max = Math.max(DATA.buku, 1);
   document.getElementById('bar-buku').style.width  = '100%';
-  document.getElementById('bar-agt').style.width   = Math.round(DATA.agt/DATA.buku*100)+'%';
-  document.getElementById('bar-pin').style.width   = Math.round(DATA.pin/DATA.buku*100)+'%';
-  document.getElementById('bar-avail').style.width = Math.round(DATA.avail/DATA.buku*100)+'%';
+  document.getElementById('bar-agt').style.width   = Math.round(DATA.agt   / max * 100) + '%';
+  document.getElementById('bar-pin').style.width   = Math.round(DATA.pin   / max * 100) + '%';
+  document.getElementById('bar-avail').style.width = Math.round(DATA.avail / max * 100) + '%';
 }, 500);
 
-// ── CHART ──
+// ── CHART ────────────────────────────────────────────────────────
 const gridC  = 'rgba(0,0,0,.06)';
 const labelC = '#5a6b7b';
+const bulanLabels = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agt','Sep','Okt','Nov','Des'];
+
+// Warna doughnut — fallback jika kategori < 5
+const doughnutColors = ['#1a2d6b','#0891b2','#059669','#d97706','#8a9bac','#7c3aed','#dc2626'];
 
 const chartData = {
   bar: {
-    labels: ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agt','Sep','Okt','Nov','Des'],
+    labels: bulanLabels,
     datasets: [
-      { label:'Dipinjam',     data:[22,31,28,45,38,52,41,35,49,44,37,55], backgroundColor:'rgba(26,45,107,.75)', borderRadius:6, borderSkipped:false },
-      { label:'Dikembalikan', data:[18,27,31,40,35,48,38,30,45,40,33,50], backgroundColor:'rgba(8,145,178,.65)',  borderRadius:6, borderSkipped:false }
+      { label:'Dipinjam',     data: pinjamBulanan,  backgroundColor:'rgba(26,45,107,.75)', borderRadius:6, borderSkipped:false },
+      { label:'Dikembalikan', data: kembaliБулanan, backgroundColor:'rgba(8,145,178,.65)',  borderRadius:6, borderSkipped:false }
     ]
   },
   line: {
-    labels: ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agt','Sep','Okt','Nov','Des'],
+    labels: bulanLabels,
     datasets: [
-      { label:'Peminjaman',   data:[22,31,28,45,38,52,41,35,49,44,37,55], borderColor:'#1a2d6b', backgroundColor:'rgba(26,45,107,.10)', fill:true, tension:.4, pointRadius:4, pointBackgroundColor:'#1a2d6b', borderWidth:2 },
-      { label:'Pengembalian', data:[18,27,31,40,35,48,38,30,45,40,33,50], borderColor:'#0891b2', backgroundColor:'rgba(8,145,178,.08)',  fill:true, tension:.4, pointRadius:4, pointBackgroundColor:'#0891b2', borderWidth:2 }
+      { label:'Peminjaman',   data: pinjamBulanan,  borderColor:'#1a2d6b', backgroundColor:'rgba(26,45,107,.10)', fill:true, tension:.4, pointRadius:4, pointBackgroundColor:'#1a2d6b', borderWidth:2 },
+      { label:'Pengembalian', data: kembaliБулanan, borderColor:'#0891b2', backgroundColor:'rgba(8,145,178,.08)',  fill:true, tension:.4, pointRadius:4, pointBackgroundColor:'#0891b2', borderWidth:2 }
     ]
   },
   doughnut: {
-    labels: ['Fiksi','Sains','Sejarah','Teknologi','Lainnya'],
-    datasets: [{ data:[35,25,15,18,7], backgroundColor:['#1a2d6b','#0891b2','#059669','#d97706','#8a9bac'], borderWidth:0, hoverOffset:6 }]
+    labels: labelKategori.length ? labelKategori : ['Belum ada data'],
+    datasets: [{
+      data: jumlahKategori.length ? jumlahKategori : [1],
+      backgroundColor: doughnutColors.slice(0, Math.max(labelKategori.length, 1)),
+      borderWidth: 0,
+      hoverOffset: 6
+    }]
   }
 };
 
