@@ -8,23 +8,23 @@ use Illuminate\Support\Facades\Hash;
 
 class AnggotaController extends Controller
 {
-    // Menampilkan semua data anggota
+   
     public function index()
     {
         $anggota = User::where('role', 'siswa')
             ->orderBy('created_at', 'desc')
             ->get();
         
-        return view('dashboard_admin.agt.data_agt', compact('anggota')); // ← DIUBAH
+        return view('dashboard_admin.agt.data_agt', compact('anggota')); 
     }
 
-    // Menampilkan form tambah anggota
+    
     public function create()
     {
-        return view('dashboard_admin.agt.add_agt'); // ← DIUBAH
+        return view('dashboard_admin.agt.add_agt'); 
     }
 
-    // Simpan data anggota baru
+   
     public function store(Request $request)
     {
         $request->validate([
@@ -54,7 +54,7 @@ class AnggotaController extends Controller
             ->with('success', 'Data anggota berhasil ditambahkan');
     }
 
-    // Menampilkan form edit anggota
+    
     public function edit($nis)
     {
         $anggota = User::where('nis', $nis)->firstOrFail();
@@ -62,7 +62,7 @@ class AnggotaController extends Controller
         return view('dashboard_admin.agt.edit_agt', compact('anggota')); // ← DIUBAH
     }
 
-    // Update data anggota
+    
     public function update(Request $request, $nis)
     {
         $anggota = User::where('nis', $nis)->firstOrFail();
@@ -87,7 +87,7 @@ class AnggotaController extends Controller
             'email' => $request->email,
         ];
 
-        // Update password kalau diisi
+       
         if ($request->filled('password')) {
             $dataUpdate['password'] = Hash::make($request->password);
         }
@@ -98,7 +98,7 @@ class AnggotaController extends Controller
             ->with('success', 'Data anggota berhasil diubah');
     }
 
-    // Hapus data anggota
+   
     public function destroy($nis)
     {
         try {
@@ -113,7 +113,7 @@ class AnggotaController extends Controller
         }
     }
 
-    // Print semua anggota
+    
     public function printAll()
     {
         $anggota = User::where('role', 'siswa')
@@ -123,7 +123,7 @@ class AnggotaController extends Controller
         return view('dashboard_admin.agt.print_all_agt', compact('anggota')); // ← DIUBAH
     }
 
-    // Print anggota tunggal
+    
     public function printSingle($nis)
     {
         $anggota = User::where('nis', $nis)->firstOrFail();

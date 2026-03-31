@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Buku;
 use App\Models\Category;
-use Illuminate\Support\Facades\Storage; // ← tambah ini
+use Illuminate\Support\Facades\Storage; 
 use App\Models\Ulasan;
 class BukuController extends Controller
 {
@@ -16,7 +16,7 @@ class BukuController extends Controller
 
     $query = Buku::with('kategori');
     
-    // Filter pencarian
+    
     if ($keyword) {
         $query->where(function ($q) use ($keyword) {
             $q->where('judul_buku', 'like', "%{$keyword}%")
@@ -27,7 +27,7 @@ class BukuController extends Controller
         });
     }
 
-    // Filter kategori
+    
     if ($kategori && $kategori !== 'semua') {
         $query->where('id_kategori', $kategori);
     }
@@ -41,14 +41,14 @@ class BukuController extends Controller
     return view('home', compact('buku', 'kategoris', 'aktif', 'ulasan'));
 }
 
-    // Menampilkan semua data buku (admin)
+    
     public function index()
     {
         $buku = Buku::with('kategori')->get();
         return view('dashboard_admin.buku.data_buku', compact('buku'));
     }
 
-    // Detail buku
+    
     public function show($id)
     {
         $buku = Buku::with('kategori')
@@ -58,7 +58,7 @@ class BukuController extends Controller
         return view('layouts.detail', compact('buku'));
     }
 
-    // Form tambah buku
+    
     public function create()
     {
         $kategori = Category::all();
@@ -70,7 +70,7 @@ class BukuController extends Controller
         return view('dashboard_admin.buku.add_buku', compact('format', 'kategori'));
     }
 
-    // Simpan buku baru
+    
     public function store(Request $request)
     {
         $request->validate([
@@ -110,7 +110,7 @@ class BukuController extends Controller
             ->with('success', 'Data buku berhasil ditambahkan');
     }
 
-    // Form edit buku
+    
     public function edit($id)
     {
         $buku     = Buku::where('id_buku', $id)->firstOrFail();
@@ -119,7 +119,7 @@ class BukuController extends Controller
         return view('dashboard_admin.buku.edit_buku', compact('buku', 'kategori'));
     }
 
-    // Update buku
+    
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -133,7 +133,7 @@ class BukuController extends Controller
 
         $buku = Buku::where('id_buku', $id)->firstOrFail();
 
-        // Handle update foto jika ada file baru
+       
         $pathFoto = $buku->foto;
         if ($request->hasFile('foto')) {
             // Hapus foto lama jika ada

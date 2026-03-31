@@ -2,7 +2,6 @@
 @section('content')
 
 <style>
-    /* ── Variabel sesuai design system yang sudah ada ── */
     :root {
         --navy:       #1a2d6b;
         --navy-dark:  #152356;
@@ -454,17 +453,17 @@
                         <div class="tertib-item">
                             <div class="tertib-num">4</div>
                             <div class="tertib-body-text">
-                                <h5>Menunjukkan kartu pelajar saat peminjaman</h5>
-                                <p>Wajib membawa kartu identitas sekolah untuk proses peminjaman.</p>
-                            </div>
-                        </div>
-                        <div class="tertib-item">
-                            <div class="tertib-num">5</div>
-                            <div class="tertib-body-text">
-                                <h5>Batas peminjaman maksimal 7 hari</h5>
+                                <h5>Batas peminjaman maksimal 3 hari</h5>
                                 <p>Buku wajib dikembalikan tepat waktu agar dapat dimanfaatkan siswa lain.</p>
                             </div>
                         </div>
+                        <!-- <div class="tertib-item">
+                            <div class="tertib-num">5</div>
+                            <div class="tertib-body-text">
+                                <h5>Batas peminjaman maksimal 3 hari</h5>
+                                <p>Buku wajib dikembalikan tepat waktu agar dapat dimanfaatkan siswa lain.</p>
+                            </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

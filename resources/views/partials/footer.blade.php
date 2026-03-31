@@ -13,10 +13,10 @@
       </div>
       <p class="footer-tagline">Pusat literasi dan sumber belajar siswa SMKN 1 Cirebon. Tingkatkan pengetahuanmu bersama kami.</p>
       <div class="social-links">
-        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-        <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
-        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
-        <a href="#" class="social-link"><i class="fas fa-envelope"></i></a>
+        <a href="https://www.instagram.com/smkn1cirebon?igsh=MThwOW5objMxeGo0bg==" class="social-link"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.facebook.com/smknsatucirebon" class="social-link"><i class="fab fa-facebook"></i></a>
+        <a href="https://youtube.com/@smknegeri1cirebonofficial472?si=UCKeYa1pjttn_4BK" class="social-link"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.smkn1-cirebon.sch.id/" class="social-link"><i class="fas fa-envelope"></i></a>
       </div>
     </div>
 
