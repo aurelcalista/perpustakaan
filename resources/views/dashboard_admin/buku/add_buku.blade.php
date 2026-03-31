@@ -2,7 +2,7 @@
 
 @section('content')
 
-<link rel="stylesheet" href="{{ asset('css/admin-custom.css') }}">
+<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 
 <section class="content-header">
 	<h1 style="text-align:center;">
@@ -47,7 +47,7 @@
 					{{-- ID --}}
 					<div class="form-group">
 						<label>ID Buku</label>
-						<input type="text" class="form-control" value="{{ $format }}" readonly>
+						<input type="text" name="id_buku" class="form-control" value="{{ $format }}" readonly>
 					</div>
 
 					{{-- 2 KOLOM MINI --}}

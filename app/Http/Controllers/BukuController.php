@@ -6,38 +6,40 @@ use Illuminate\Http\Request;
 use App\Models\Buku;
 use App\Models\Category;
 use Illuminate\Support\Facades\Storage; // ← tambah ini
-
+use App\Models\Ulasan;
 class BukuController extends Controller
 {
     public function home(Request $request)
-    {
-        $keyword  = $request->keyword;
-        $kategori = $request->kategori;
+{
+    $keyword  = $request->keyword;
+    $kategori = $request->kategori;
 
-        $query = Buku::with('kategori');
-        
-        // Filter pencarian
-        if ($keyword) {
-            $query->where(function ($q) use ($keyword) {
-                $q->where('judul_buku', 'like', "%{$keyword}%")
-                  ->orWhere('pengarang', 'like', "%{$keyword}%")
-                  ->orWhereHas('kategori', function ($q) use ($keyword) {
-                      $q->where('nama_kategori', 'like', "%{$keyword}%");
-                  });
-            });
-        }
-
-        // Filter kategori
-        if ($kategori && $kategori !== 'semua') {
-            $query->where('id_kategori', $kategori);
-        }
-
-        $buku      = $query->orderBy('judul_buku')->get();
-        $kategoris = Category::orderBy('nama_kategori')->get();
-        $aktif     = $kategori ?? 'semua';
-
-        return view('home', compact('buku', 'kategoris', 'aktif'));
+    $query = Buku::with('kategori');
+    
+    // Filter pencarian
+    if ($keyword) {
+        $query->where(function ($q) use ($keyword) {
+            $q->where('judul_buku', 'like', "%{$keyword}%")
+              ->orWhere('pengarang', 'like', "%{$keyword}%")
+              ->orWhereHas('kategori', function ($q) use ($keyword) {
+                  $q->where('nama_kategori', 'like', "%{$keyword}%");
+              });
+        });
     }
+
+    // Filter kategori
+    if ($kategori && $kategori !== 'semua') {
+        $query->where('id_kategori', $kategori);
+    }
+
+    $buku      = $query->orderBy('judul_buku')->get();
+    $kategoris = Category::orderBy('nama_kategori')->get();
+    $aktif     = $kategori ?? 'semua';
+
+    $ulasan = \App\Models\Ulasan::latest()->get(); // ✅ TAMBAHAN AMAN
+
+    return view('home', compact('buku', 'kategoris', 'aktif', 'ulasan'));
+}
 
     // Menampilkan semua data buku (admin)
     public function index()

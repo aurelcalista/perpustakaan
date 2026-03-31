@@ -2,7 +2,7 @@
 
 @section('content')
 
-<link rel="stylesheet" href="{{ asset('css/admin-custom.css') }}">
+<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 
 <section class="content-header">
 	<h1 style="text-align:center;">

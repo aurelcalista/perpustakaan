@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Buku;
+use App\Models\Ulasan;
 
 class HomeController extends Controller
 {
@@ -18,9 +19,10 @@ public function index(Request $request)
               ->orWhere('kategori', 'like', "%{$keyword}%");
     })->get();
 
-    return view('home', compact('buku'));
-}
+    $ulasan = Ulasan::latest()->get(); // ✅ TAMBAHAN
 
+    return view('home', compact('buku', 'ulasan'));
+}
     public function detail()
     {
         $buku = [
@@ -35,3 +37,5 @@ public function index(Request $request)
         return view('frontend.detail-buku', compact('buku'));
     }
 }
+
+

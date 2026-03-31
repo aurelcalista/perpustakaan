@@ -57,7 +57,7 @@
     </div> -->
 
     <!-- Card Sirkulasi -->
-    <div class="col-lg-3 col-md-6 mb-4">
+    <!-- <div class="col-lg-3 col-md-6 mb-4">
         <div class="stat-card card-gradient-orange">
             <div class="stat-icon">
                 <i class="fa fa-refresh"></i>
@@ -72,7 +72,7 @@
                 </a>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Card Pengguna -->
     <div class="col-lg-3 col-md-6 mb-4">
@@ -139,9 +139,9 @@
                 <a href="{{ route('admin.buku.create') }}" class="btn btn-primary btn-block mb-2">
                     <i class="fa fa-plus"></i> Tambah Buku
                 </a>
-                <a href="{{ url('/data_sirkul/create') }}" class="btn btn-info btn-block">
+                <!-- <a href="{{ url('/data_sirkul/create') }}" class="btn btn-info btn-block">
                     <i class="fa fa-exchange"></i> Peminjaman Baru
-                </a>
+                </a> -->
             </div>
         </div>
     </div>
