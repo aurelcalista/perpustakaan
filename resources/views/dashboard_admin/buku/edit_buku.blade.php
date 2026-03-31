@@ -92,6 +92,24 @@
                 </select>
             </div>
 
+            							{{-- STOK --}}
+							<div class="form-group">
+								<label>Stok Buku</label>
+								<div class="input-group" style="width: 150px;">
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-default" onclick="changeStok(-1)">
+											<i class="fa fa-minus"></i>
+										</button>
+									</span>
+									<input type="number" name="stok" id="stok" class="form-control text-center" value="0" min="0" readonly>
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-default" onclick="changeStok(1)">
+											<i class="fa fa-plus"></i>
+										</button>
+									</span>
+								</div>
+							</div>
+
             {{-- Created At --}}
             <div class="mb-3">
                 <label class="form-label">Dibuat Pada</label>
@@ -124,5 +142,23 @@
 
 
 </div>
+
+@push('scripts')
+<script>
+function previewImage(event) {
+	const reader = new FileReader();
+	reader.onload = function(){
+		document.getElementById('preview-cover').src = reader.result;
+	};
+	reader.readAsDataURL(event.target.files[0]);
+}
+
+function changeStok(delta) {
+	const input = document.getElementById('stok');
+	const newVal = parseInt(input.value) + delta;
+	if (newVal >= 0) input.value = newVal;
+}
+</script>
+@endpush
 
 @endsection

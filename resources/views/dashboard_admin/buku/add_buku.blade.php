@@ -44,13 +44,19 @@
 				<form action="{{ route('admin.buku.store') }}" method="POST" enctype="multipart/form-data">
 					@csrf
 
-					{{-- ID --}}
+					{{-- ID BUKU: label kiri, value kanan --}}
 					<div class="form-group">
-						<label>ID Buku</label>
-						<input type="text" name="id_buku" class="form-control" value="{{ $format }}" readonly>
+						<div style="display: flex; align-items: center; gap: 10px;">
+							<label class="mb-0">ID Buku</label>
+							<span class="text-muted">:</span>
+							<strong>{{ $format }}</strong>
+							<input type="hidden" name="id_buku" value="{{ $format }}">
+						</div>
 					</div>
 
-					{{-- 2 KOLOM MINI --}}
+					<hr>
+
+					{{-- 2 KOLOM --}}
 					<div class="row">
 
 						<div class="col-md-6">
@@ -76,6 +82,25 @@
 						</div>
 
 						<div class="col-md-6">
+
+							{{-- STOK --}}
+							<div class="form-group">
+								<label>Stok Buku</label>
+								<div class="input-group" style="width: 150px;">
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-default" onclick="changeStok(-1)">
+											<i class="fa fa-minus"></i>
+										</button>
+									</span>
+									<input type="number" name="stok" id="stok" class="form-control text-center" value="0" min="0" readonly>
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-default" onclick="changeStok(1)">
+											<i class="fa fa-plus"></i>
+										</button>
+									</span>
+								</div>
+							</div>
+
 							<div class="form-group">
 								<label>Kategori</label>
 								<select name="id_kategori" class="form-control">
@@ -102,6 +127,7 @@
 								<label>Call Number</label>
 								<input type="text" name="call_number" class="form-control">
 							</div>
+
 						</div>
 
 					</div>
@@ -113,23 +139,23 @@
 
 					<div class="form-group">
 						<label>Sinopsis</label>
-						<textarea name="sinopsis" class="form-control"></textarea>
+						<textarea name="sinopsis" class="form-control" rows="4"></textarea>
 					</div>
 
 					<div class="form-group text-center">
 						<img id="preview-cover"
 							src="https://via.placeholder.com/120x160"
-							class="mb-2">
-						<br>
-
+							class="mb-2"
+							style="display: block; margin: 0 auto 10px;">
 						<input type="file" name="foto" onchange="previewImage(event)">
 					</div>
+
+					<hr>
 
 					<div class="text-right">
 						<a href="{{ route('admin.buku.index') }}" class="btn btn-default">
 							Batal
 						</a>
-
 						<button type="submit" class="btn btn-primary">
 							Simpan
 						</button>
@@ -153,6 +179,12 @@ function previewImage(event) {
 		document.getElementById('preview-cover').src = reader.result;
 	};
 	reader.readAsDataURL(event.target.files[0]);
+}
+
+function changeStok(delta) {
+	const input = document.getElementById('stok');
+	const newVal = parseInt(input.value) + delta;
+	if (newVal >= 0) input.value = newVal;
 }
 </script>
 @endpush
