@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use App\Models\Buku;
+
 
 class UserPinjamController extends Controller
 {
@@ -53,17 +53,6 @@ public function store(Request $request)
     $request->validate([
         'id_buku' => 'required|exists:tb_buku,id_buku',
     ]);
-
-    
-        $buku = Buku::where('id_buku', $request->id_buku)->first();
-
-        if ($buku->stok < 1) {
-            return back()->with('error', 'Stok habis!');
-        }
-
-        $buku->stok -= 1;
-        $buku->save();
-
 
     $idAnggota = $this->getIdAnggota();
 
