@@ -13,16 +13,17 @@
       </a>
 
       <nav class="home-nav">
-        <a class="nav-link-item" href="{{ route('home') }}#section_1">Beranda</a>
-        <a class="nav-link-item" href="{{ route('home') }}#section_2">Koleksi</a>
-        <a class="nav-link-item" href="{{ route('home') }}#section_3">Penggunaan</a>
-        <a class="nav-link-item" href="{{ route('home') }}#section_4">FAQs</a>
-        <a class="nav-link-item" href="{{ route('home') }}#section_5">Kontak</a>
+        <a class="nav-link-item" href="{{ route('home') }}#beranda">Beranda</a>
+        <a class="nav-link-item" href="{{ route('home') }}#koleksi">Koleksi</a>
+        <a class="nav-link-item" href="{{ route('home') }}#petugas">Petugas</a>
+        <a class="nav-link-item" href="{{ route('home') }}#faqs">FAQs</a>
+        <a class="nav-link-item" href="{{ route('home') }}#kontak">Kontak</a>
         <div class="nav-dropdown">
           <a class="nav-link-item" href="#">Pages <i class="fas fa-chevron-down" style="font-size:11px;margin-left:2px;"></i></a>
           <div class="nav-dropdown-menu">
             <a href="{{ route('informasi') }}">Informasi</a>
             <a href="{{ route('panduan') }}">Panduan</a>
+            <a class="nav-link-item" href="{{ route('home') }}#ulasan">Ulasan</a>
           </div>
         </div>
       </nav>
@@ -43,7 +44,6 @@
                 <a href="{{ route('admin.dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
               @else
                 <a href="{{ route('profile.show') }}"><i class="fas fa-user"></i> Profil Saya</a>
-                <a href="{{ route('siswa.buku.saya') }}"><i class="fas fa-book"></i> Buku Saya</a>
               @endif
               <hr>
               <form method="POST" action="{{ route('logout') }}">
@@ -72,13 +72,14 @@
     <button class="mobile-close" onclick="toggleMobileMenu()">✕</button>
   </div>
   <nav class="mobile-nav">
-    <a href="{{ route('home') }}#section_1" onclick="toggleMobileMenu()">Beranda</a>
-    <a href="{{ route('home') }}#section_2" onclick="toggleMobileMenu()">Koleksi</a>
-    <a href="{{ route('home') }}#section_3" onclick="toggleMobileMenu()">Penggunaan</a>
-    <a href="{{ route('home') }}#section_4" onclick="toggleMobileMenu()">FAQs</a>
-    <a href="{{ route('home') }}#section_5" onclick="toggleMobileMenu()">Kontak</a>
+    <a href="{{ route('home') }}#beranda" onclick="toggleMobileMenu()">Beranda</a>
+    <a href="{{ route('home') }}#koleksi" onclick="toggleMobileMenu()">Koleksi</a>
+    <a href="{{ route('home') }}#penggunaan" onclick="toggleMobileMenu()">Penggunaan</a>
+    <a href="{{ route('home') }}#faqs" onclick="toggleMobileMenu()">FAQs</a>
+    <a href="{{ route('home') }}#kontak" onclick="toggleMobileMenu()">Kontak</a>
     <a href="{{ route('informasi') }}" onclick="toggleMobileMenu()">Informasi</a>
     <a href="{{ route('panduan') }}" onclick="toggleMobileMenu()">Panduan</a>
+    <a href="{{ route('home') }}#ulasan" onclick="toggleMobileMenu()">Ulasan</a>
   </nav>
   <div class="mobile-actions">
     @guest

@@ -3,7 +3,7 @@
 @section('content')
 
 {{-- HERO --}}
-<section id="section_1">
+<section id="beranda">
   <div class="container">
     <div class="hero-content">
       <div class="hero-badge fade-up"><span></span> Perpustakaan Digital SMKN 1 Cirebon</div>
@@ -61,7 +61,7 @@
 </div>
 
 {{-- KOLEKSI BUKU --}}
-<section id="section_2">
+<section id="koleksi">
   <div class="container">
 
     @if(request('keyword'))
@@ -173,7 +173,7 @@
 </section>
 
 {{-- PETUGAS --}}
-<section id="section_mentors">
+<section id="penggunaan">
   <div class="container">
     <div class="section-head">
       <h2>Tim Petugas Perpustakaan</h2>
@@ -209,7 +209,7 @@
 </section>
 
 {{-- TESTIMONIALS --}}
-<section id="section_testimonials">
+<section id="ulasan">
   <div class="container">
     <div class="section-head fade-up">
       <h2>Apa Kata Siswa<br/>Tentang Kami</h2>
@@ -402,7 +402,7 @@
 
 
 {{-- CARA PENGGUNAAN --}}
-<section id="section_3" style="background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%);position:relative;overflow:hidden;">
+<section id="penggunaan" style="background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%);position:relative;overflow:hidden;">
   <div style="position:absolute;inset:0;opacity:.05;background-image:radial-gradient(circle,white 1px,transparent 1px);background-size:30px 30px;"></div>
   <div class="container" style="position:relative;z-index:1;">
     <div class="section-head fade-up" style="justify-content:center;">
@@ -438,7 +438,7 @@
 </section>
 
 {{-- FAQ --}}
-<section id="section_4" style="background:#f7f9fc;">
+<section id="faqs" style="background:#f7f9fc;">
   <div class="container">
     <div class="section-head fade-up"><h2>Pertanyaan yang Sering<br/>Diajukan</h2></div>
     <div class="faq-grid fade-up">
@@ -464,7 +464,7 @@
 </section>
 
 {{-- CONTACT --}}
-<section id="section_5">
+<section id="kontak">
   <div class="container">
     <div class="section-head fade-up" style="justify-content:center;">
       <h2 style="text-align:center;">Hubungi Kami</h2>
