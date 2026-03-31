@@ -173,7 +173,7 @@
 </section>
 
 {{-- PETUGAS --}}
-<section id="penggunaan">
+<section id="petugas">
   <div class="container">
     <div class="section-head">
       <h2>Tim Petugas Perpustakaan</h2>
