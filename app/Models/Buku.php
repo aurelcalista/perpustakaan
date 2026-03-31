@@ -16,7 +16,7 @@ class Buku extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
-        'id_buku', 'judul_buku', 'pengarang', 'penerbit', 'th_terbit',
+        'id_buku','stok', 'judul_buku', 'pengarang', 'penerbit', 'th_terbit',
         'id_kategori', 'penyunting', 'edisi', 'deskripsi_fisik',
         'isbn', 'bahasa', 'call_number', 'sinopsis', 'foto'
     ];

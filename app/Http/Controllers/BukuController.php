@@ -36,7 +36,7 @@ class BukuController extends Controller
     $kategoris = Category::orderBy('nama_kategori')->get();
     $aktif     = $kategori ?? 'semua';
 
-    $ulasan = \App\Models\Ulasan::latest()->get(); // ✅ TAMBAHAN AMAN
+    $ulasan = \App\Models\Ulasan::latest()->get(); 
 
     return view('home', compact('buku', 'kategoris', 'aktif', 'ulasan'));
 }
@@ -103,6 +103,7 @@ class BukuController extends Controller
             'call_number'    => $request->call_number,
             'sinopsis'       => $request->sinopsis,
             'foto'           => $pathFoto,
+             'stok'           => $request->stok ?? 0,
         ]);
 
         return redirect()->route('admin.buku.index')
@@ -126,6 +127,8 @@ class BukuController extends Controller
             'pengarang'  => 'required',
             'penerbit'   => 'required',
             'th_terbit'  => 'required',
+            
+
         ]);
 
         $buku = Buku::where('id_buku', $id)->firstOrFail();
@@ -154,6 +157,7 @@ class BukuController extends Controller
             'call_number'     => $request->call_number     ?? $buku->call_number,
             'sinopsis'        => $request->sinopsis        ?? $buku->sinopsis,
             'foto'            => $pathFoto,
+            'stok'            => $request->stok            ?? $buku->stok,
         ]);
 
         return redirect()->route('admin.buku.index')

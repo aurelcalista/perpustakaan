@@ -55,6 +55,7 @@
 							<th>Kategori</th>
 							<th>Penerbit</th>
 							<th>Tahun</th>
+							<th>Stok</th>
 							<th>ISBN</th>
 							<th>Bahasa</th>
 							<th data-orderable="false">Kelola</th>
@@ -88,6 +89,7 @@
 
 							<td>{{ $data->penerbit }}</td>
 							<td>{{ $data->th_terbit }}</td>
+							<td>{{ $data->stok ?? 0 }}</td>
 							<td>{{ $data->isbn }}</td>
 							<td>{{ $data->bahasa }}</td>
 
@@ -112,7 +114,7 @@
 
 						@empty
 						<tr>
-							<td colspan="11" class="text-center">
+							<td colspan="12" class="text-center">
 								Tidak ada data buku
 							</td>
 						</tr>
