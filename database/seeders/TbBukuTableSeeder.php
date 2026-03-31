@@ -27,6 +27,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Tere Liye',
                 'penerbit' => 'Gramedia Pustaka Utama',
                 'th_terbit' => '2014',
+                'stok' => 3,
                 'id_kategori' => 1,
                 'penyunting' => 'Tim Editor Gramedia',
                 'edisi' => 'Cetakan ke-1',
@@ -46,6 +47,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Tere Liye',
                 'penerbit' => 'Gramedia Pustaka Utama',
                 'th_terbit' => '2015',
+                'stok' => 3,
                 'id_kategori' => 1,
                 'penyunting' => 'Tim Editor Gramedia',
                 'edisi' => 'Cetakan ke-1',
@@ -65,6 +67,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Tere Liye',
                 'penerbit' => 'Gramedia Pustaka Utama',
                 'th_terbit' => '2016',
+                'stok' => 3,
                 'id_kategori' => 1,
                 'penyunting' => 'Tim Editor Gramedia',
                 'edisi' => 'Cetakan ke-1',
@@ -84,6 +87,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Wulan Nur Amalia',
                 'penerbit' => 'Black Swan Books',
                 'th_terbit' => '2024',
+                'stok' => 2,
                 'id_kategori' => 1,
                 'penyunting' => 'Feby Noer Masyitoh & Lovita Cendana',
                 'edisi' => 'Cetakan kedua; Cetakan kelima',
@@ -103,6 +107,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Nurwina Sari',
                 'penerbit' => 'Romancious',
                 'th_terbit' => '2024',
+                'stok' => 2,
                 'id_kategori' => 1,
                 'penyunting' => 'Zafira Salsabila',
                 'edisi' => 'Cetakan kedua',
@@ -122,6 +127,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Leila S. Chudori',
                 'penerbit' => 'Kepustakaan Populer Gramedia',
                 'th_terbit' => '2022',
+                'stok' => 3,
                 'id_kategori' => 1,
                 'penyunting' => 'Endah Sulwesi & Christina M. Udian',
                 'edisi' => 'Cetakan ke empat puluh dua',
@@ -141,6 +147,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Dahlian',
                 'penerbit' => 'GagasMedia',
                 'th_terbit' => '2014',
+                'stok' => 2,
                 'id_kategori' => 1,
                 'penyunting' => 'Yooki',
                 'edisi' => 'Cetakan pertama',
@@ -160,6 +167,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Tere Liye',
                 'penerbit' => 'PT Sabak Grip Nusantara',
                 'th_terbit' => '2024',
+                'stok' => 2,
                 'id_kategori' => 1,
                 'penyunting' => 'Triana Rahmawati',
                 'edisi' => 'Cetakan kesepuluh',
@@ -179,6 +187,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Andrea Hirata',
                 'penerbit' => 'Bentang',
                 'th_terbit' => '2024',
+                'stok' => 3,
                 'id_kategori' => 1,
                 'penyunting' => 'Suhindrati A. Shinta',
                 'edisi' => 'Cetakan keenam',
@@ -198,6 +207,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Dee Lestari',
                 'penerbit' => 'Benteng Pustaka',
                 'th_terbit' => '2012',
+                'stok' => 2,
                 'id_kategori' => 1,
                 'penyunting' => 'Hermawan Aksan',
                 'edisi' => 'Cetakan pertama',
@@ -217,6 +227,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Barker J.D',
                 'penerbit' => 'Bhuana Sastra',
                 'th_terbit' => '2025',
+                'stok' => 2,
                 'id_kategori' => 1,
                 'penyunting' => 'Ani Nuraini Syahara',
                 'edisi' => 'Cetakan ketiga',
@@ -236,6 +247,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Leila S. Chudori',
                 'penerbit' => 'Kepustakaan Populer Gramedia',
                 'th_terbit' => '2025',
+                'stok' => 2,
                 'id_kategori' => 1,
                 'penyunting' => 'Endah Sulwesi',
                 'edisi' => 'Cetakan kesebelas',
@@ -243,7 +255,7 @@ class TbBukuTableSeeder extends Seeder
                 'isbn' => '9786024242725',
                 'bahasa' => 'Indonesia',
                 'call_number' => '813 LEI n ; 899.221 3 LEI n',
-                'sinopsis' => 'DI SEBUAH pagi yang murung, Nadira Suwandi menemukan ibunya tewas bunuh diri. Kematian sang ibu, Kemala Yunus, seorang perempuan yang dikenal sangat ekspresif, berpikiran bebas, dan selalu bertarung mencari diri itu, sungguh mengejutkan. Tewasnya Kemala kemudian mempengaruhi kehidupan Nadira sebagai seorang anak (“Melukis Langit”); seorang wartawan (“Tasbih”); seorang kekasih (“Ciuman Terpanjang”); seorang istri, hingga akhirnya membawa Nadira kepada sebuah penjelajahan ke dunia baru, dunia seksualitas yang tak pernah disentuhnya (“Kirana”).',
+                'sinopsis' => 'DI SEBUAH pagi yang murung, Nadira Suwandi menemukan ibunya tewas bunuh diri. Kematian sang ibu, Kemala Yunus, seorang perempuan yang dikenal sangat ekspresif, berpikiran bebas, dan selalu bertarung mencari diri itu, sungguh mengejutkan. Tewasnya Kemala kemudian mempengaruhi kehidupan Nadira sebagai seorang anak ("Melukis Langit"); seorang wartawan ("Tasbih"); seorang kekasih ("Ciuman Terpanjang"); seorang istri, hingga akhirnya membawa Nadira kepada sebuah penjelajahan ke dunia baru, dunia seksualitas yang tak pernah disentuhnya ("Kirana").',
                 'foto' => 'cover_buku/nadira.jpg',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -255,6 +267,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Ahmad Tohari',
                 'penerbit' => 'Gramedia Pustaka Utama',
                 'th_terbit' => '2025',
+                'stok' => 2,
                 'id_kategori' => 1,
                 'penyunting' => 'Eka Pudjawati',
                 'edisi' => 'Cetakan kesebelas',
@@ -274,6 +287,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Gilang Pamungkas',
                 'penerbit' => 'Media Cendekia Muslim',
                 'th_terbit' => '2023',
+                'stok' => 2,
                 'id_kategori' => 1,
                 'penyunting' => 'Dany georgetown',
                 'edisi' => 'Cetakan pertama',
@@ -293,6 +307,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Lenn Liu ; Vie Asano ; Aira Rumi',
                 'penerbit' => 'Tekad Media Cakrawala',
                 'th_terbit' => '2024',
+                'stok' => 2,
                 'id_kategori' => 1,
                 'penyunting' => 'Mardiansyah',
                 'edisi' => 'Cetakan keempat',
@@ -308,7 +323,7 @@ class TbBukuTableSeeder extends Seeder
 
             /*
             ===============================
-            KATEGORI 2 - MAPEL 
+            KATEGORI 2 - MAPEL
             ===============================
             */
 
@@ -318,6 +333,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Dicky Susanto, Theja Kurniawan, Savitri K. Sihombing, dkk.',
                 'penerbit' => 'Pusat Kurikulum dan Perbukuan, Kemendikbudristek',
                 'th_terbit' => '2021',
+                'stok' => 5,
                 'id_kategori' => 2,
                 'penyunting' => 'Tri Hartini',
                 'edisi' => 'Kurikulum Merdeka',
@@ -337,6 +353,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Ahmad Taufik, Nurwastuti Setyowati',
                 'penerbit' => 'Pusat Kurikulum dan Perbukuan, Kemendikbudristek',
                 'th_terbit' => '2021',
+                'stok' => 5,
                 'id_kategori' => 2,
                 'penyunting' => 'Tim Kemendikbudristek',
                 'edisi' => 'Kurikulum Merdeka',
@@ -344,7 +361,7 @@ class TbBukuTableSeeder extends Seeder
                 'isbn' => '978-602-244-547-0',
                 'bahasa' => 'Indonesia',
                 'call_number' => '297 TAU p',
-                'sinopsis' => 'Materi meliputi Al-Qur’an dan Hadis, akidah, akhlak, fikih, serta sejarah peradaban Islam untuk membentuk karakter peserta didik yang beriman, bertakwa, dan berakhlak mulia.',
+                'sinopsis' => 'Materi meliputi Al-Qur\'an dan Hadis, akidah, akhlak, fikih, serta sejarah peradaban Islam untuk membentuk karakter peserta didik yang beriman, bertakwa, dan berakhlak mulia.',
                 'foto' => 'cover_buku/pai10.jpg',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -356,6 +373,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Fadillah Tri Aulia, Sefi Indra Gumilar',
                 'penerbit' => 'Pusat Kurikulum dan Perbukuan, Kemendikbudristek',
                 'th_terbit' => '2021',
+                'stok' => 5,
                 'id_kategori' => 2,
                 'penyunting' => 'Maman Suryaman, Priscila Fitriasih Limbong',
                 'edisi' => 'Kurikulum Merdeka',
@@ -375,6 +393,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Dicky Susanto, dkk.',
                 'penerbit' => 'Kementrian Pendidikan, Kebudayaan, Riset, dan Teknologi',
                 'th_terbit' => '2021',
+                'stok' => 5,
                 'id_kategori' => 2,
                 'penyunting' => 'Tri Hartini',
                 'edisi' => 'Kurikulum Merdeka',
@@ -394,6 +413,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Abd. Rahman & Hery Nugroho',
                 'penerbit' => 'Kementrian Pendidikan, Kebudayaan, Riset, dan Teknologi',
                 'th_terbit' => '2021',
+                'stok' => 5,
                 'id_kategori' => 2,
                 'penyunting' => 'Agus Imam Kharomen',
                 'edisi' => 'Kurikulum Merdeka',
@@ -413,6 +433,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Heny Marwati & K. Waskitaningtyas',
                 'penerbit' => 'Kementrian Pendidikan, Kebudayaan, Riset, dan Teknologi',
                 'th_terbit' => '2021',
+                'stok' => 5,
                 'id_kategori' => 2,
                 'penyunting' => 'Ahid Hidayat',
                 'edisi' => 'Kurikulum Merdeka',
@@ -429,9 +450,10 @@ class TbBukuTableSeeder extends Seeder
             [
                 'id_buku' => 'B022',
                 'judul_buku' => 'Matematika untuk SMA/MA Kelas XII Kurikulum Merdeka',
-                'pengarang' => 'Mohammad Tohir, Ahmad Choirul Anam, Ibnu Taufiq',   
+                'pengarang' => 'Mohammad Tohir, Ahmad Choirul Anam, Ibnu Taufiq',
                 'penerbit' => 'Pusat Kurikulum dan Perbukuan, Kemendikbudristek',
                 'th_terbit' => '2022',
+                'stok' => 5,
                 'id_kategori' => 2,
                 'penyunting' => 'Tim Kemendikbudristek',
                 'edisi' => 'Kurikulum Merdeka',
@@ -451,6 +473,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Ahmad Taufik, dkk.',
                 'penerbit' => 'Pusat Kurikulum dan Perbukuan, Kemendikbudristek',
                 'th_terbit' => '2022',
+                'stok' => 5,
                 'id_kategori' => 2,
                 'penyunting' => 'Tim Kemendikbudristek',
                 'edisi' => 'Kurikulum Merdeka',
@@ -458,7 +481,7 @@ class TbBukuTableSeeder extends Seeder
                 'isbn' => '978-602-244-678-1',
                 'bahasa' => 'Indonesia',
                 'call_number' => '297 TAU p',
-                'sinopsis' => 'Materi meliputi Al-Qur’an dan Hadis, akidah, akhlak, fikih, serta sejarah Islam untuk membentuk karakter peserta didik yang beriman dan berakhlak mulia.',
+                'sinopsis' => 'Materi meliputi Al-Qur\'an dan Hadis, akidah, akhlak, fikih, serta sejarah Islam untuk membentuk karakter peserta didik yang beriman dan berakhlak mulia.',
                 'foto' => 'cover_buku/pai12.jpg',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -470,6 +493,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Maman Suryaman, dkk.',
                 'penerbit' => 'Pusat Kurikulum dan Perbukuan, Kemendikbudristek',
                 'th_terbit' => '2022',
+                'stok' => 5,
                 'id_kategori' => 2,
                 'penyunting' => 'Tim Kemendikbudristek',
                 'edisi' => 'Kurikulum Merdeka',
@@ -495,6 +519,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Rosa A.S & M. Shalahuddin',
                 'penerbit' => 'Informatika',
                 'th_terbit' => '2018',
+                'stok' => 3,
                 'id_kategori' => 3,
                 'penyunting' => 'Tim Editor Informatika',
                 'edisi' => 'Revisi',
@@ -514,6 +539,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Ade Rahmat Iskandar',
                 'penerbit' => 'Gramedia',
                 'th_terbit' => '2024',
+                'stok' => 3,
                 'id_kategori' => 3,
                 'penyunting' => 'Tim Editor Gramedia',
                 'edisi' => 'Cetakan pertama',
@@ -533,6 +559,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Abdul Kadir',
                 'penerbit' => 'Elex Media',
                 'th_terbit' => '2023',
+                'stok' => 3,
                 'id_kategori' => 3,
                 'penyunting' => 'Tim Editor Elex',
                 'edisi' => 'Cetakan pertama',
@@ -545,13 +572,20 @@ class TbBukuTableSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            // ===== KBBI =====
+
+            /*
+            ===============================
+            KATEGORI 4 - REFERENSI
+            ===============================
+            */
+
             [
                 'id_buku' => 'B028',
                 'judul_buku' => 'Kamus Besar Bahasa Indonesia Edisi Kelima',
                 'pengarang' => 'Pusat Bahasa Kemendikbud',
                 'penerbit' => 'Balai Pustaka',
                 'th_terbit' => '2016',
+                'stok' => 2,
                 'id_kategori' => 4,
                 'penyunting' => 'Badan Pengembangan dan Pembinaan Bahasa',
                 'edisi' => 'Edisi kelima',
@@ -565,13 +599,13 @@ class TbBukuTableSeeder extends Seeder
                 'updated_at' => now(),
             ],
 
-            // ===== KAMUS INGGRIS-INDONESIA =====
             [
                 'id_buku' => 'B029',
                 'judul_buku' => 'Kamus Inggris - Indonesia Edisi yang Diperbarui',
                 'pengarang' => 'John M. Echols & Hassan Shadily',
                 'penerbit' => 'Gramedia Pustaka Utama',
                 'th_terbit' => '2014',
+                'stok' => 2,
                 'id_kategori' => 4,
                 'penyunting' => 'John U. Wolff & James T. Collins',
                 'edisi' => 'Edisi yang Diperbarui',
@@ -585,19 +619,18 @@ class TbBukuTableSeeder extends Seeder
                 'updated_at' => now(),
             ],
 
-        
-            // ===== ENSIKLOPEDIA =====
             [
                 'id_buku' => 'B030',
                 'judul_buku' => 'Ensiklopedia Sejarah Dunia',
                 'pengarang' => 'Tim Usborne',
                 'penerbit' => 'Bhuana Ilmu Populer',
                 'th_terbit' => '2018',
+                'stok' => 2,
                 'id_kategori' => 4,
                 'penyunting' => 'Tim Editor BIP',
                 'edisi' => 'Edisi Revisi',
                 'deskripsi_fisik' => 'xii + 312 halaman ; 28 cm',
-                'isbn' => '9786230402678 ',
+                'isbn' => '9786230402678',
                 'bahasa' => 'Indonesia',
                 'call_number' => '900 TIM e',
                 'sinopsis' => 'Ensiklopedia Sejarah Dunia ini memuat berbagai fakta dan kisah tentang berbagai bangsa, tempat, dan peristiwa pada masa lalu yang membentuk dunia. Dilengkapi skema bergambar selama 12.000 tahun, lebih dari 100 peta, ilustrasi, grafik, dan foto yang lengkap.',
@@ -606,7 +639,6 @@ class TbBukuTableSeeder extends Seeder
                 'updated_at' => now(),
             ],
 
-          
         ]);
     }
 }

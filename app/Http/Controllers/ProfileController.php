@@ -53,7 +53,7 @@ public function show(Request $request): View
 
             $item->sisa_hari = (int) $diff;
             $item->terlambat = $diff < 0;
-            $item->denda     = $diff < 0 ? abs((int) $diff) * 1000 : 0;
+            $item->denda     = $diff < 0 ? abs((int) $diff) * 500 : 0;
             return $item;
         });
 
