@@ -107,7 +107,7 @@ class TbBukuTableSeeder extends Seeder
                 'pengarang' => 'Nurwina Sari',
                 'penerbit' => 'Romancious',
                 'th_terbit' => '2024',
-                'stok' => 2,
+                'stok' => 1,
                 'id_kategori' => 1,
                 'penyunting' => 'Zafira Salsabila',
                 'edisi' => 'Cetakan kedua',

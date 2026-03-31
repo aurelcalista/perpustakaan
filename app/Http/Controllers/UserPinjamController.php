@@ -6,20 +6,15 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
-
 
 class UserPinjamController extends Controller
 {
-    /**
-     * Ambil id_anggota dari tb_anggota berdasarkan nis user yang login.
-     */
     private function getIdAnggota()
     {
-        
         return Auth::user()->nis;
     }
 
+    // ✅ DETAIL BUKU (INI YANG WAJIB ADA)
     public function show($id)
     {
         $buku = DB::table('tb_buku')
@@ -36,156 +31,128 @@ class UserPinjamController extends Controller
 
         if (Auth::check() && Auth::user()->role == 'siswa') {
             $idAnggota = $this->getIdAnggota();
-            if ($idAnggota) {
-                $sudahPinjam = DB::table('tb_sirkulasi')
-                    ->where('id_buku', $id)
-                    ->where('id_anggota', $idAnggota)
-                    ->whereIn('status', ['dipinjam', 'pending'])
-                    ->exists();
-            }
+
+            $sudahPinjam = DB::table('tb_sirkulasi')
+                ->where('id_buku', $id)
+                ->where('id_anggota', $idAnggota)
+                ->whereIn('status', ['dipinjam', 'pending'])
+                ->exists();
         }
 
         return view('siswa.detail', compact('buku', 'sudahPinjam'));
     }
 
-public function store(Request $request)
-{
-    $request->validate([
-        'id_buku' => 'required|exists:tb_buku,id_buku',
-    ]);
-
-    $idAnggota = $this->getIdAnggota();
-
-    if (!$idAnggota) {
-        return redirect()->back()
-            ->with('error', 'Data anggota tidak ditemukan. Hubungi admin.');
-    }
-
-    // Cek sudah pinjam buku ini
-    $sudahPinjam = DB::table('tb_sirkulasi')
-        ->where('id_buku', $request->id_buku)
-        ->where('id_anggota', $idAnggota)
-        ->whereIn('status', ['dipinjam', 'pending'])
-        ->exists();
-
-    if ($sudahPinjam) {
-        return redirect()->back()
-            ->with('error', 'Anda sudah meminjam buku ini!');
-    }
-
-    // Cek maksimal 3 buku aktif
-    $jumlahPinjam = DB::table('tb_sirkulasi')
-        ->where('id_anggota', $idAnggota)
-        ->whereIn('status', ['dipinjam', 'pending'])
-        ->count();
-
-    if ($jumlahPinjam >= 3) {
-        return redirect()->back()
-            ->with('error', 'Maksimal 3 buku sedang dipinjam!');
-    }
-
-    // Generate id_sk unik: SK-YYYYMMDD-XXXX
-    do {
-        $id_sk = 'SK-' . now()->format('Ymd') . '-' . strtoupper(Str::random(4));
-    } while (DB::table('tb_sirkulasi')->where('id_sk', $id_sk)->exists());
-
-    $tglPinjam  = Carbon::now();
-    $tglKembali = Carbon::now()->addDays(7); 
-
-    // Insert ke tb_sirkulasi
-    DB::table('tb_sirkulasi')->insert([
-        'id_sk'       => $id_sk,
-        'id_buku'     => $request->id_buku,
-        'id_anggota'  => $idAnggota,
-        'tgl_pinjam'  => $tglPinjam,
-        'tgl_kembali' => $tglKembali,
-        'status'      => 'pending',
-        'created_at'  => Carbon::now(),
-        'updated_at'  => Carbon::now(),
-    ]);
-
-    
-    DB::table('log_pinjam')->insert([
-        'id_buku'     => $request->id_buku,
-        'id_anggota'  => $idAnggota,
-        'tgl_pinjam'  => $tglPinjam,
-        'created_at'  => Carbon::now(),
-        'updated_at'  => Carbon::now(),
-    ]);
-
-    return redirect()
-        ->route('profile.show')
-        ->with('success', 'Request peminjaman berhasil! Menunggu persetujuan admin.');
-}
-
-    public function bukuSaya()
+    // ✅ REQUEST PINJAM
+    public function store(Request $request)
     {
+        $request->validate([
+            'id_buku' => 'required|exists:tb_buku,id_buku',
+        ]);
+
         $idAnggota = $this->getIdAnggota();
 
-        $bukuSaya = collect();
-
-        if ($idAnggota) {
-            $bukuSaya = DB::table('tb_sirkulasi as s')
-                ->join('tb_buku as b', 's.id_buku', '=', 'b.id_buku')
-                ->where('s.id_anggota', $idAnggota)
-                ->whereIn('s.status', ['dipinjam', 'pending'])
-                ->select('s.*', 'b.judul_buku', 'b.pengarang', 'b.foto')
-                ->orderBy('s.created_at', 'desc')
-                ->get();
+        if (!$idAnggota) {
+            return back()->with('error', 'Data anggota tidak ditemukan.');
         }
 
-        return view('siswa.buku_saya', compact('bukuSaya'));
-    }
-
-    public function riwayat()
-    {
-        $idAnggota = $this->getIdAnggota();
-
-        $pinjaman = collect();
-
-        if ($idAnggota) {
-            $pinjaman = DB::table('tb_sirkulasi as s')
-                ->join('tb_buku as b', 's.id_buku', '=', 'b.id_buku')
-                ->where('s.id_anggota', $idAnggota)
-                ->select('s.*', 'b.judul_buku', 'b.pengarang', 'b.foto')
-                ->orderBy('s.created_at', 'desc')
-                ->get();
-        }
-
-        return view('siswa.riwayat', compact('pinjaman'));
-    }
-
-    public function cancel($id_sk)
-{
-    $idAnggota = $this->getIdAnggota();
-
-    // Pastikan yang membatalkan adalah pemiliknya & status masih pending
-    $pinjaman = DB::table('tb_sirkulasi')
-        ->where('id_sk', $id_sk)
-        ->where('id_anggota', $idAnggota)
-        ->where('status', 'pending') // hanya bisa batal kalau masih pending
-        ->first();
-
-    if (!$pinjaman) {
-        return redirect()->back()
-            ->with('error', 'Peminjaman tidak ditemukan atau sudah diproses admin.');
-    }
-
-    DB::table('tb_sirkulasi')->where('id_sk', $id_sk)->delete();
-
-    return redirect()->route('profile.show')
-        ->with('success', 'Peminjaman berhasil dibatalkan.');
-}
-
-    public function index()
-    {
+        // ❗ CEK STOK
         $buku = DB::table('tb_buku')
-            ->leftJoin('tb_kategori', 'tb_buku.id_kategori', '=', 'tb_kategori.id_kategori')
-            ->select('tb_buku.*', 'tb_kategori.nama_kategori')
-            ->get();
+            ->where('id_buku', $request->id_buku)
+            ->first();
 
-        return view('siswa.index', compact('buku'));
+        if (!$buku || $buku->stok < 1) {
+            return back()->with('error', 'Stok buku habis!');
+        }
+
+        // ❗ CEK SUDAH PINJAM
+        $sudahPinjam = DB::table('tb_sirkulasi')
+            ->where('id_buku', $request->id_buku)
+            ->where('id_anggota', $idAnggota)
+            ->whereIn('status', ['dipinjam', 'pending'])
+            ->exists();
+
+        if ($sudahPinjam) {
+            return back()->with('error', 'Sudah meminjam buku ini!');
+        }
+
+        // ❗ MAKS 3 BUKU
+        $jumlahPinjam = DB::table('tb_sirkulasi')
+            ->where('id_anggota', $idAnggota)
+            ->whereIn('status', ['dipinjam', 'pending'])
+            ->count();
+
+        if ($jumlahPinjam >= 3) {
+            return back()->with('error', 'Maksimal 3 buku!');
+        }
+
+        // ✅ GENERATE ID
+        do {
+            $id_sk = 'SK-' . now()->format('Ymd') . '-' . strtoupper(Str::random(4));
+        } while (DB::table('tb_sirkulasi')->where('id_sk', $id_sk)->exists());
+
+        // ✅ INSERT (STATUS PENDING)
+        DB::table('tb_sirkulasi')->insert([
+            'id_sk'       => $id_sk,
+            'id_buku'     => $request->id_buku,
+            'id_anggota'  => $idAnggota,
+            'tgl_pinjam'  => now(),
+            'tgl_kembali' => now()->addDays(7),
+            'status'      => 'pending',
+            'created_at'  => now(),
+            'updated_at'  => now(),
+        ]);
+
+        return redirect()->route('profile.show')
+            ->with('success', 'Menunggu persetujuan admin!');
     }
 
-    
+    // ❌ BATALKAN (TIDAK UBAH STOK)
+    public function cancel($id_sk)
+    {
+        $idAnggota = $this->getIdAnggota();
+
+        $pinjaman = DB::table('tb_sirkulasi')
+            ->where('id_sk', $id_sk)
+            ->where('id_anggota', $idAnggota)
+            ->where('status', 'pending')
+            ->first();
+
+        if (!$pinjaman) {
+            return back()->with('error', 'Tidak bisa dibatalkan!');
+        }
+
+        DB::table('tb_sirkulasi')->where('id_sk', $id_sk)->delete();
+
+        return back()->with('success', 'Berhasil dibatalkan!');
+    }
+
+    // ✅ KEMBALIKAN
+    public function kembalikan($id_sk)
+    {
+        $idAnggota = $this->getIdAnggota();
+
+        $pinjaman = DB::table('tb_sirkulasi')
+            ->where('id_sk', $id_sk)
+            ->where('id_anggota', $idAnggota)
+            ->where('status', 'dipinjam')
+            ->first();
+
+        if (!$pinjaman) {
+            return back()->with('error', 'Data tidak ditemukan!');
+        }
+
+        DB::table('tb_sirkulasi')
+            ->where('id_sk', $id_sk)
+            ->update([
+                'status' => 'dikembalikan',
+                'updated_at' => now()
+            ]);
+
+        // ❗ TAMBAH STOK
+        DB::table('tb_buku')
+            ->where('id_buku', $pinjaman->id_buku)
+            ->increment('stok');
+
+        return back()->with('success', 'Buku dikembalikan!');
+    }
 }

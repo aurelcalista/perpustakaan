@@ -8,6 +8,7 @@ use Carbon\Carbon;
 
 class SirkulasiController extends Controller
 {
+    
     public function index()
     {
         $sirkulasi = DB::table('tb_sirkulasi as s')
@@ -18,7 +19,6 @@ class SirkulasiController extends Controller
             ->orderBy('s.created_at', 'desc')
             ->get();
 
-        // ✅ UPDATE: denda 500/hari
         $u_denda = 500;
         $today = Carbon::now();
 
@@ -27,12 +27,10 @@ class SirkulasiController extends Controller
             $selisih = $today->diffInDays($tgl_kembali, false);
 
             if ($selisih < 0) {
-                // Terlambat
                 $item->terlambat = abs($selisih);
                 $item->denda = $item->terlambat * $u_denda;
                 $item->status_label = 'Terlambat';
             } else {
-                // Masih masa pinjam
                 $item->terlambat = 0;
                 $item->denda = 0;
                 $item->status_label = 'Masa Peminjaman';
@@ -55,31 +53,52 @@ class SirkulasiController extends Controller
         return view('dashboard_admin.sirkul.pending_sirkul', compact('pending'));
     }
 
+    // ✅ APPROVE = KURANGI STOK
     public function approve($id_sk)
     {
-        $sirkulasi = DB::table('tb_sirkulasi')->where('id_sk', $id_sk)->first();
+        $sirkulasi = DB::table('tb_sirkulasi')
+            ->where('id_sk', $id_sk)
+            ->where('status', 'pending')
+            ->first();
 
         if (!$sirkulasi) {
-            return redirect()->back()->with('error', 'Data tidak ditemukan!');
+            return back()->with('error', 'Data tidak valid atau sudah diproses!');
         }
 
+        // ❗ cek buku & stok
+        $buku = DB::table('tb_buku')
+            ->where('id_buku', $sirkulasi->id_buku)
+            ->first();
+
+        if (!$buku || $buku->stok < 1) {
+            return back()->with('error', 'Stok buku habis!');
+        }
+
+        // update status
         DB::table('tb_sirkulasi')
             ->where('id_sk', $id_sk)
             ->update([
                 'status' => 'dipinjam',
-                'updated_at' => Carbon::now()
+                'updated_at' => now()
             ]);
 
-        return redirect()->back()->with('success', 'Peminjaman berhasil disetujui!');
+        // ❗ kurangi stok
+        DB::table('tb_buku')
+            ->where('id_buku', $sirkulasi->id_buku)
+            ->decrement('stok');
+
+        return back()->with('success', 'Peminjaman berhasil disetujui!');
     }
 
+    // ❌ REJECT (tidak ubah stok)
     public function reject($id_sk)
     {
         DB::table('tb_sirkulasi')
             ->where('id_sk', $id_sk)
+            ->where('status', 'pending')
             ->delete();
 
-        return redirect()->back()->with('success', 'Peminjaman ditolak dan dihapus!');
+        return back()->with('success', 'Peminjaman ditolak dan dihapus!');
     }
 
     public function create()
@@ -90,6 +109,7 @@ class SirkulasiController extends Controller
         return view('dashboard_admin.sirkul.add_sirkul', compact('buku', 'anggota'));
     }
 
+    // ✅ ADMIN INPUT LANGSUNG = STOK BERKURANG
     public function store(Request $request)
     {
         $request->validate([
@@ -98,9 +118,15 @@ class SirkulasiController extends Controller
             'tgl_pinjam' => 'required|date',
         ]);
 
-        $tglPinjam = Carbon::parse($request->tgl_pinjam);
+        $buku = DB::table('tb_buku')
+            ->where('id_buku', $request->id_buku)
+            ->first();
 
-        // ✅ UPDATE: max 3 hari
+        if (!$buku || $buku->stok < 1) {
+            return back()->with('error', 'Stok buku habis!');
+        }
+
+        $tglPinjam = Carbon::parse($request->tgl_pinjam);
         $tglKembali = $tglPinjam->copy()->addDays(3);
 
         DB::table('tb_sirkulasi')->insert([
@@ -109,9 +135,14 @@ class SirkulasiController extends Controller
             'tgl_pinjam' => $tglPinjam,
             'tgl_kembali' => $tglKembali,
             'status' => 'dipinjam',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
+
+        // ❗ kurangi stok
+        DB::table('tb_buku')
+            ->where('id_buku', $request->id_buku)
+            ->decrement('stok');
 
         return redirect()->route('admin.sirkul.index')
             ->with('success', 'Data sirkulasi berhasil ditambahkan!');
@@ -122,31 +153,45 @@ class SirkulasiController extends Controller
         $sirkulasi = DB::table('tb_sirkulasi')->where('id_sk', $id_sk)->first();
 
         if (!$sirkulasi) {
-            return redirect()->back()->with('error', 'Data tidak ditemukan!');
+            return back()->with('error', 'Data tidak ditemukan!');
         }
 
-        // tetap 3 hari perpanjang (udah sesuai)
         $tglKembaliBaru = Carbon::parse($sirkulasi->tgl_kembali)->addDays(3);
 
         DB::table('tb_sirkulasi')
             ->where('id_sk', $id_sk)
             ->update([
                 'tgl_kembali' => $tglKembaliBaru,
-                'updated_at'  => Carbon::now()
+                'updated_at' => now()
             ]);
 
         return redirect()->route('admin.sirkul.index')
             ->with('success', 'Peminjaman diperpanjang 3 hari!');
     }
 
+    // ✅ KEMBALI = TAMBAH STOK
     public function kembali($id_sk)
     {
+        $sirkulasi = DB::table('tb_sirkulasi')
+            ->where('id_sk', $id_sk)
+            ->where('status', 'dipinjam')
+            ->first();
+
+        if (!$sirkulasi) {
+            return back()->with('error', 'Data tidak valid!');
+        }
+
         DB::table('tb_sirkulasi')
             ->where('id_sk', $id_sk)
             ->update([
                 'status' => 'dikembalikan',
-                'updated_at' => Carbon::now()
+                'updated_at' => now()
             ]);
+
+        // ❗ tambah stok
+        DB::table('tb_buku')
+            ->where('id_buku', $sirkulasi->id_buku)
+            ->increment('stok');
 
         return redirect()->route('log.kembali')
             ->with('success', 'Buku berhasil dikembalikan!');

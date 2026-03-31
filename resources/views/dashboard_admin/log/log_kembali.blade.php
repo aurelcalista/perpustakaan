@@ -27,6 +27,7 @@
                             <th>No</th>
                             <th>Buku</th>
                             <th>Peminjam</th>
+                            <th>Tgl Dipinjam</th>
                             <th>Tgl Dikembalikan</th>
                         </tr>
                     </thead>
@@ -36,8 +37,8 @@
 								<td>{{ $index + 1 }}</td>
 								<td>{{ $data->judul_buku }}</td>
 								<td>{{ $data->nis }} - {{ $data->nama }}</td>
-								<td>{{ \Carbon\Carbon::parse($data->tgl_kembali)->format('d/M/Y') }}</td>
 								<td>{{ \Carbon\Carbon::parse($data->updated_at)->format('d/M/Y H:i') }}</td>
+								<td>{{ \Carbon\Carbon::parse($data->tgl_kembali)->format('d/M/Y') }}</td>
 							</tr>
 						@empty
 							<tr>
