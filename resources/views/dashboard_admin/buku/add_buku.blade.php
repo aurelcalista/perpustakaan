@@ -146,7 +146,7 @@
 						<img id="preview-cover"
 							src="https://via.placeholder.com/120x160"
 							class="mb-2"
-							style="display: block; margin: 0 auto 10px;">
+							style="display: block; margin: 0 auto 10px; width: 120px; height: 160px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd;">
 						<input type="file" name="foto" onchange="previewImage(event)">
 					</div>
 
