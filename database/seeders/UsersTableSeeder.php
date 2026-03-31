@@ -39,10 +39,10 @@ class UsersTableSeeder extends Seeder
             ),
             array (
                 'id' => 2,
-                'username' => '12478293',
+                'username' => null,
                 'nis' => '12478293',
                 'nama' => 'Adinda Meilia Putri',
-                'noidentitas' => '12478293',
+                'noidentitas' => 'XI RPL 1',
                 'alamat' => 'cirebon',
                 'notlp' => '0811111111',
                 'email' => 'adinda@gmail.com',
@@ -56,10 +56,10 @@ class UsersTableSeeder extends Seeder
 
             array ( 
                 'id' => 3,
-                'username' => '12439104',
+                'username' => null,
                 'nis' => '12439104',
                 'nama' => 'Agnia Putri Erwanti',
-                'noidentitas' => '12439104',
+                'noidentitas' => 'XI RPL 1',
                 'alamat' => 'cirebon',
                 'notlp' => '0822222222',
                 'email' => 'agnia@gmail.com',
@@ -73,10 +73,10 @@ class UsersTableSeeder extends Seeder
 
             array (
                 'id' => 4,
-                'username' => '12409472',
+                'username' => null,
                 'nis' => '12409472',
                 'nama' => 'Aurel Calista Maheswari',
-                'noidentitas' => '12409472',
+                'noidentitas' => 'XI RPL 1',
                 'alamat' => 'cirebon',
                 'notlp' => '0833333333',
                 'email' => 'arel@gmail.com',
@@ -90,10 +90,10 @@ class UsersTableSeeder extends Seeder
 
             array (
                 'id' => 5,
-                'username' => '12493749',
+                'username' => null,
                 'nis' => '12493749',
                 'nama' => 'Cyra Ghasanna Nuraaqilah Yusup',
-                'noidentitas' => '12493749',
+                'noidentitas' => 'XI RPL 1',
                 'alamat' => 'cirebon',
                 'notlp' => '0844444444',
                 'email' => 'cyra@gmail.com',
@@ -107,10 +107,10 @@ class UsersTableSeeder extends Seeder
 
             array (
                 'id' => 6,
-                'username' => '12430125',
+                'username' => null,
                 'nis' => '12430125',
                 'nama' => 'Kezhia Aurelia Andini',
-                'noidentitas' => '12426485',
+                'noidentitas' => 'XI RPL 1',
                 'alamat' => 'cirebon',
                 'notlp' => '0855555555',
                 'email' => 'kezhia@gmail.com',
