@@ -72,7 +72,7 @@
         line-height: 1;
     }
 
-    /* ── STAT STRIP ── */
+    
     .stat-strip {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -121,7 +121,6 @@
         letter-spacing: 0.8px;
     }
 
-    /* ── SECTION DIVIDER LABEL ── */
     .section-divider {
         font-size: 10px;
         font-weight: 700;
@@ -142,7 +141,7 @@
         background: var(--border);
     }
 
-    /* ── SHARED BOX STYLES ── */
+   
     .info-box {
         background: var(--surface);
         border-radius: var(--radius);
@@ -174,7 +173,7 @@
         margin: 0 !important;
     }
 
-    /* ── PROFIL ── */
+    
     .profil-body {
         padding: 22px;
         display: flex;
@@ -207,7 +206,7 @@
         margin: 0 !important;
     }
 
-    /* ── JAM OPERASIONAL ── */
+    
     .jam-body { padding: 18px 20px; }
 
     .jam-row {
@@ -238,7 +237,7 @@
     .jam-badge.open  { background: var(--navy); color: #fff; }
     .jam-badge.close { background: #dc2626; color: #fff; }
 
-    /* ── TATA TERTIB ── */
+    
     .tertib-body { padding: 18px 20px; }
 
     .tertib-item {
@@ -286,7 +285,7 @@
         line-height: 1.5 !important;
     }
 
-    /* ── KONTAK ── */
+   
     .kontak-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -457,13 +456,7 @@
                                 <p>Buku wajib dikembalikan tepat waktu agar dapat dimanfaatkan siswa lain.</p>
                             </div>
                         </div>
-                        <!-- <div class="tertib-item">
-                            <div class="tertib-num">5</div>
-                            <div class="tertib-body-text">
-                                <h5>Batas peminjaman maksimal 3 hari</h5>
-                                <p>Buku wajib dikembalikan tepat waktu agar dapat dimanfaatkan siswa lain.</p>
-                            </div>
-                        </div> -->
+                        
                     </div>
                 </div>
             </div>

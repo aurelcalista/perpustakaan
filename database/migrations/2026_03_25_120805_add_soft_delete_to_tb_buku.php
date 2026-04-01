@@ -9,7 +9,7 @@ return new class extends Migration
 public function up(): void
 {
     Schema::table('tb_buku', function (Blueprint $table) {
-        $table->softDeletes(); // menambah kolom deleted_at
+        $table->softDeletes(); 
     });
 }
 

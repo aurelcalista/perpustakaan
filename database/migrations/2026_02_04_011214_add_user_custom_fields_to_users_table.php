@@ -9,12 +9,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // Hapus kolom 'name' default Laravel (kalau ada)
+            
             if (Schema::hasColumn('users', 'name')) {
                 $table->dropColumn('name');
             }
             
-            // Tambah kolom baru
+            
             if (!Schema::hasColumn('users', 'nis')) {
                 $table->string('nis')->nullable()->unique()->after('id'); 
             }
@@ -38,7 +38,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn(['nis', 'nama', 'noidentitas', 'alamat', 'notlp']);
             
-            // Kembalikan kolom 'name' default Laravel
+            
             if (!Schema::hasColumn('users', 'name')) {
                 $table->string('name')->after('id');
             }

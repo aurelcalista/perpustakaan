@@ -6,7 +6,7 @@
 <div class="profile-page-wrap">
     <div class="profile-container">
 
-        <!-- HEADER CARD -->
+        
         <div class="profile-header-card">
             <div class="profile-avatar-wrap" onclick="openPhotoModal()" style="position:relative;">
                 @if(Auth::user()->avatar)
@@ -75,10 +75,10 @@
             </div>
         </div>
 
-        <!-- BODY -->
+       
         <div class="profile-body">
 
-            <!-- SIDEBAR NAV -->
+            
             <nav class="profile-nav-card">
                 <a class="profile-nav-item active" href="javascript:void(0)" onclick="switchPanel('biodata', this)">
                     <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
@@ -113,10 +113,10 @@
                 </a>
             </nav>
 
-            <!-- PANELS -->
+            
             <div>
 
-                <!-- BIODATA -->
+               
                 <div class="profile-panel active" id="panel-biodata">
                     <div class="panel-card">
                         <div class="panel-card-header">
@@ -166,7 +166,7 @@
                     </div>
                 </div>
 
-                <!-- BUKU DIPINJAM -->
+                
                 <div class="profile-panel" id="panel-dipinjam">
                     <div class="panel-card">
                         <div class="panel-card-header">
@@ -262,7 +262,6 @@
                     </div>
                 </div>
 
-                <!-- RIWAYAT PEMINJAMAN -->
                 <div class="profile-panel" id="panel-peminjaman">
                     <div class="panel-card">
                         <div class="panel-card-header">
@@ -302,7 +301,6 @@
                     </div>
                 </div>
 
-                <!-- PELANGGARAN -->
                 <div class="profile-panel" id="panel-pelanggaran">
                     <div class="panel-card">
                         <div class="panel-card-header">
@@ -377,7 +375,7 @@
                     </div>
                 </div>
 
-                <!-- FAVORIT -->
+              
                 <div class="profile-panel" id="panel-favorit">
                     <div class="panel-card">
                         <div class="panel-card-header">
@@ -419,7 +417,7 @@
                     </div>
                 </div>
 
-                <!-- PENGATURAN AKUN -->
+                
                 {{-- ↓ Tombol "Ganti Password" diarahkan ke profile.edit dengan anchor #password ↓ --}}
                 <div class="profile-panel" id="panel-akun">
                     <div class="panel-card">
@@ -468,13 +466,13 @@
                     </div>
                 </div>
 
-            </div><!-- end panels -->
-        </div><!-- end profile-body -->
+            </div>
+        </div>
 
-    </div><!-- end container -->
-</div><!-- end page wrap -->
+    </div>
+</div>
 
-<!-- MODAL FOTO -->
+
 <div id="photoModal" class="photo-modal-overlay" style="display:none;">
     <div class="photo-modal-box">
         <button class="photo-modal-close" onclick="closePhotoModal()">&#10006;</button>
@@ -536,7 +534,7 @@
     </div>
 </div>
 
-<!-- MODAL BARCODE -->
+
 <div id="barcodeModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;
     background:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:3000;">
     <div class="barcode-modal-box">

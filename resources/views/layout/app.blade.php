@@ -28,7 +28,7 @@
 
   {{-- CSS Navbar & Footer Baru --}}
   <style>
-    /* ===================== RESET & ROOT ===================== */
+    
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -51,7 +51,7 @@
     img { max-width: 100%; display: block; }
     a { text-decoration: none; color: inherit; }
 
-    /* ===================== BUTTONS ===================== */
+    
     .btn {
       display: inline-flex; align-items: center; gap: 8px;
       padding: 12px 28px; border-radius: var(--radius-sm);
@@ -63,7 +63,7 @@
     .btn-outline { background: transparent; color: var(--primary); border-color: var(--primary); }
     .btn-outline:hover { background: var(--primary); color: var(--white); }
 
-    /* ===================== HEADER ===================== */
+   
     header#mainHeader {
       position: fixed; top: 0; left: 0; right: 0;
       z-index: 1000; padding: 16px 0;
@@ -84,7 +84,7 @@
     }
     .logo-icon svg { fill: white; width: 20px; height: 20px; }
 
-    /* Desktop Nav */
+    
     .home-nav { display: flex; align-items: center; gap: 28px; }
     .nav-link-item {
       font-size: 14px; font-weight: 500; color: var(--text); position: relative; transition: color .2s;
@@ -96,10 +96,10 @@
     .nav-link-item:hover { color: var(--primary); }
     .nav-link-item:hover::after { width: 100%; }
 
-    /* Nav Dropdown — CLICK BASED (hover dinonaktifkan) */
+    
     .nav-dropdown { position: relative; }
     .nav-dropdown-menu {
-      position: fixed; /* pakai fixed agar tidak terpotong section manapun */
+      position: fixed; 
       background: var(--white); border-radius: var(--radius-sm);
       box-shadow: var(--shadow-heavy); border: 1px solid var(--border);
       min-width: 160px; padding: 8px 0;
@@ -108,13 +108,13 @@
     }
     .nav-dropdown-menu-end { min-width: 190px; }
 
-    /* NONAKTIFKAN hover — sepenuhnya pakai JS click */
+    
     .nav-dropdown:hover .nav-dropdown-menu {
       opacity: 0;
       pointer-events: none;
       transform: translateY(8px);
     }
-    /* Kelas .open yang dikontrol JS */
+   
     .nav-dropdown-menu.open {
       opacity: 1 !important;
       pointer-events: all !important;
@@ -137,14 +137,14 @@
     .dropdown-logout:hover { background: #fff5f5; }
     .header-actions { display: flex; align-items: center; gap: 12px; }
 
-    /* Hamburger */
+    
     .hamburger {
       display: none; flex-direction: column; gap: 5px;
       cursor: pointer; background: none; border: none; padding: 4px;
     }
     .hamburger span { display: block; width: 24px; height: 2px; background: var(--text); border-radius: 2px; }
 
-    /* ===================== MOBILE MENU ===================== */
+    
     .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 1998; }
     .mobile-overlay.active { display: block; }
     .mobile-menu {
@@ -167,7 +167,7 @@
     .mobile-nav a:hover { color: var(--primary); }
     .mobile-actions { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
 
-    /* ===================== FOOTER ===================== */
+    
     footer.new-footer {
       background: var(--primary);
       padding: 64px 0 24px;
@@ -207,7 +207,7 @@
       max-width: 1200px; margin: 0 auto; padding-left: 24px; padding-right: 24px;
     }
 
-    /* ===================== SCROLL TO TOP ===================== */
+   
     #scrollTop {
       position: fixed; bottom: 28px; right: 28px;
       width: 44px; height: 44px; background: var(--primary); color: white;
@@ -219,11 +219,11 @@
     #scrollTop.visible { opacity: 1; transform: translateY(0); }
     #scrollTop:hover { background: var(--primary-light); }
 
-    /* ===================== FADE UP ===================== */
+   
     .fade-up { opacity: 0; transform: translateY(28px); transition: opacity .6s ease, transform .6s ease; }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
 
-    /* ===================== RESPONSIVE ===================== */
+    
     @media (max-width: 960px) {
       .home-nav, .header-actions .btn { display: none; }
       .hamburger { display: flex; }
@@ -269,7 +269,7 @@
   @endif
 
   <script>
-  /* ---- HEADER SCROLL ---- */
+ 
   window.addEventListener('scroll', () => {
     const h = document.getElementById('mainHeader');
     if (h) h.classList.toggle('scrolled', window.scrollY > 10);
@@ -277,13 +277,13 @@
     if (btn) btn.classList.toggle('visible', window.scrollY > 300);
   });
 
-  /* ---- MOBILE MENU ---- */
+  
   function toggleMobileMenu() {
     document.getElementById('mobileMenu').classList.toggle('active');
     document.getElementById('mobileOverlay').classList.toggle('active');
   }
 
-  /* ---- FADE UP ---- */
+  
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
       if (entry.isIntersecting) {
@@ -294,7 +294,7 @@
   }, { threshold: 0.08 });
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-  /* ---- DROPDOWN CLICK (menggantikan hover agar tidak cepat hilang) ---- */
+  
   document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.nav-dropdown').forEach(function (dropdown) {
       const menu = dropdown.querySelector('.nav-dropdown-menu');
@@ -304,17 +304,17 @@
         e.stopPropagation();
         const isOpen = menu.classList.contains('open');
 
-        // Tutup semua dropdown lain
+      
         document.querySelectorAll('.nav-dropdown-menu').forEach(function (m) {
           m.classList.remove('open');
         });
 
-        // Posisikan dropdown tepat di bawah trigger
+        
         if (!isOpen) {
           const rect = dropdown.getBoundingClientRect();
           menu.style.top  = (rect.bottom + 8) + 'px';
 
-          // Kalau menu-end, ratakan ke kanan; kalau tidak, ratakan ke kiri
+          
           if (menu.classList.contains('nav-dropdown-menu-end')) {
             menu.style.left = 'auto';
             menu.style.right = (window.innerWidth - rect.right) + 'px';
@@ -328,14 +328,14 @@
       });
     });
 
-    // Klik di luar = tutup semua dropdown
+    
     document.addEventListener('click', function () {
       document.querySelectorAll('.nav-dropdown-menu').forEach(function (m) {
         m.classList.remove('open');
       });
     });
 
-    // Klik di dalam menu tidak menutup dropdown
+    
     document.querySelectorAll('.nav-dropdown-menu').forEach(function (menu) {
       menu.addEventListener('click', function (e) {
         e.stopPropagation();
@@ -343,7 +343,7 @@
     });
   });
 
-  /* ---- PROFILE FUNCTIONS ---- */
+  
   function confirmLogout() {
     Swal.fire({ title:'Yakin mau logout?', text:"Kamu harus login lagi untuk mengakses akun.", icon:'warning', showCancelButton:true, confirmButtonColor:'#d33', cancelButtonColor:'#3085d6', confirmButtonText:'Ya, Logout', cancelButtonText:'Batal' })
     .then((result) => { if (result.isConfirmed) document.getElementById('logout-form').submit(); });

@@ -10,7 +10,7 @@ class AppServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        // Share data ke semua view
+        
         View::composer('*', function ($view) {
             if (Auth::check()) {
                 $view->with([

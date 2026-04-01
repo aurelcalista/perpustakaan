@@ -180,14 +180,14 @@ class BukuController extends Controller
         }
     }
 
-    // ✅ BARU: Tampilkan halaman trash
+    
     public function trash()
     {
         $buku = Buku::onlyTrashed()->with('kategori')->get();
         return view('dashboard_admin.buku.trash_buku', compact('buku'));
     }
 
-    // ✅ BARU: Restore buku dari trash
+    
     public function restore($id)
     {
         $buku = Buku::onlyTrashed()->where('id_buku', $id)->firstOrFail();
@@ -197,7 +197,7 @@ class BukuController extends Controller
             ->with('success', 'Data buku berhasil dipulihkan!');
     }
 
-    // ✅ BARU: Hapus permanen dari trash (baru hapus foto)
+    
     public function forceDelete($id)
     {
         try {

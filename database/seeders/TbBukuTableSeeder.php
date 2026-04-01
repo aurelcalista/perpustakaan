@@ -15,11 +15,7 @@ class TbBukuTableSeeder extends Seeder
 
         DB::table('tb_buku')->insert([
 
-            /*
-            ===============================
-            KATEGORI 1 - NOVEL
-            ===============================
-            */
+           
 
             [
                 'id_buku' => 'B001',
@@ -321,12 +317,7 @@ class TbBukuTableSeeder extends Seeder
                 'updated_at' => now(),
             ],
 
-            /*
-            ===============================
-            KATEGORI 2 - MAPEL
-            ===============================
-            */
-
+            
             [
                 'id_buku' => 'B016',
                 'judul_buku' => 'Matematika untuk SMA/SMK Kelas X Kurikulum Merdeka',
@@ -573,11 +564,7 @@ class TbBukuTableSeeder extends Seeder
                 'updated_at' => now(),
             ],
 
-            /*
-            ===============================
-            KATEGORI 4 - REFERENSI
-            ===============================
-            */
+            
 
             [
                 'id_buku' => 'B028',

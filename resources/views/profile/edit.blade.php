@@ -7,10 +7,10 @@
 <div class="profile-page-wrap">
     <div class="profile-container">
 
-        <!-- BODY -->
+      
         <div class="profile-body">
 
-            <!-- SIDEBAR NAV -->
+        
             <nav class="profile-nav-card">
                 <a class="profile-nav-item active" href="javascript:void(0)" onclick="switchPanel('profil', this)">
                     <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
@@ -30,10 +30,10 @@
                 </a>
             </nav>
 
-            <!-- PANELS -->
+            
             <div>
 
-                <!-- EDIT PROFIL -->
+              
                 <div class="profile-panel active" id="panel-profil">
                     <div class="panel-card">
                         <div class="panel-card-header">
@@ -43,7 +43,7 @@
                     </div>
                 </div>
 
-                <!-- GANTI PASSWORD -->
+                
                 <div class="profile-panel" id="panel-password">
                     <div class="panel-card">
                         <div class="panel-card-header">
@@ -53,7 +53,7 @@
                     </div>
                 </div>
 
-                <!-- HAPUS AKUN -->
+                
                 <div class="profile-panel" id="panel-hapus">
                     <div class="panel-card" style="border: 1px solid #ffcccc;">
                         <div class="panel-card-header">
@@ -63,9 +63,9 @@
                     </div>
                 </div>
 
-            </div><!-- end panels -->
+            </div>
 
-        </div><!-- end profile-body -->
+        </div>
 
     </div>
 </div>

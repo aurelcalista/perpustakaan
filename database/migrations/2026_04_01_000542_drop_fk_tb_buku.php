@@ -15,8 +15,7 @@ return new class extends Migration {
 
     public function down(): void
     {
-        // Cek dulu apakah FK sudah ada, kalau belum baru tambah
-        // (mencegah error duplicate constraint saat rollback)
+        
         $fkExists = collect(DB::select("
             SELECT CONSTRAINT_NAME
             FROM information_schema.TABLE_CONSTRAINTS
@@ -29,7 +28,7 @@ return new class extends Migration {
         if (!$fkExists) {
             Schema::table('tb_buku', function (Blueprint $table) {
                 $table->foreign('id_kategori')
-                    ->references('id_kategori') // fix: harusnya id_kategori, bukan id
+                    ->references('id_kategori') 
                     ->on('tb_kategori')
                     ->onDelete('set null');
             });

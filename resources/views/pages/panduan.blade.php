@@ -18,7 +18,6 @@
         --shadow-hover: 0 8px 24px rgba(0,0,0,0.10);
     }
 
-    /* ── BANNER ── */
     .info-banner {
         background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
         border-radius: var(--radius);
@@ -72,7 +71,6 @@
         line-height: 1;
     }
 
-    /* ── SECTION DIVIDER ── */
     .section-divider {
         font-size: 10px;
         font-weight: 700;
@@ -92,7 +90,6 @@
         background: var(--border);
     }
 
-    /* ── SHARED BOX ── */
     .info-box {
         background: var(--surface);
         border-radius: var(--radius);
@@ -126,7 +123,6 @@
     }
     .info-box-body { padding: 20px; }
 
-    /* ── STEP ITEMS ── */
     .step-item {
         display: flex;
         align-items: flex-start;
@@ -174,7 +170,6 @@
         line-height: 1.5 !important;
     }
 
-    /* ── DENDA ALERT ── */
     .denda-box {
         background: var(--surface);
         border-radius: var(--radius);
@@ -228,7 +223,7 @@
         margin-left: 4px;
     }
 
-    /* ── TIPS GRID ── */
+
     .tips-box {
         background: var(--surface);
         border-radius: var(--radius);

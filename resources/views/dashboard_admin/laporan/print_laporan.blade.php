@@ -179,7 +179,7 @@
             font-style: italic;
         }
 
-        /* ── FOOTER ── */
+       
         .footer {
             margin-top: 32px;
             padding-top: 16px;
@@ -190,7 +190,7 @@
             color: var(--light);
         }
 
-        /* ── PRINT ── */
+        
         @media print {
             .no-print { display: none !important; }
             body { background: white; }

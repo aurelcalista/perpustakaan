@@ -19,7 +19,7 @@
 	</ol>
 </section>
 
-<!-- Main content -->
+
 <section class="content">
 	<div class="box box-primary">
 		<div class="box-header with-border">

@@ -19,7 +19,7 @@ public function index(Request $request)
               ->orWhere('kategori', 'like', "%{$keyword}%");
     })->get();
 
-    $ulasan = Ulasan::latest()->get(); // ✅ TAMBAHAN
+    $ulasan = Ulasan::latest()->get(); 
 
     return view('home', compact('buku', 'ulasan'));
 }

@@ -6,13 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    
     public function up(): void
     {
         Schema::table('tb_buku', function (Blueprint $table) {
-            // Perbesar SEMUA kolom varchar sekaligus
+            
             $table->string('judul_buku', 255)->change();
             $table->string('pengarang', 100)->change();
             $table->string('penerbit', 100)->change();
@@ -25,13 +23,11 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+    
     public function down(): void
     {
         Schema::table('tb_buku', function (Blueprint $table) {
-            // Kembalikan ke ukuran semula
+            
             $table->string('judul_buku', 30)->change();
             $table->string('pengarang', 30)->change();
             $table->string('penerbit', 30)->change();

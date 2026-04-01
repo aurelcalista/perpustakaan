@@ -11,7 +11,7 @@ class DashboardAdminController extends Controller
 {
     public function index()
     {
-        // ── STAT CARDS ──────────────────────────────────────────────
+        
         $totalBuku    = Buku::count();
         $totalAnggota = User::where('role', 'siswa')->count();
 
@@ -22,7 +22,7 @@ class DashboardAdminController extends Controller
         $totalStok    = Buku::sum('stok');
         $bukuTersedia = max(0, $totalStok - $bukuDipinjam);
 
-        // ── CHART BULANAN (bar & line) ───────────────────────────────
+       
         $tahun = date('Y');
 
         $peminjamanBulanan = DB::table('tb_sirkulasi')
@@ -45,7 +45,7 @@ class DashboardAdminController extends Controller
             $dataKembali[] = $pengembalianBulanan[$i] ?? 0;
         }
 
-        // ── CHART DOUGHNUT (per kategori) ───────────────────────────
+       
         $dataKategori = DB::table('tb_buku')
             ->join('tb_kategori', 'tb_buku.id_kategori', '=', 'tb_kategori.id_kategori')
             ->selectRaw('tb_kategori.nama_kategori, COUNT(tb_buku.id_buku) as total')
@@ -56,7 +56,7 @@ class DashboardAdminController extends Controller
         $labelKategori  = $dataKategori->pluck('nama_kategori')->toArray();
         $jumlahKategori = $dataKategori->pluck('total')->toArray();
 
-        // ── AKTIVITAS TERBARU (5 sirkulasi terbaru) ─────────────────
+       
         $aktivitas = DB::table('tb_sirkulasi')
             ->join('tb_buku', 'tb_sirkulasi.id_buku', '=', 'tb_buku.id_buku')
             ->leftJoin('users', 'tb_sirkulasi.user_id', '=', 'users.id') // fix: tb_anggota → users

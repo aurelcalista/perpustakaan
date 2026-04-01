@@ -9,11 +9,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('log_pinjam', function (Blueprint $table) {
-            // Hapus foreign key yang salah
+           
             $table->dropForeign(['id_anggota']);
             $table->dropForeign(['id_buku']);
             
-            // Tambah kolom timestamps
+            
             $table->timestamps();
         });
     }

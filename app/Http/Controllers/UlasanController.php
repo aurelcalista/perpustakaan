@@ -28,7 +28,7 @@ class UlasanController extends Controller
             'kelas'   => $request->kelas,
             'isi'     => $request->isi,
             'rating'  => $request->rating,
-            // id_buku tidak diisi (nullable)
+          
         ]);
 
         return redirect('/')->with('success', 'Ulasan berhasil dikirim!');

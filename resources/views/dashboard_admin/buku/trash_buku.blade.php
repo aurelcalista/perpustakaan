@@ -216,7 +216,7 @@
         });
     }
 
-    // Konfirmasi kosongkan semua trash
+
     function confirmDeleteAll() {
         Swal.fire({
             title: 'Kosongkan Trash?',

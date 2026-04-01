@@ -6,13 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+   
    public function up(): void
 {
     Schema::table('tb_buku', function (Blueprint $table) {
-        // Sesuaikan nama & tipe kolom dengan yang teman kamu buat manual
+        
         $table->integer('stok')->default(0)->after('id_buku');
     });
 }

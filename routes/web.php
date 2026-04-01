@@ -23,7 +23,7 @@ Route::post('/ulasan/store', [UlasanController::class, 'store'])->name('ulasan.s
 Route::get('/', [BukuController::class, 'home'])
     ->name('home');
 
-// Detail buku - bisa diakses siapa aja (guest & logged in)
+
 Route::get('/buku/{id}', [UserPinjamController::class, 'show'])
     ->name('buku.detail');
 
@@ -52,7 +52,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
 
-    // Kategori
+    
     Route::get('/kategori', [CategoryController::class, 'index'])->name('admin.kategori.index');
     Route::get('/kategori/create', [CategoryController::class, 'create'])->name('admin.kategori.create');
     Route::post('/kategori/store', [CategoryController::class, 'store'])->name('admin.kategori.store');
@@ -60,11 +60,11 @@ Route::prefix('admin')->middleware(['auth','role:admin'])->group(function () {
 Route::put('/kategori/{id}', [CategoryController::class, 'update'])->name('admin.kategori.update');
 Route::delete('/kategori/{id}', [CategoryController::class, 'destroy'])->name('admin.kategori.destroy');
 
-    // ✅ Buku - route CUSTOM harus SEBELUM route dengan parameter {id}
+    
     Route::get('/buku/trash', [BukuController::class, 'trash'])->name('admin.buku.trash');
     Route::delete('/buku/force-delete-all', [BukuController::class, 'forceDeleteAll'])->name('admin.buku.force-delete-all');
 
-    // Buku CRUD biasa
+    
     Route::get('/buku', [BukuController::class, 'index'])->name('admin.buku.index');  
     Route::get('/buku/create', [BukuController::class, 'create'])->name('admin.buku.create'); 
     Route::post('/buku/store', [BukuController::class, 'store'])->name('admin.buku.store'); 
@@ -72,11 +72,11 @@ Route::delete('/kategori/{id}', [CategoryController::class, 'destroy'])->name('a
     Route::put('/buku/{id}', [BukuController::class, 'update'])->name('admin.buku.update');
     Route::delete('/buku/{id}', [BukuController::class, 'destroy'])->name('admin.buku.destroy');
 
-    // ✅ Route dengan parameter {id} — setelah route static
+   
     Route::patch('/buku/{id}/restore', [BukuController::class, 'restore'])->name('admin.buku.restore');
     Route::delete('/buku/{id}/force-delete', [BukuController::class, 'forceDelete'])->name('admin.buku.force-delete');
 
-    // Anggota (AGT)
+    
     Route::get('/agt', [AnggotaController::class, 'index'])->name('admin.agt.index');
     Route::get('/agt/create', [AnggotaController::class, 'create'])->name('admin.agt.create');
     Route::post('/agt/store', [AnggotaController::class, 'store'])->name('admin.agt.store');
@@ -84,21 +84,21 @@ Route::delete('/kategori/{id}', [CategoryController::class, 'destroy'])->name('a
     Route::put('/agt/{nis}', [AnggotaController::class, 'update'])->name('admin.agt.update');
     Route::delete('/agt/{nis}', [AnggotaController::class, 'destroy'])->name('admin.agt.destroy');
     
-    // Print Anggota
+   
     Route::get('/agt/print', [AnggotaController::class, 'printAll'])->name('admin.agt.print');
     Route::get('/agt/{nis}/print', [AnggotaController::class, 'printSingle'])->name('admin.agt.print-single');
 
-    // Log Peminjaman
+   
     Route::get('/log-peminjaman', [LogPinjamController::class, 'index'])->name('log.pinjam');
 
-    // Log Pengembalian
+    
     Route::get('/log-kembali', [SirkulasiController::class, 'riwayat'])->name('log.kembali');
 
-    // Laporan
+   
     Route::get('/laporan', [LaporanController::class, 'index'])->name('admin.laporan.index');
     Route::get('/laporan/print', [LaporanController::class, 'print'])->name('admin.laporan.print');
 
-    // Sirkulasi
+    
     Route::get('/sirkul', [SirkulasiController::class, 'index'])
         ->name('admin.sirkul.index');
     
@@ -161,11 +161,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])
         ->name('profile.update');
         
-    // Upload / ganti foto profil (file atau base64 dari kamera)
+    
     Route::post('/profile/photo', [ProfileController::class, 'updatePhoto'])
          ->name('profile.updatePhoto');
 
-    // Hapus foto profil
+   
     Route::delete('/profile/photo', [ProfileController::class, 'deletePhoto'])
          ->name('profile.deletePhoto');
 

@@ -8,17 +8,17 @@
 	<link rel="icon" href="{{ asset('dist/img/logo.png') }}">
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	
-	<!-- Bootstrap 3.3.6 -->
+	
 	<link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
-	<!-- Font Awesome -->
+
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-	<!-- Ionicons -->
+
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-	<!-- DataTables -->
+	
 	<link rel="stylesheet" href="{{ asset('plugins/datatables/dataTables.bootstrap.css') }}">
-	<!-- Select2 -->
+	
 	<link rel="stylesheet" href="{{ asset('plugins/select2/select2.min.css') }}">
-	<!-- Theme style -->
+	
 	<link rel="stylesheet" href="{{ asset('dist/css/AdminLTE.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('dist/css/skins/_all-skins.min.css') }}">
 
@@ -26,7 +26,7 @@
 
 	@stack('styles')
 
-	<!-- Dashboard Custom CSS - HARUS PALING AKHIR -->
+	
 	<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 </head>
 
@@ -266,7 +266,7 @@
 			</section>
 		</aside>
 
-		<!-- Content -->
+		
 		<div class="content-wrapper">
 			<section class="content">
 				@yield('content')

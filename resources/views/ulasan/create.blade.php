@@ -72,14 +72,13 @@
               </div>
             </div>
 
-            {{-- ULASAN --}}
             <div class="form-group">
               <label>Ulasan</label>
               <textarea name="isi" class="form-control" rows="4"
                         placeholder="Ceritakan pengalamanmu menggunakan perpustakaan..." required>{{ old('isi') }}</textarea>
             </div>
 
-            {{-- STAR RATING --}}
+
             <div class="form-group">
               <label>Rating</label>
               <div style="display:flex;align-items:center;gap:12px;margin-top:6px;">
@@ -99,7 +98,7 @@
               <input type="hidden" name="rating" id="ratingValue" value="5">
             </div>
 
-            {{-- BUTTONS --}}
+        
             <div class="text-right" style="margin-top:24px;border-top:1px solid #e8edf2;padding-top:20px;">
               <a href="{{ route('home') }}" class="btn btn-default" style="margin-right:8px;">
                 <i class="fa fa-arrow-left"></i> Kembali
@@ -112,7 +111,7 @@
           </form>
         </div>
 
-        {{-- BOX FOOTER: preview ulasan --}}
+       
         <div class="box-footer">
           <div style="display:flex;align-items:center;gap:14px;">
             <div style="width:44px;height:44px;border-radius:50%;

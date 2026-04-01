@@ -52,7 +52,7 @@ class SirkulasiController extends Controller
         return view('dashboard_admin.sirkul.pending_sirkul', compact('pending'));
     }
 
-    // ✅ APPROVE = KURANGI STOK
+    
     public function approve($id_sk)
     {
         $sirkulasi = DB::table('tb_sirkulasi')
@@ -86,7 +86,7 @@ class SirkulasiController extends Controller
         return back()->with('success', 'Peminjaman berhasil disetujui!');
     }
 
-    // ❌ REJECT (tidak ubah stok)
+
     public function reject($id_sk)
     {
         DB::table('tb_sirkulasi')
@@ -105,12 +105,12 @@ class SirkulasiController extends Controller
         return view('dashboard_admin.sirkul.add_sirkul', compact('buku', 'anggota'));
     }
 
-    // ✅ ADMIN INPUT LANGSUNG = STOK BERKURANG
+    
     public function store(Request $request)
     {
         $request->validate([
             'id_buku'    => 'required',
-            'user_id'    => 'required|exists:users,id',               // fix: id_anggota → user_id
+            'user_id'    => 'required|exists:users,id',               
             'tgl_pinjam' => 'required|date',
         ]);
 
@@ -125,7 +125,7 @@ class SirkulasiController extends Controller
         $tglPinjam  = Carbon::parse($request->tgl_pinjam);
         $tglKembali = $tglPinjam->copy()->addDays(3);
 
-        // Generate ID unik
+    
         do {
             $id_sk = 'SK-' . now()->format('Ymd') . '-' . strtoupper(\Illuminate\Support\Str::random(4));
         } while (DB::table('tb_sirkulasi')->where('id_sk', $id_sk)->exists());
@@ -133,8 +133,7 @@ class SirkulasiController extends Controller
         DB::table('tb_sirkulasi')->insert([
             'id_sk'      => $id_sk,
             'id_buku'    => $request->id_buku,
-            'user_id'    => $request->user_id,                        // fix: id_anggota → user_id
-            'tgl_pinjam'  => $tglPinjam,
+            'user_id'    => $request->user_id,                        
             'tgl_kembali' => $tglKembali,
             'status'      => 'dipinjam',
             'created_at'  => now(),
@@ -170,7 +169,7 @@ class SirkulasiController extends Controller
             ->with('success', 'Peminjaman diperpanjang 3 hari!');
     }
 
-    // ✅ KEMBALI = TAMBAH STOK
+    
     public function kembali($id_sk)
     {
         $sirkulasi = DB::table('tb_sirkulasi')

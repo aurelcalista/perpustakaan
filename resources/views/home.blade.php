@@ -2,7 +2,6 @@
 
 @section('content')
 
-{{-- HERO --}}
 <section id="beranda">
   <div class="container">
     <div class="hero-content">
@@ -35,7 +34,7 @@
   </div>
 </section>
 
-{{-- TICKER --}}
+
 <div class="companies-section">
   <div class="container">
     <p class="companies-label">Kategori Koleksi Kami</p>
@@ -60,7 +59,7 @@
   </div>
 </div>
 
-{{-- KOLEKSI BUKU --}}
+
 <section id="koleksi">
   <div class="container">
 
@@ -81,7 +80,7 @@
       <h2>Koleksi Perpustakaan</h2>
     </div>
 
-    {{-- Category Tabs --}}
+    
     <div class="category-tabs fade-up" id="categoryTabs">
       <button class="tab-btn {{ $aktif === 'semua' ? 'active' : '' }}"
               onclick="filterKategori('semua', this)">Semua</button>
@@ -93,7 +92,7 @@
       @endforeach
     </div>
 
-    {{-- Grid Buku --}}
+   
     <div class="courses-grid fade-up" id="bukuGrid">
       @forelse($buku as $item)
         @php
@@ -152,13 +151,13 @@
       @endforelse
     </div>
 
-    {{-- Empty state filter --}}
+   
     <div id="emptyStateFilter" style="display:none;text-align:center;padding:60px 0;color:var(--text-muted);">
       <i class="fas fa-book" style="font-size:48px;margin-bottom:16px;display:block;opacity:.4;"></i>
       <p>Tidak ada buku di kategori ini.</p>
     </div>
 
-    {{-- Pagination --}}
+   
     <div id="paginationWrap" style="display:none;justify-content:center;align-items:center;gap:12px;margin-top:40px;flex-wrap:wrap;">
       <button id="btnPrev" onclick="changePage(-1)" class="pagination-btn">
         <i class="fas fa-chevron-left"></i> Sebelumnya
@@ -172,7 +171,7 @@
   </div>
 </section>
 
-{{-- PETUGAS --}}
+
 <section id="petugas">
   <div class="container">
     <div class="section-head">
@@ -208,7 +207,7 @@
   </div>
 </section>
 
-{{-- TESTIMONIALS --}}
+
 <section id="ulasan">
   <div class="container">
     <div class="section-head fade-up">
@@ -258,7 +257,6 @@
 </section>
 
 
-{{-- ========== MODAL BERI ULASAN ========== --}}
 @auth
 <div id="modal-ulasan" class="modal-overlay" onclick="closeUlasanModal(event)">
   <div class="modal-box" style="max-width:640px;padding:0;">
@@ -383,7 +381,7 @@
 </div>
 @endauth
 
-{{-- ========== MODAL LOGIN DULU ========== --}}
+
 @guest
 <div id="modal-login-alert" class="modal-overlay" onclick="closeLoginAlert(event)">
   <div class="modal-box modal-box--sm">
@@ -401,7 +399,6 @@
 @endguest
 
 
-{{-- CARA PENGGUNAAN --}}
 <section id="penggunaan" style="background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%);position:relative;overflow:hidden;">
   <div style="position:absolute;inset:0;opacity:.05;background-image:radial-gradient(circle,white 1px,transparent 1px);background-size:30px 30px;"></div>
   <div class="container" style="position:relative;z-index:1;">
@@ -437,7 +434,7 @@
   </div>
 </section>
 
-{{-- FAQ --}}
+
 <section id="faqs" style="background:#f7f9fc;">
   <div class="container">
     <div class="section-head fade-up"><h2>Pertanyaan yang Sering<br/>Diajukan</h2></div>
@@ -463,7 +460,7 @@
   </div>
 </section>
 
-{{-- CONTACT --}}
+
 <section id="kontak">
   <div class="container">
     <div class="section-head fade-up" style="justify-content:center;">
@@ -500,7 +497,6 @@
 </section>
 
 
-{{-- Variabel Blade → JS --}}
 <script>
   var IS_LOGGED_IN = {{ auth()->check() ? 'true' : 'false' }};
   var HAS_SUCCESS  = {{ session('success') ? 'true' : 'false' }};
@@ -508,9 +504,7 @@
 </script>
 
 <script>
-/* ================================================================
-   AUTO SCROLL
-================================================================ */
+
 document.addEventListener('DOMContentLoaded', function () {
   var hasKeyword  = "{{ request('keyword') }}";
   var hasKategori = "{{ request('kategori') }}";
@@ -520,9 +514,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
-/* ================================================================
-   PAGINATION
-================================================================ */
+
 var ITEMS_PER_PAGE = 12;
 var currentPage    = 1;
 var activeKategori = 'semua';
@@ -543,17 +535,15 @@ function renderPage(page) {
   var start = (currentPage - 1) * ITEMS_PER_PAGE;
   var end   = start + ITEMS_PER_PAGE;
 
-  // Sembunyikan semua item dulu
   Array.from(document.querySelectorAll('.buku-item')).forEach(function(item) {
     item.style.display = 'none';
   });
 
-  // Tampilkan sesuai halaman & kategori
   items.forEach(function(item, i) {
     item.style.display = (i >= start && i < end) ? '' : 'none';
   });
 
-  // Update page numbers
+
   var pageNumbers = document.getElementById('pageNumbers');
   if (pageNumbers) {
     pageNumbers.innerHTML = '';
@@ -569,17 +559,14 @@ function renderPage(page) {
     }
   }
 
-  // Update tombol prev/next
   var btnPrev = document.getElementById('btnPrev');
   var btnNext = document.getElementById('btnNext');
   if (btnPrev) { btnPrev.disabled = currentPage <= 1; btnPrev.style.opacity = currentPage <= 1 ? '0.4' : '1'; }
   if (btnNext) { btnNext.disabled = currentPage >= total; btnNext.style.opacity = currentPage >= total ? '0.4' : '1'; }
 
-  // Tampilkan/sembunyikan pagination
   var wrap = document.getElementById('paginationWrap');
   if (wrap) wrap.style.display = total <= 1 ? 'none' : 'flex';
 
-  // Empty state
   var emptyFilter = document.getElementById('emptyStateFilter');
   if (emptyFilter) emptyFilter.style.display = items.length === 0 ? 'block' : 'none';
 }

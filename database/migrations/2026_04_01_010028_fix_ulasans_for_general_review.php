@@ -9,11 +9,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('ulasans', function (Blueprint $table) {
-            // Tambah kolom nama & kelas
+    
             $table->string('nama')->after('user_id')->nullable();
             $table->string('kelas')->after('nama')->nullable();
 
-            // id_buku tidak wajib untuk ulasan umum
+
             $table->string('id_buku', 10)->nullable()->change();
         });
     }

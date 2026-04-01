@@ -18,18 +18,16 @@ use Carbon\Carbon;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
+
 public function show(Request $request): View
 {
     $user = $request->user();
 
-    // Barcode dari NIS
+
     $d = new DNS1D();
     $barcode = $user->nis ? $d->getBarcodePNG($user->nis, 'C128', 2, 50) : null;
 
-    // Buku yang sedang dipinjam / pending
+    
     $pinjaman = DB::table('tb_sirkulasi as sk')
         ->join('tb_buku as b', 'sk.id_buku', '=', 'b.id_buku')
         ->where('sk.user_id', $user->id)          // fix: id_anggota → user_id, nis → id
@@ -59,7 +57,7 @@ public function show(Request $request): View
 
     $totalBukuDipinjam = $pinjaman->count();
 
-    // Riwayat peminjaman (sudah dikembalikan)
+    
     $riwayat = DB::table('tb_sirkulasi as sk')
         ->join('tb_buku as b', 'sk.id_buku', '=', 'b.id_buku')
         ->where('sk.user_id', $user->id)          // fix: id_anggota → user_id, nis → id
@@ -68,24 +66,24 @@ public function show(Request $request): View
         ->orderBy('sk.tgl_kembali', 'desc')
         ->get();
 
-    // ── Favorit ──────────────────────────────────────────────────────────
+    
     $favorit = Favorit::where('user_id', $user->id)
                       ->with('buku.kategori')
                       ->latest()
                       ->get();
 
 
-    // ── Pelanggaran (terlambat kembalikan buku) ───────────────────────────
+    
 $pelanggaran = DB::table('tb_sirkulasi as sk')
     ->join('tb_buku as b', 'sk.id_buku', '=', 'b.id_buku')
-    ->where('sk.user_id', $user->id)              // fix: id_anggota → user_id, nis → id
+    ->where('sk.user_id', $user->id)             
     ->where(function ($q) {
-        // Sudah dikembalikan tapi melewati batas tgl_kembali
+        
         $q->where(function ($q2) {
             $q2->where('sk.status', 'dikembalikan')
                ->where('sk.updated_at', '>', DB::raw('sk.tgl_kembali'));
         })
-        // Atau masih dipinjam dan sudah melewati batas
+        
         ->orWhere(function ($q2) {
             $q2->where('sk.status', 'dipinjam')
                ->where('sk.tgl_kembali', '<', Carbon::today());

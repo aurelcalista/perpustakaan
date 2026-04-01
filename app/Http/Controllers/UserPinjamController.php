@@ -14,7 +14,7 @@ class UserPinjamController extends Controller
         return Auth::id();
     }
 
-    // ✅ DETAIL BUKU
+    
     public function show($id)
     {
         $buku = DB::table('tb_buku')
@@ -42,7 +42,7 @@ class UserPinjamController extends Controller
         return view('siswa.detail', compact('buku', 'sudahPinjam'));
     }
 
-    // ✅ REQUEST PINJAM
+    
     public function store(Request $request)
     {
         $request->validate([
@@ -55,7 +55,7 @@ class UserPinjamController extends Controller
             return back()->with('error', 'Data anggota tidak ditemukan.');
         }
 
-        // ❗ CEK STOK
+        
         $buku = DB::table('tb_buku')
             ->where('id_buku', $request->id_buku)
             ->first();
@@ -64,7 +64,7 @@ class UserPinjamController extends Controller
             return back()->with('error', 'Stok buku habis!');
         }
 
-        // ❗ CEK SUDAH PINJAM
+        
         $sudahPinjam = DB::table('tb_sirkulasi')
             ->where('id_buku', $request->id_buku)
             ->where('user_id', $userId)
@@ -75,7 +75,7 @@ class UserPinjamController extends Controller
             return back()->with('error', 'Sudah meminjam buku ini!');
         }
 
-        // ❗ MAKS 3 BUKU
+        
         $jumlahPinjam = DB::table('tb_sirkulasi')
             ->where('user_id', $userId)
             ->whereIn('status', ['dipinjam', 'pending'])
@@ -85,12 +85,12 @@ class UserPinjamController extends Controller
             return back()->with('error', 'Maksimal 3 buku!');
         }
 
-        // ✅ GENERATE ID
+        
         do {
             $id_sk = 'SK-' . now()->format('Ymd') . '-' . strtoupper(Str::random(4));
         } while (DB::table('tb_sirkulasi')->where('id_sk', $id_sk)->exists());
 
-        // ✅ INSERT SIRKULASI (STATUS PENDING)
+        
         DB::table('tb_sirkulasi')->insert([
             'id_sk'       => $id_sk,
             'id_buku'     => $request->id_buku,
@@ -102,7 +102,7 @@ class UserPinjamController extends Controller
             'updated_at'  => now(),
         ]);
 
-        // ✅ CATAT KE LOG PINJAM (log dicatat saat request, bukan saat approve)
+        
         DB::table('log_pinjam')->insert([
             'id_buku'    => $request->id_buku,
             'id_anggota' => Auth::user()->nis,
@@ -115,7 +115,7 @@ class UserPinjamController extends Controller
             ->with('success', 'Menunggu persetujuan admin!');
     }
 
-    // ❌ BATALKAN
+    
     public function cancel($id_sk)
     {
         $userId = $this->getUserId();
@@ -135,7 +135,7 @@ class UserPinjamController extends Controller
         return back()->with('success', 'Berhasil dibatalkan!');
     }
 
-    // ✅ KEMBALIKAN
+    
     public function kembalikan($id_sk)
     {
         $userId = $this->getUserId();
@@ -157,7 +157,7 @@ class UserPinjamController extends Controller
                 'updated_at' => now()
             ]);
 
-        // ❗ TAMBAH STOK
+        
         DB::table('tb_buku')
             ->where('id_buku', $pinjaman->id_buku)
             ->increment('stok');

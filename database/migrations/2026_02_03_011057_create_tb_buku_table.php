@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+   
     public function up(): void
     {
         Schema::create('tb_buku', function (Blueprint $table) {
@@ -28,7 +26,7 @@ return new class extends Migration
             $table->string('foto')->nullable();
             $table->timestamps();
 
-            // Foreign key
+            
             $table->foreign('id_kategori')
                   ->references('id_kategori')
                   ->on('tb_kategori')
@@ -36,9 +34,7 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+    
     public function down(): void
     {
         Schema::dropIfExists('tb_buku');
