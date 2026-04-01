@@ -8,12 +8,11 @@ use Carbon\Carbon;
 
 class SirkulasiController extends Controller
 {
-    
     public function index()
     {
         $sirkulasi = DB::table('tb_sirkulasi as s')
             ->join('tb_buku as b', 's.id_buku', '=', 'b.id_buku')
-            ->join('users as u', 's.id_anggota', '=', 'u.nis')
+            ->join('users as u', 's.user_id', '=', 'u.id')           // fix
             ->whereIn('s.status', ['dipinjam', 'pending'])
             ->select('s.*', 'b.judul_buku', 'u.nis', 'u.nama')
             ->orderBy('s.created_at', 'desc')
@@ -44,7 +43,7 @@ class SirkulasiController extends Controller
     {
         $pending = DB::table('tb_sirkulasi as s')
             ->join('tb_buku as b', 's.id_buku', '=', 'b.id_buku')
-            ->join('users as u', 's.id_anggota', '=', 'u.nis')
+            ->join('users as u', 's.user_id', '=', 'u.id')           // fix
             ->where('s.status', 'pending')
             ->select('s.*', 'b.judul_buku', 'u.nis', 'u.nama')
             ->orderBy('s.created_at', 'desc')
@@ -65,7 +64,6 @@ class SirkulasiController extends Controller
             return back()->with('error', 'Data tidak valid atau sudah diproses!');
         }
 
-        // ❗ cek buku & stok
         $buku = DB::table('tb_buku')
             ->where('id_buku', $sirkulasi->id_buku)
             ->first();
@@ -74,15 +72,13 @@ class SirkulasiController extends Controller
             return back()->with('error', 'Stok buku habis!');
         }
 
-        // update status
         DB::table('tb_sirkulasi')
             ->where('id_sk', $id_sk)
             ->update([
-                'status' => 'dipinjam',
+                'status'     => 'dipinjam',
                 'updated_at' => now()
             ]);
 
-        // ❗ kurangi stok
         DB::table('tb_buku')
             ->where('id_buku', $sirkulasi->id_buku)
             ->decrement('stok');
@@ -103,7 +99,7 @@ class SirkulasiController extends Controller
 
     public function create()
     {
-        $buku = DB::table('tb_buku')->get();
+        $buku    = DB::table('tb_buku')->get();
         $anggota = DB::table('users')->where('role', 'siswa')->get();
 
         return view('dashboard_admin.sirkul.add_sirkul', compact('buku', 'anggota'));
@@ -113,8 +109,8 @@ class SirkulasiController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_buku' => 'required',
-            'id_anggota' => 'required',
+            'id_buku'    => 'required',
+            'user_id'    => 'required|exists:users,id',               // fix: id_anggota → user_id
             'tgl_pinjam' => 'required|date',
         ]);
 
@@ -126,20 +122,25 @@ class SirkulasiController extends Controller
             return back()->with('error', 'Stok buku habis!');
         }
 
-        $tglPinjam = Carbon::parse($request->tgl_pinjam);
+        $tglPinjam  = Carbon::parse($request->tgl_pinjam);
         $tglKembali = $tglPinjam->copy()->addDays(3);
 
+        // Generate ID unik
+        do {
+            $id_sk = 'SK-' . now()->format('Ymd') . '-' . strtoupper(\Illuminate\Support\Str::random(4));
+        } while (DB::table('tb_sirkulasi')->where('id_sk', $id_sk)->exists());
+
         DB::table('tb_sirkulasi')->insert([
-            'id_buku' => $request->id_buku,
-            'id_anggota' => $request->id_anggota,
-            'tgl_pinjam' => $tglPinjam,
+            'id_sk'      => $id_sk,
+            'id_buku'    => $request->id_buku,
+            'user_id'    => $request->user_id,                        // fix: id_anggota → user_id
+            'tgl_pinjam'  => $tglPinjam,
             'tgl_kembali' => $tglKembali,
-            'status' => 'dipinjam',
-            'created_at' => now(),
-            'updated_at' => now(),
+            'status'      => 'dipinjam',
+            'created_at'  => now(),
+            'updated_at'  => now(),
         ]);
 
-        // ❗ kurangi stok
         DB::table('tb_buku')
             ->where('id_buku', $request->id_buku)
             ->decrement('stok');
@@ -162,7 +163,7 @@ class SirkulasiController extends Controller
             ->where('id_sk', $id_sk)
             ->update([
                 'tgl_kembali' => $tglKembaliBaru,
-                'updated_at' => now()
+                'updated_at'  => now()
             ]);
 
         return redirect()->route('admin.sirkul.index')
@@ -184,11 +185,10 @@ class SirkulasiController extends Controller
         DB::table('tb_sirkulasi')
             ->where('id_sk', $id_sk)
             ->update([
-                'status' => 'dikembalikan',
+                'status'     => 'dikembalikan',
                 'updated_at' => now()
             ]);
 
-        // ❗ tambah stok
         DB::table('tb_buku')
             ->where('id_buku', $sirkulasi->id_buku)
             ->increment('stok');
@@ -201,7 +201,7 @@ class SirkulasiController extends Controller
     {
         $riwayat = DB::table('tb_sirkulasi as s')
             ->join('tb_buku as b', 's.id_buku', '=', 'b.id_buku')
-            ->join('users as u', 's.id_anggota', '=', 'u.nis')
+            ->join('users as u', 's.user_id', '=', 'u.id')           // fix
             ->where('s.status', 'dikembalikan')
             ->select('s.*', 'b.judul_buku', 'u.nis', 'u.nama')
             ->orderBy('s.updated_at', 'desc')

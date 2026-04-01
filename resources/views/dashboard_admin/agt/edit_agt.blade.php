@@ -60,11 +60,11 @@
 						</div>
 
 						<div class="form-group">
-							<label>Username <small class="text-muted">(opsional)</small></label>
+							<label>Username <small class="text-muted"></small></label>
 							<input type="text" name="username"
 								class="form-control @error('username') is-invalid @enderror"
 								value="{{ old('username', $anggota->username) }}"
-								placeholder="Kosongkan jika tidak ingin mengubah">
+								placeholder="Kosongkan jika tidak ingin mengubah" readonly>
 							@error('username')
 								<small class="text-danger">{{ $message }}</small>
 							@enderror

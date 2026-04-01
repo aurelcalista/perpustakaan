@@ -136,7 +136,7 @@ class BukuController extends Controller
        
         $pathFoto = $buku->foto;
         if ($request->hasFile('foto')) {
-            // Hapus foto lama jika ada
+            
             if ($buku->foto) {
                 Storage::disk('public')->delete($buku->foto);
             }
@@ -164,13 +164,13 @@ class BukuController extends Controller
             ->with('success', 'Data buku berhasil diubah');
     }
 
-    // Hapus buku
+
 
     public function destroy($id)
     {
         try {
             $buku = Buku::where('id_buku', $id)->firstOrFail();
-            $buku->delete(); // soft delete, foto tetap ada
+            $buku->delete(); 
 
             return redirect()->route('admin.buku.index')
                 ->with('success', 'Data buku dipindahkan ke trash!');

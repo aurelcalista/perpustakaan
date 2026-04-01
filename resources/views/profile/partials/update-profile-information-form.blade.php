@@ -18,7 +18,7 @@
             <label>Nama Lengkap <span class="req">*</span></label>
             <input type="text" name="nama"
                    class="form-input {{ $errors->has('nama') ? 'is-error' : '' }}"
-                   value="{{ old('nama', Auth::user()->nama) }}" disabled>
+                   value="{{ old('nama', Auth::user()->nama) }}" readonly>
             <span class="field-note">Nama tidak dapat diubah</span>
         </div>
        <div class="form-field">

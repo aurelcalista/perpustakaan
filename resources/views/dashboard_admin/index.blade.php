@@ -31,7 +31,7 @@
           </div>
         </div>
         <div class="dh-stat-footer">
-          <span class="dh-stat-link sl-blue">Lihat Detail →</span>
+          <!-- <span class="dh-stat-link sl-blue">Lihat Detail →</span> -->
         </div>
       </div>
     </div>
@@ -45,7 +45,7 @@
           </div>
         </div>
         <div class="dh-stat-footer">
-          <span class="dh-stat-link sl-teal">Lihat Detail →</span>
+          <!-- <span class="dh-stat-link sl-teal">Lihat Detail →</span> -->
         </div>
       </div>
     </div>
@@ -59,7 +59,7 @@
           </div>
         </div>
         <div class="dh-stat-footer">
-          <span class="dh-stat-link sl-amber">Lihat Detail →</span>
+          <!-- <span class="dh-stat-link sl-amber">Lihat Detail →</span> -->
         </div>
       </div>
     </div>
@@ -73,7 +73,7 @@
           </div>
         </div>
         <div class="dh-stat-footer">
-          <span class="dh-stat-link sl-green">Lihat Detail →</span>
+          <!-- <span class="dh-stat-link sl-green">Lihat Detail →</span> -->
         </div>
       </div>
     </div>

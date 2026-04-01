@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Ulasan;
 
 class UlasanController extends Controller
@@ -15,17 +16,19 @@ class UlasanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required',
-            'kelas' => 'required',
-            'isi' => 'required',
+            'nama'   => 'required',
+            'kelas'  => 'required',
+            'isi'    => 'required',
             'rating' => 'required|integer|min:1|max:5'
         ]);
 
         Ulasan::create([
-            'nama' => $request->nama,
-            'kelas' => $request->kelas,
-            'isi' => $request->isi,
-            'rating' => $request->rating,
+            'user_id' => Auth::id(),
+            'nama'    => $request->nama,
+            'kelas'   => $request->kelas,
+            'isi'     => $request->isi,
+            'rating'  => $request->rating,
+            // id_buku tidak diisi (nullable)
         ]);
 
         return redirect('/')->with('success', 'Ulasan berhasil dikirim!');

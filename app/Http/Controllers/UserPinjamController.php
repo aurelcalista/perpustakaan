@@ -9,12 +9,12 @@ use Illuminate\Support\Facades\DB;
 
 class UserPinjamController extends Controller
 {
-    private function getIdAnggota()
+    private function getUserId()
     {
-        return Auth::user()->nis;
+        return Auth::id();
     }
 
-    // ✅ DETAIL BUKU (INI YANG WAJIB ADA)
+    // ✅ DETAIL BUKU
     public function show($id)
     {
         $buku = DB::table('tb_buku')
@@ -30,11 +30,11 @@ class UserPinjamController extends Controller
         $sudahPinjam = false;
 
         if (Auth::check() && Auth::user()->role == 'siswa') {
-            $idAnggota = $this->getIdAnggota();
+            $userId = $this->getUserId();
 
             $sudahPinjam = DB::table('tb_sirkulasi')
                 ->where('id_buku', $id)
-                ->where('id_anggota', $idAnggota)
+                ->where('user_id', $userId)
                 ->whereIn('status', ['dipinjam', 'pending'])
                 ->exists();
         }
@@ -49,9 +49,9 @@ class UserPinjamController extends Controller
             'id_buku' => 'required|exists:tb_buku,id_buku',
         ]);
 
-        $idAnggota = $this->getIdAnggota();
+        $userId = $this->getUserId();
 
-        if (!$idAnggota) {
+        if (!$userId) {
             return back()->with('error', 'Data anggota tidak ditemukan.');
         }
 
@@ -67,7 +67,7 @@ class UserPinjamController extends Controller
         // ❗ CEK SUDAH PINJAM
         $sudahPinjam = DB::table('tb_sirkulasi')
             ->where('id_buku', $request->id_buku)
-            ->where('id_anggota', $idAnggota)
+            ->where('user_id', $userId)
             ->whereIn('status', ['dipinjam', 'pending'])
             ->exists();
 
@@ -77,7 +77,7 @@ class UserPinjamController extends Controller
 
         // ❗ MAKS 3 BUKU
         $jumlahPinjam = DB::table('tb_sirkulasi')
-            ->where('id_anggota', $idAnggota)
+            ->where('user_id', $userId)
             ->whereIn('status', ['dipinjam', 'pending'])
             ->count();
 
@@ -90,11 +90,11 @@ class UserPinjamController extends Controller
             $id_sk = 'SK-' . now()->format('Ymd') . '-' . strtoupper(Str::random(4));
         } while (DB::table('tb_sirkulasi')->where('id_sk', $id_sk)->exists());
 
-        // ✅ INSERT (STATUS PENDING)
+        // ✅ INSERT SIRKULASI (STATUS PENDING)
         DB::table('tb_sirkulasi')->insert([
             'id_sk'       => $id_sk,
             'id_buku'     => $request->id_buku,
-            'id_anggota'  => $idAnggota,
+            'user_id'     => $userId,
             'tgl_pinjam'  => now(),
             'tgl_kembali' => now()->addDays(7),
             'status'      => 'pending',
@@ -102,18 +102,27 @@ class UserPinjamController extends Controller
             'updated_at'  => now(),
         ]);
 
+        // ✅ CATAT KE LOG PINJAM (log dicatat saat request, bukan saat approve)
+        DB::table('log_pinjam')->insert([
+            'id_buku'    => $request->id_buku,
+            'id_anggota' => Auth::user()->nis,
+            'tgl_pinjam' => now()->toDateString(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         return redirect()->route('profile.show')
             ->with('success', 'Menunggu persetujuan admin!');
     }
 
-    // ❌ BATALKAN (TIDAK UBAH STOK)
+    // ❌ BATALKAN
     public function cancel($id_sk)
     {
-        $idAnggota = $this->getIdAnggota();
+        $userId = $this->getUserId();
 
         $pinjaman = DB::table('tb_sirkulasi')
             ->where('id_sk', $id_sk)
-            ->where('id_anggota', $idAnggota)
+            ->where('user_id', $userId)
             ->where('status', 'pending')
             ->first();
 
@@ -129,11 +138,11 @@ class UserPinjamController extends Controller
     // ✅ KEMBALIKAN
     public function kembalikan($id_sk)
     {
-        $idAnggota = $this->getIdAnggota();
+        $userId = $this->getUserId();
 
         $pinjaman = DB::table('tb_sirkulasi')
             ->where('id_sk', $id_sk)
-            ->where('id_anggota', $idAnggota)
+            ->where('user_id', $userId)
             ->where('status', 'dipinjam')
             ->first();
 
@@ -144,7 +153,7 @@ class UserPinjamController extends Controller
         DB::table('tb_sirkulasi')
             ->where('id_sk', $id_sk)
             ->update([
-                'status' => 'dikembalikan',
+                'status'     => 'dikembalikan',
                 'updated_at' => now()
             ]);
 

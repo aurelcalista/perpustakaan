@@ -58,7 +58,7 @@
                 <div class="form-group">
                   <label>Nama</label>
                   <input type="text" name="nama" class="form-control"
-                         value="{{ auth()->user()->name ?? old('nama') }}"
+                         value="{{ auth()->user()->nama ?? old('nama') }}"
                          placeholder="Nama lengkap" required>
                 </div>
               </div>
@@ -66,7 +66,7 @@
                 <div class="form-group">
                   <label>Kelas</label>
                   <input type="text" name="kelas" class="form-control"
-                         value="{{ old('kelas') }}"
+                         value="{{ auth()->user()->noidentitas ?? old('kelas') }}"
                          placeholder="Contoh: XI RPL 1" required>
                 </div>
               </div>
@@ -119,11 +119,11 @@
                         background:linear-gradient(135deg,#eef1fb,#dde4eb);
                         display:flex;align-items:center;justify-content:center;
                         font-size:20px;font-weight:800;color:#1a2d6b;" id="previewAvatar">
-              {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}
+              {{ strtoupper(substr(auth()->user()->nama ?? 'U', 0, 1)) }}
             </div>
             <div>
               <div style="font-weight:700;font-size:14px;color:#1a2332;" id="previewNama">
-                {{ auth()->user()->name ?? 'Nama' }}
+                {{ auth()->user()->nama ?? 'Nama' }}
               </div>
               <div id="previewStars" style="color:#f5a623;font-size:16px;letter-spacing:2px;">
                 ★★★★★
@@ -158,7 +158,6 @@
     document.getElementById('ratingValue').value = val;
     document.getElementById('starLabel').textContent = ratingLabels[val];
     paintStars(val, false);
-    // update preview
     var previewStars = '';
     for (var i = 0; i < val; i++) previewStars += '★';
     for (var j = val; j < 5; j++) previewStars += '☆';
@@ -172,14 +171,12 @@
     s.addEventListener('mouseout',   function() { paintStars(currentRating, false); });
   });
 
-  // Live preview ulasan
   document.querySelector('[name="isi"]').addEventListener('input', function() {
     var txt = this.value.trim();
     document.getElementById('previewTeks').textContent =
       txt ? '"' + txt + '"' : 'Preview ulasan kamu akan muncul di sini...';
   });
 
-  // Init
   setRating(5);
 </script>
 @endpush

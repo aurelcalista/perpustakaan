@@ -32,7 +32,7 @@ public function show(Request $request): View
     // Buku yang sedang dipinjam / pending
     $pinjaman = DB::table('tb_sirkulasi as sk')
         ->join('tb_buku as b', 'sk.id_buku', '=', 'b.id_buku')
-        ->where('sk.id_anggota', $user->nis)
+        ->where('sk.user_id', $user->id)          // fix: id_anggota → user_id, nis → id
         ->whereIn('sk.status', ['pending', 'dipinjam'])
         ->select(
             'sk.id_sk',
@@ -62,7 +62,7 @@ public function show(Request $request): View
     // Riwayat peminjaman (sudah dikembalikan)
     $riwayat = DB::table('tb_sirkulasi as sk')
         ->join('tb_buku as b', 'sk.id_buku', '=', 'b.id_buku')
-        ->where('sk.id_anggota', $user->nis)
+        ->where('sk.user_id', $user->id)          // fix: id_anggota → user_id, nis → id
         ->where('sk.status', 'dikembalikan')
         ->select('sk.*', 'b.judul_buku', 'b.pengarang')
         ->orderBy('sk.tgl_kembali', 'desc')
@@ -78,7 +78,7 @@ public function show(Request $request): View
     // ── Pelanggaran (terlambat kembalikan buku) ───────────────────────────
 $pelanggaran = DB::table('tb_sirkulasi as sk')
     ->join('tb_buku as b', 'sk.id_buku', '=', 'b.id_buku')
-    ->where('sk.id_anggota', $user->nis)
+    ->where('sk.user_id', $user->id)              // fix: id_anggota → user_id, nis → id
     ->where(function ($q) {
         // Sudah dikembalikan tapi melewati batas tgl_kembali
         $q->where(function ($q2) {

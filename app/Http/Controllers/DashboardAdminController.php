@@ -15,12 +15,10 @@ class DashboardAdminController extends Controller
         $totalBuku    = Buku::count();
         $totalAnggota = User::where('role', 'siswa')->count();
 
-        // Dipinjam = status pending atau dipinjam di tb_sirkulasi
         $bukuDipinjam = DB::table('tb_sirkulasi')
             ->whereIn('status', ['dipinjam', 'pending'])
             ->count();
 
-        // Tersedia = total stok dikurangi yang sedang dipinjam
         $totalStok    = Buku::sum('stok');
         $bukuTersedia = max(0, $totalStok - $bukuDipinjam);
 
@@ -61,10 +59,10 @@ class DashboardAdminController extends Controller
         // ── AKTIVITAS TERBARU (5 sirkulasi terbaru) ─────────────────
         $aktivitas = DB::table('tb_sirkulasi')
             ->join('tb_buku', 'tb_sirkulasi.id_buku', '=', 'tb_buku.id_buku')
-            ->leftJoin('tb_anggota', 'tb_sirkulasi.id_anggota', '=', 'tb_anggota.id_anggota')
+            ->leftJoin('users', 'tb_sirkulasi.user_id', '=', 'users.id') // fix: tb_anggota → users
             ->select(
                 'tb_buku.judul_buku',
-                'tb_anggota.nama as nama_anggota',
+                'users.nama as nama_anggota',                             // fix: tb_anggota.nama → users.nama
                 'tb_sirkulasi.status',
                 'tb_sirkulasi.created_at'
             )

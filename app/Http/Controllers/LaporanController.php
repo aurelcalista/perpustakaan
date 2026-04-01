@@ -7,14 +7,14 @@ use Illuminate\Support\Facades\DB;
 
 class LaporanController extends Controller
 {
-    public function index()
-    {
-        $tarif_denda = 500;
+    private int $tarif_denda = 500;
 
+    private function getLaporan()
+    {
         $laporan = DB::table('tb_sirkulasi as s')
             ->join('tb_buku as b', 's.id_buku', '=', 'b.id_buku')
-            ->join('users as u', 's.id_anggota', '=', 'u.nis')
-            ->where('s.status', 'dikembalikan')
+            ->join('users as u', 's.user_id', '=', 'u.id') // <-- fix: user_id bukan id_anggota
+            ->where('s.status', '=', 'dikembalikan')
             ->select(
                 's.id_sk',
                 's.tgl_pinjam',
@@ -28,11 +28,16 @@ class LaporanController extends Controller
             ->orderBy('s.updated_at', 'desc')
             ->get();
 
-        // Hitung denda
         foreach ($laporan as $item) {
-            $item->denda = $item->telat_pengembalian * $tarif_denda;
+            $item->denda = $item->telat_pengembalian * $this->tarif_denda;
         }
 
+        return $laporan;
+    }
+
+    public function index()
+    {
+        $laporan     = $this->getLaporan();
         $total_denda = $laporan->sum('denda');
 
         return view('dashboard_admin.laporan.laporan_sirkulasi', compact(
@@ -43,29 +48,7 @@ class LaporanController extends Controller
 
     public function print()
     {
-        $tarif_denda = 500;
-
-        $laporan = DB::table('tb_sirkulasi as s')
-            ->join('tb_buku as b', 's.id_buku', '=', 'b.id_buku')
-            ->join('users as u', 's.id_anggota', '=', 'u.nis')
-            ->where('s.status', 'dikembalikan')
-            ->select(
-                's.id_sk',
-                's.tgl_pinjam',
-                's.tgl_kembali',
-                's.updated_at as tgl_dikembalikan',
-                'b.judul_buku',
-                'u.nis',
-                'u.nama',
-                DB::raw('GREATEST(0, DATEDIFF(s.updated_at, s.tgl_kembali)) as telat_pengembalian')
-            )
-            ->orderBy('s.updated_at', 'desc')
-            ->get();
-
-        foreach ($laporan as $item) {
-            $item->denda = $item->telat_pengembalian * $tarif_denda;
-        }
-
+        $laporan     = $this->getLaporan();
         $total_denda = $laporan->sum('denda');
 
         return view('dashboard_admin.laporan.print_laporan', compact(
